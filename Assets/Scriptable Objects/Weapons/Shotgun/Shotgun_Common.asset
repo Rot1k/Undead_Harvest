@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da588e510649a146b228e5b27892ec3, type: 3}
+  m_Name: Shotgun_Common
+  m_EditorClassIdentifier: Assembly-CSharp::RangeWeaponSO
+  UISprite: {fileID: -8930843003216789197, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Shotgun
+  Rarity: 0
+  Price: 35
+  Prefab: {fileID: 336198951520307596, guid: b1a542e37e81da54e86a0df07f729a21, type: 3}
+  MaskSprite: {fileID: -1747592657822508401, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
+  BaseDamage: 25
+  RangeMultiplier: 0.7
+  ScalingStats: 04000000
+  BaseAttackSpeed: 0.8
+  ScalingFactor: 1
+  _unionResult: {fileID: 11400000, guid: 24030a370cab4cb4aa8d5459ef92569e, type: 2}
+  WeaponType: 1
+  BulletPrefab: {fileID: 4439229082521693837, guid: 33e10918ba1a64f46856ba09c2cdfbda, type: 3}
+  BulletSpeed: 20

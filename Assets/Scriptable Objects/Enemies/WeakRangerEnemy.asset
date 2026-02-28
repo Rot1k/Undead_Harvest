@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6813620bfab0fad4683704433f6bfea7, type: 3}
+  m_Name: WeakRangerEnemy
+  m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 1140011490426597685, guid: c1e7f5f30bf93014f95b2e270b7ac034, type: 3}
+  BaseHealth: 100
+  BaseDamage: 1
+  BaseMoveSpeed: 2
+  ShootingRange: 7
+  RunAwayDistance: 4
+  FireRate: 1

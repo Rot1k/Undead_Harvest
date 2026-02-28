@@ -1,0 +1,4 @@
+repository "My project (1)/Brotato(сам придумав)@7971594680458@cloud"
+  path "/"
+    br "/main"
+    co "/main"

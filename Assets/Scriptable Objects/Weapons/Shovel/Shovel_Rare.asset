@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b7f6309fb273a49bff255bb078e9d8, type: 3}
+  m_Name: Shovel_Rare
+  m_EditorClassIdentifier: Assembly-CSharp::MeeleWeaponSO
+  UISprite: {fileID: 7332373752705763435, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Shovel
+  Rarity: 2
+  Price: 140
+  SpecialDescription: 
+  Prefab: {fileID: 336198951520307596, guid: fac9282334e59f748a23812e19ab732c, type: 3}
+  MaskSprite: {fileID: -465151478569305459, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
+  BaseDamage: 35
+  RangeMultiplier: 1
+  ScalingStats: 03000000
+  BaseAttackSpeed: 5.4
+  ScalingFactor: 1
+  _unionResult: {fileID: 11400000, guid: 36a899bc96bb88f42a49d6a6634e10e5, type: 2}
+  WeaponSpeed: 22

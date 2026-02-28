@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
+  m_Name: RedApple
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSO
+  UISprite: {fileID: 1907061452, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Apple
+  Rarity: 0
+  Price: 20
+  Modifiers:
+  - statType: 0
+    modifierType: 0
+    value: 2
+    priority: 0
