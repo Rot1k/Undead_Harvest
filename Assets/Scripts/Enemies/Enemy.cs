@@ -154,4 +154,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
                 break;
         }
     }
+    public void ApplyEffect(StatusEffectSO statusEffectSO)
+    {
+        _statusEffectsManager.ApplyEffect(statusEffectSO);
+    }
 }

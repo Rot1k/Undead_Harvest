@@ -12,7 +12,7 @@ public class RangeWeaponSO : WeaponSO
 {
     [Header("Range Weapon Specifics")]
     public WeaponType WeaponType;
-    public Bullet BulletPrefab;
+    public PlayerBullet BulletPrefab;
     public float BulletSpeed;
     public RangeWeaponContext GetContext()
     {

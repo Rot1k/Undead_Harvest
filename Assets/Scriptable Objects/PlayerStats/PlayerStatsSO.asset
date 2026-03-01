@@ -85,3 +85,33 @@ MonoBehaviour:
     Icon: {fileID: 0}
     BaseIncreaseAmount: 0.05
     Tags: 2
+  - Name: Debuff Chance Multiplier
+    Type: 12
+    BaseValue: 1
+    Icon: {fileID: 0}
+    BaseIncreaseAmount: 0.05
+    Tags: 2
+  - Name: Freeze Chance
+    Type: 15
+    BaseValue: 0
+    Icon: {fileID: 0}
+    BaseIncreaseAmount: 0.05
+    Tags: 2
+  - Name: Poison Chance
+    Type: 14
+    BaseValue: 0
+    Icon: {fileID: 0}
+    BaseIncreaseAmount: 0.05
+    Tags: 2
+  - Name: Bleed Chance
+    Type: 13
+    BaseValue: 0
+    Icon: {fileID: 0}
+    BaseIncreaseAmount: 0.05
+    Tags: 2
+  - Name: Burn Chance
+    Type: 16
+    BaseValue: 0
+    Icon: {fileID: 0}
+    BaseIncreaseAmount: 0.05
+    Tags: 2

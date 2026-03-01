@@ -9,7 +9,6 @@ public class MeeleWeapon : Weapon
 
     private State _state;
     private MeeleWeaponSO _meeleWeaponSO;
-    [SerializeField] private StatusEffectSO _statusEffectSO;
     private void Start()
     {
 
@@ -107,7 +106,7 @@ public class MeeleWeapon : Weapon
             CombatSystem.CalculateDamage(_playerStats, _weaponBaseStats)
         );
         Debug.Log($"Hit {enemy.name} for {damage} damage.");
-        enemy.GetComponent<StatusEffectsManager>()?.ApplyEffect(_statusEffectSO);
         enemy.HealthSystem.Damage(damage);
+        HandleOnHit(enemy);
     }
 }

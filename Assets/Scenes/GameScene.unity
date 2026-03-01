@@ -2029,8 +2029,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 221658965}
   m_HandleRect: {fileID: 221658964}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999811
+  m_Value: -0.0060975607
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3883,8 +3883,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195672332}
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
-  m_Value: 0.018292682
-  m_Size: 0.9999811
+  m_Value: -0.0121951215
+  m_Size: 0.00000023031265
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5536,7 +5536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049438477}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.005065918}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -6376,7 +6376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.0050354004}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.005004883}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &652934187
@@ -19673,7 +19673,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf5d8e3307de4104495d208ffd179545, type: 2}
   - {fileID: 11400000, guid: 2ed0a70cdadf9b444be24f49cfe153bf, type: 2}
   _startingWeapons:
-  - {fileID: 11400000, guid: 8433447a29e587044942919340f1ccd8, type: 2}
+  - {fileID: 11400000, guid: 208a20d4cf786994fa8f86431577809f, type: 2}
   _maxWeapons: 6
 --- !u!1 &1853291045
 GameObject:
@@ -24051,6 +24051,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9212599969415905600, guid: 23684fc81f5999a448c67e6bff910026, type: 3}
+      propertyPath: _effects
+      value: 
+      objectReference: {fileID: 11400000, guid: f514a5a5d9d964f4abfe39184d77b759, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8524852444045793207, guid: 23684fc81f5999a448c67e6bff910026, type: 3}

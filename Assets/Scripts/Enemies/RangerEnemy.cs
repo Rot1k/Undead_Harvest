@@ -72,7 +72,6 @@ public class RangerEnemy : Enemy
     }
     private void Shoot()
     {
-
         Bullet bullet = NightPool.Spawn(_bulletPrefab, transform.position, Quaternion.identity);
         Vector2 shootDirecton = (Player.position - transform.position).normalized;
         bullet.Setup(shootDirecton, _rangerEnemyStats.BaseDamage, _rangerEnemyStats.BulletSpeed);

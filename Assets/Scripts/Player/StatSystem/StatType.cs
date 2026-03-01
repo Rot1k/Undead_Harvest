@@ -12,6 +12,11 @@ public enum StatType
     CriticalDamageMultiplier,
     ItemPickupRange,
     ExperienceMultiplier,
+    GlobalEffectChanceMultiplier,
+    BleedChance,
+    PoisonChance,
+    FreezeChance,
+    BurnChance,
 }
 
 [System.Flags]

@@ -2,22 +2,23 @@ using NTC.Pool;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Bullet : MonoBehaviour, ISpawnable
+public abstract class Bullet : MonoBehaviour, ISpawnable
 {
-    private float _damage;
+    protected float _damage;
     private Rigidbody2D _rigidbody;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
     }
-    public void OnSpawn()
+
+    public virtual void OnSpawn()
     {
-        _rigidbody.linearVelocity  = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
         transform.rotation = Quaternion.identity;
     }
 
-    public void Setup(Vector2 shootDir, float damage, float speed)
+    public virtual void Setup(Vector2 shootDir, float damage, float speed)
     {
         _damage = damage;
         _rigidbody.AddForce(shootDir * speed, ForceMode2D.Impulse);
@@ -28,14 +29,33 @@ public class Bullet : MonoBehaviour, ISpawnable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
+        if (IsObstacle(collision))
         {
-            NightPool.Despawn(gameObject);
+            Despawn();
+            return;
         }
-        else if (collision.gameObject.TryGetComponent<IDamageable>(out var target))
+
+        if (TryGetTarget(collision, out var target))
         {
             target.HealthSystem.Damage(Mathf.RoundToInt(_damage));
-            NightPool.Despawn(gameObject);
+
+            OnHit(target);
+
+            Despawn();
         }
+    }
+
+    protected virtual bool IsObstacle(Collider2D collision)
+    {
+        return collision.gameObject.layer == LayerMask.NameToLayer("Obstacle");
+    }
+
+    protected abstract bool TryGetTarget(Collider2D collision, out IDamageable target);
+
+    protected virtual void OnHit(IDamageable target) { }
+
+    protected void Despawn()
+    {
+        NightPool.Despawn(gameObject);
     }
 }

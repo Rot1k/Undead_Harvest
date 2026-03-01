@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
     public event Action<StatType, float> OnStatChanged;
-
+    
     [SerializeField] private PlayerStatsSO _baseStats;
+    [SerializeField] private StatusEffectsListSO _effects;
+
     private readonly Dictionary<StatType, Stat> _stats = new();
     private readonly Dictionary<StatType, Action<float>> _statHandlers = new();
 
@@ -83,5 +86,16 @@ public class PlayerStats : MonoBehaviour
             return stat.CurrentValue;
 
         throw new KeyNotFoundException($"Stat {type} not found on {name}.");
+    }
+    public void TryApplyEffects(Enemy enemy)
+    {
+        foreach (var effect in _effects.StatusEffects)
+        {
+            float finalChance = Get(effect.LinkedChanceStat) * Get(StatType.GlobalEffectChanceMultiplier);
+            if (UnityEngine.Random.value <= finalChance)
+            {
+                enemy.ApplyEffect(effect);
+            }
+        }
     }
 }

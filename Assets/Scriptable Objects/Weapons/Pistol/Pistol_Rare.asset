@@ -16,6 +16,7 @@ MonoBehaviour:
   ItemName: Pistol
   Rarity: 2
   Price: 140
+  SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: b0da74ca13185a84e896ea3838362f50, type: 3}
   MaskSprite: {fileID: 2094918321770200223, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 35
@@ -25,5 +26,5 @@ MonoBehaviour:
   ScalingFactor: 1
   _unionResult: {fileID: 11400000, guid: b2dfb289ccaf21e46a5f58d5a82fc2fb, type: 2}
   WeaponType: 0
-  BulletPrefab: {fileID: 4439229082521693837, guid: 33e10918ba1a64f46856ba09c2cdfbda, type: 3}
+  BulletPrefab: {fileID: 3827742391407620573, guid: 33e10918ba1a64f46856ba09c2cdfbda, type: 3}
   BulletSpeed: 20

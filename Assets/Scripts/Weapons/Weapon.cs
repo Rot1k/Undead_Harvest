@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponVisual _weaponVisual;
@@ -117,6 +118,29 @@ public abstract class Weapon : MonoBehaviour
         _nextFireTime = currentTime + cooldown;
     }
 
+    public void HandleOnHit(Enemy enemy)
+    {
+        ApplyWeaponEffects(enemy);
+        ApplyPlayerEffects(enemy);
+    }
+    private void ApplyWeaponEffects(Enemy enemy)
+    {
+        foreach (var effectData in _weaponBaseStats.OnHitEffects)
+        {
+            float finalChance =
+                effectData.Chance *
+                _playerStats.Get(StatType.GlobalEffectChanceMultiplier);
+
+            if (Random.value <= finalChance)
+            {
+                enemy.ApplyEffect(effectData.Effect);
+            }
+        }
+    }
+    private void ApplyPlayerEffects(Enemy enemy)
+    {
+        _playerStats.TryApplyEffects(enemy);
+    }
     public virtual void UpdateStartPosition(Vector3 localPosition)
     {
         OriginalLocalPosition = localPosition;

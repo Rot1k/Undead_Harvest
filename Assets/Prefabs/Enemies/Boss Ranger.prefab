@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 877149969572591370}
   - component: {fileID: 5170246447271429838}
   m_Layer: 6
-  m_Name: Boss Ranger 1
+  m_Name: Boss Ranger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossEnemy
   _enemyStats: {fileID: 11400000, guid: 3bd893eea09bd4b40b3e7a5fe3c93aac, type: 2}
   _expPrefab: {fileID: 3847954848404346988, guid: f5a354f61879e2645bd90adf311f494f, type: 3}
-  _bulletPrefab: {fileID: 4439229082521693837, guid: 09f7f4ca357006d449fcfa2993b86d37, type: 3}
+  _bulletPrefab: {fileID: 620818728340652242, guid: 09f7f4ca357006d449fcfa2993b86d37, type: 3}
 --- !u!114 &877149969572591370
 MonoBehaviour:
   m_ObjectHideFlags: 0
