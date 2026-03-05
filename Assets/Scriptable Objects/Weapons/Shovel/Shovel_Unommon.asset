@@ -21,8 +21,10 @@ MonoBehaviour:
   MaskSprite: {fileID: -465151478569305459, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 18
   RangeMultiplier: 1
-  ScalingStats: 03000000
   BaseAttackSpeed: 5.2
-  ScalingFactor: 1
   _unionResult: {fileID: 11400000, guid: 7569c95ac382ccf46bb6b5ab09d64c0c, type: 2}
+  _scalingStats:
+  - ScalingStatType: 3
+    ScalingFactor: 1
+  _onHitEffects: []
   WeaponSpeed: 22

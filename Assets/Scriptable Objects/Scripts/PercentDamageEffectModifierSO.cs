@@ -7,6 +7,9 @@ public class PercentDamageEffectModifierSO : EffectModifierSO
 
     public override void OnTick(StatusEffectInstance instance, Enemy target, int stackCount)
     {
+        if (target is BossEnemy) return;
+
         target.HealthSystem.Damage(Mathf.RoundToInt(target.HealthSystem.HealthMax * PercentDamageAmount * stackCount));
     }
 }
+    

@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 439dc9f18933afe4b9ed010b592eefbd, type: 3}
-  m_Name: SlowEffectModifierSO
+  m_Name: FreezeSlowSO
   m_EditorClassIdentifier: Assembly-CSharp::SlowEffectModifierSO
   SlowPercentAmount: 10

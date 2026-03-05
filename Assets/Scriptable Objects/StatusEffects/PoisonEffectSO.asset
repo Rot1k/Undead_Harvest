@@ -20,5 +20,6 @@ MonoBehaviour:
   MaxStacks: 5
   Modifiers:
   - {fileID: 11400000, guid: 259acd5d1127dc74eaa85389129d4623, type: 2}
+  - {fileID: 11400000, guid: 7bdd33be81a8182409c54c80aa6ca846, type: 2}
   VFX: {fileID: 6823200998282874702, guid: 7763925db3e8d1147ade7cf0e5c74799, type: 3}
   ApplySound: {fileID: 8300000, guid: 0bddcb411d826e14bb26d40ae45d8e22, type: 3}

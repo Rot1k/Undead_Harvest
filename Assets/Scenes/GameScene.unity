@@ -3883,8 +3883,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195672332}
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
-  m_Value: -0.0121951215
-  m_Size: 0.00000023031265
+  m_Value: 0
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3994,7 +3994,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTransform: {fileID: 413318956}
   _waves:
-  - {fileID: 11400000, guid: 3c9d3483118658b4aa1ce9e67b9b548d, type: 2}
   - {fileID: 11400000, guid: ad970f082605f69409d5e9d2fb13c108, type: 2}
   - {fileID: 11400000, guid: 40fa91ddd7e32a349b7f27c4b57fe8fa, type: 2}
   - {fileID: 11400000, guid: 84d654dde5180af458b0c28334d7d790, type: 2}
@@ -4002,6 +4001,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2c1a27e275eba404a8446ff733a81f6a, type: 2}
   - {fileID: 11400000, guid: 30bb180c21995f44d9785c9de0f3e276, type: 2}
   - {fileID: 11400000, guid: b8525214fc2ecaf4e8ac91a95e5e696b, type: 2}
+  - {fileID: 11400000, guid: 3c9d3483118658b4aa1ce9e67b9b548d, type: 2}
 --- !u!4 &413215188
 Transform:
   m_ObjectHideFlags: 0
@@ -5536,7 +5536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.005065918}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0050354004}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -19668,12 +19668,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
   _playerStats: {fileID: 1782614997}
-  _startingItems:
-  - {fileID: 11400000, guid: 2ed0a70cdadf9b444be24f49cfe153bf, type: 2}
-  - {fileID: 11400000, guid: cf5d8e3307de4104495d208ffd179545, type: 2}
-  - {fileID: 11400000, guid: 2ed0a70cdadf9b444be24f49cfe153bf, type: 2}
+  _startingItems: []
   _startingWeapons:
-  - {fileID: 11400000, guid: 208a20d4cf786994fa8f86431577809f, type: 2}
+  - {fileID: 11400000, guid: 2972c9264b933ee42b2b5c6f3b2d7c4d, type: 2}
+  - {fileID: 11400000, guid: 7c9895fd6614c6844b1c46df774601f0, type: 2}
   _maxWeapons: 6
 --- !u!1 &1853291045
 GameObject:

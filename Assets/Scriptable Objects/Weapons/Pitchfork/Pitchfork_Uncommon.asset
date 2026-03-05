@@ -16,16 +16,17 @@ MonoBehaviour:
   ItemName: Pitchfork
   Rarity: 1
   Price: 70
-  SpecialDescription: POISON
+  SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: 1c01bdb373139e049af90cad51917f5f, type: 3}
   MaskSprite: {fileID: 3529149275660272584, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 18
   RangeMultiplier: 1
-  ScalingStats: 03000000
   BaseAttackSpeed: 5
-  ScalingFactor: 1
-  _unionResult: {fileID: 11400000, guid: 208a20d4cf786994fa8f86431577809f, type: 2}
+  _unionResult: {fileID: 11400000, guid: 0fc22b5fd636ef942a6536987eaeda58, type: 2}
+  _scalingStats:
+  - ScalingStatType: 3
+    ScalingFactor: 1
   _onHitEffects:
-  - Effect: {fileID: 11400000, guid: 36b748c9525935e48a6dce2f77276768, type: 2}
-    Chance: 1
+  - Effect: {fileID: 11400000, guid: b55f9e341d8f7644bba89e3885e854db, type: 2}
+    Chance: 0.15
   WeaponSpeed: 22

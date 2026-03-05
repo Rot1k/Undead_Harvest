@@ -21,10 +21,12 @@ MonoBehaviour:
   MaskSprite: {fileID: -1747592657822508401, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 88
   RangeMultiplier: 0.7
-  ScalingStats: 04000000
   BaseAttackSpeed: 1
-  ScalingFactor: 1
   _unionResult: {fileID: 11400000, guid: 03f2b25588f3d2848a297758bf58fde8, type: 2}
+  _scalingStats:
+  - ScalingStatType: 4
+    ScalingFactor: 1
+  _onHitEffects: []
   WeaponType: 1
   BulletPrefab: {fileID: 3827742391407620573, guid: 33e10918ba1a64f46856ba09c2cdfbda, type: 3}
   BulletSpeed: 20

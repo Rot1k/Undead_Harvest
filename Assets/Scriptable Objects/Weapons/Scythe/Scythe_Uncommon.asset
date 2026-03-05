@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b7f6309fb273a49bff255bb078e9d8, type: 3}
+  m_Name: Scythe_Uncommon
+  m_EditorClassIdentifier: Assembly-CSharp::MeeleWeaponSO
+  UISprite: {fileID: 7902701637492136988, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Scythe
+  Rarity: 1
+  Price: 70
+  SpecialDescription: 
+  Prefab: {fileID: 336198951520307596, guid: 6d240322526a5ae4e93a1f3be00ffb7d, type: 3}
+  MaskSprite: {fileID: -1694369758766683232, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
+  BaseDamage: 14
+  RangeMultiplier: 1.1
+  BaseAttackSpeed: 4
+  _unionResult: {fileID: 11400000, guid: 0fc22b5fd636ef942a6536987eaeda58, type: 2}
+  _scalingStats:
+  - ScalingStatType: 3
+    ScalingFactor: 1
+  - ScalingStatType: 8
+    ScalingFactor: 1.5
+  _onHitEffects:
+  - Effect: {fileID: 11400000, guid: 36b748c9525935e48a6dce2f77276768, type: 2}
+    Chance: 0.15
+  WeaponSpeed: 22

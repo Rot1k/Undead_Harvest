@@ -193,7 +193,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ItemsUI_2
+      name: Pitchfork Icon
       rect:
         serializedVersion: 2
         x: 19
@@ -237,7 +237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ItemsUI_4
+      name: Scythe Icon
       rect:
         serializedVersion: 2
         x: 38
@@ -610,6 +610,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: FirePepper Icon
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 968
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18340143f9e17914b91d20162188ff9b
+      internalID: 1950229423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IceCube Icon
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 987
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dd0afbc46cf86e4688057aaca614841
+      internalID: 1501995075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RitualKnife Icon
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 1006
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05707a1ac88e49742aa9f2f43904188a
+      internalID: 2033344101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -629,15 +695,18 @@ TextureImporter:
       Empty Slot Icon: 2053126153914737270
       EnergyCrystal Icon: -461037422
       Experimental Serum Icon: 1069596567
+      FirePepper Icon: 1950229423
       GlassHeart Icon: 8868715406678941153
       GreenApple Icon: -706262020
+      IceCube Icon: 1501995075
       ItemsUI_10: -4833698088164496743
-      ItemsUI_2: -2104392166141275152
-      ItemsUI_4: 7902701637492136988
       ItemsUI_6: -1409614913619087032
       ItemsUI_7: -2871574967968945493
       Pistol Icon: 7826866793240692649
+      Pitchfork Icon: -2104392166141275152
       RedApple Icon: 1907061452
+      RitualKnife Icon: 2033344101
+      Scythe Icon: 7902701637492136988
       ShotGun Icon: -8930843003216789197
       Shovel Icon: 7332373752705763435
       Slot Background: -6997041179875537021

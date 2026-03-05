@@ -38,19 +38,19 @@ public partial class WeaponSO : IDescribableItem
     }
     private string BuildScalingString()
     {
-        if (ScalingStats == null || ScalingStats.Length == 0)
+        if (ScalingStats == null || ScalingStats.Count == 0)
             return string.Empty;
 
         StringBuilder sb = new();
         sb.Append("(");
 
-        for (int i = 0; i < ScalingStats.Length; i++)
+        for (int i = 0; i < ScalingStats.Count; i++)
         {
-            StatType stat = ScalingStats[i];
+            var entry = ScalingStats[i];
 
             sb.Append("+");
-            //sb.Append(GetStatSpriteTag(stat));
-            sb.Append($"{ScalingFactor:P0}");
+
+            sb.Append($"{entry.ScalingFactor:P0}");
         }
 
         sb.Append(")");
