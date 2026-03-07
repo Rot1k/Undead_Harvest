@@ -51,12 +51,27 @@ public class BuyWindow : MonoBehaviour
                     SetRandomItem();
                     break;
                 case WeaponSO weaponSO:
-                    if (EquipmentManager.Instance.GetFirstEmptyWeaponSlot() == -1)
+
+                    int weaponSlot = EquipmentManager.Instance.GetFirstEmptyWeaponSlot();
+
+                    if (weaponSlot == -1)
                     {
-                        Debug.LogWarning("No empty weapon slots available!");
-                        return;
+                        int secondWeaponIndex = EquipmentManager.Instance.FindWeaponIndex(weaponSO);
+
+                        bool canUnion = (secondWeaponIndex != -1) && weaponSO.CanUnion;
+                        if (!canUnion)
+                        {
+                            Debug.LogWarning("No empty weapon slots available!");
+                            break;
+                        }
+
+                        EquipmentManager.Instance.ReplaceWeapon(secondWeaponIndex, weaponSO.UnionResult);
                     }
-                    EquipmentManager.Instance.EquipWeapon(weaponSO, EquipmentManager.Instance.GetFirstEmptyWeaponSlot());
+                    else
+                    {
+                        EquipmentManager.Instance.EquipWeapon(weaponSO, weaponSlot);
+                    }
+
                     WalletManager.Instance.TrySpendMoney(_currentItem.Price);
                     SetRandomItem();
                     break;

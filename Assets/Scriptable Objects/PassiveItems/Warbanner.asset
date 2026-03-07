@@ -23,6 +23,6 @@ MonoBehaviour:
     value: 3
     priority: 0
   - statType: 5
-    modifierType: 0
-    value: 0.1
+    modifierType: 1
+    value: 5
     priority: 0

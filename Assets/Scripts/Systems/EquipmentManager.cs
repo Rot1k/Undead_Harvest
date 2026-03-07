@@ -107,6 +107,22 @@ public class EquipmentManager : MonoBehaviour
 
         EquipWeapon(newWeapon, slot);
     }
+    public void Union(InventorySlot inventorySlot)
+    {
+        if (inventorySlot is not WeaponInventorySlot weaponSlot)
+            return;
+
+        WeaponSO weapon = GetWeapon(weaponSlot.SlotIndex);
+        int secondWeaponIndex = FindSecondWeaponIndex(weapon, weaponSlot.SlotIndex);
+        if (secondWeaponIndex == -1)
+            return;
+
+        if (!weapon.CanUnion)
+            return;
+
+        UnequipWeapon(secondWeaponIndex);
+        ReplaceWeapon(weaponSlot.SlotIndex, weapon.UnionResult);
+    }
     public WeaponSO GetWeapon(int slot)
     {
         if (slot < 0 || slot >= _maxWeapons)
@@ -126,6 +142,15 @@ public class EquipmentManager : MonoBehaviour
             }
         }
         return -1; // No empty slots
+    }
+    public int FindWeaponIndex(WeaponSO weapon)
+    {
+        for (int i = 0; i < _weapons.Length; i++)
+        {
+            if (_weapons[i] == weapon)
+                return i;
+        }
+        return -1;
     }
     public int FindSecondWeaponIndex(WeaponSO weapon, int excludeIndex)
     {

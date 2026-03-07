@@ -49,6 +49,7 @@ public partial class WeaponSO : IDescribableItem
             var entry = ScalingStats[i];
 
             sb.Append("+");
+            sb.Append($"<sprite name={entry.ScalingStatType} Icon>");
 
             sb.Append($"{entry.ScalingFactor:P0}");
         }

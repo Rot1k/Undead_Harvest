@@ -21,8 +21,9 @@ MonoBehaviour:
     SpawnInterval: 2
     EnemiesPerSpawn: 3
     maxEnemiesInScene: 30
-  - EnemyStats: {fileID: 11400000, guid: de4c69ec5cf30384fafc68b295d3c633, type: 2}
-    SpawnInterval: 4
+  - EnemyStats: {fileID: 11400000, guid: 2bee39813b7b37546978d42bd1464558, type: 2}
+    SpawnInterval: 2
     EnemiesPerSpawn: 3
     maxEnemiesInScene: 30
   WaveDuration: 20
+  IsBossWave: 0

@@ -47,7 +47,7 @@ MonoBehaviour:
     Type: 5
     BaseValue: 1
     Icon: {fileID: -582036849, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
-    BaseIncreaseAmount: 0.05
+    BaseIncreaseAmount: 0.02
     Tags: 1
   - Name: Attack Range
     Type: 6
@@ -64,7 +64,7 @@ MonoBehaviour:
   - Name: Critical Chance
     Type: 8
     BaseValue: 0
-    Icon: {fileID: 21300000, guid: 67fda467ebdfd1245be4e9245df91553, type: 3}
+    Icon: {fileID: -819573008, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
     BaseIncreaseAmount: 2
     Tags: 1
   - Name: Critical Damage

@@ -3883,8 +3883,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195672332}
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0
+  m_Value: 0.024390243
+  m_Size: 0.012194594
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4000,6 +4000,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79970013d0dbeb744a1dccbacfea1f82, type: 2}
   - {fileID: 11400000, guid: 2c1a27e275eba404a8446ff733a81f6a, type: 2}
   - {fileID: 11400000, guid: 30bb180c21995f44d9785c9de0f3e276, type: 2}
+  - {fileID: 11400000, guid: 8f38a811ab78ff64e967acffafec2618, type: 2}
+  - {fileID: 11400000, guid: a8752ec1fe4086b49a89d14e39f8627c, type: 2}
+  - {fileID: 11400000, guid: a76b00d94fb691e4592adf88b2cf3064, type: 2}
+  - {fileID: 11400000, guid: 67de2dff3b9b85d4889c834339976646, type: 2}
+  - {fileID: 11400000, guid: e56ddb795b9e88d4ab1ad8d5f27460cb, type: 2}
+  - {fileID: 11400000, guid: da9b06114d7f2ba45b9706384bca411b, type: 2}
+  - {fileID: 11400000, guid: a39474776ac336c4b8c21b68d425daad, type: 2}
+  - {fileID: 11400000, guid: 2b7077233a5d2da42b4a484db86d094d, type: 2}
+  - {fileID: 11400000, guid: 46823f117a442f041baa21d7d386cc1f, type: 2}
+  - {fileID: 11400000, guid: 5a8feb5639c53da4fb9a60e8e855484d, type: 2}
+  - {fileID: 11400000, guid: 52d22747f5f70ee488e04f91ff6ee99a, type: 2}
+  - {fileID: 11400000, guid: 8e093920fe0121f4b848b14da0ae81e0, type: 2}
+  - {fileID: 11400000, guid: bb570c57fbbd52048a57b81cd040f382, type: 2}
   - {fileID: 11400000, guid: b8525214fc2ecaf4e8ac91a95e5e696b, type: 2}
   - {fileID: 11400000, guid: 3c9d3483118658b4aa1ce9e67b9b548d, type: 2}
 --- !u!4 &413215188
@@ -5536,7 +5549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.0050354004}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.00491333}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -6376,7 +6389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.005004883}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0050354004}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &652934187
@@ -23910,6 +23923,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4096552665138618043, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+      propertyPath: m_text
+      value: "Damage: 20 (+<sprite name=\"MaxHealth Icon\">100%) \n\nDamage: 20+(100%)
+        ghj\n\ndamage: 20+(100%) kghhjk\n\ndamage: 20+(100%) fgfghj\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4096552665138618043, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+      propertyPath: m_lineSpacing
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5921379585430500719, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}

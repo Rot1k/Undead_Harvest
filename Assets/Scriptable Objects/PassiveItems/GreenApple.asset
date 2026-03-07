@@ -15,7 +15,8 @@ MonoBehaviour:
   UISprite: {fileID: -706262020, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Green Apple
   Rarity: 0
-  Price: 20
+  Price: 25
+  SpecialDescription: 
   Modifiers:
   - statType: 1
     modifierType: 0

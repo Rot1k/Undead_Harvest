@@ -161,20 +161,7 @@ public class ItemInfoUI : MonoBehaviour
 
     private void Union()
     {
-        if (_inventorySlot is not WeaponInventorySlot weaponSlot)
-            return;
-
-        if (_secondWeaponIndex == -1)
-            return;
-
-        WeaponSO weapon = EquipmentManager.Instance.GetWeapon(weaponSlot.SlotIndex);
-
-        if (!weapon.CanUnion)
-            return;
-        
-        EquipmentManager.Instance.UnequipWeapon(_secondWeaponIndex);
-        EquipmentManager.Instance.ReplaceWeapon(weaponSlot.SlotIndex, weapon.UnionResult);
-
+        EquipmentManager.Instance.Union(_inventorySlot);
         Close();
     }
 

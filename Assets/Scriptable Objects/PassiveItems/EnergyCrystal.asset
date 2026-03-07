@@ -20,7 +20,7 @@ MonoBehaviour:
   Modifiers:
   - statType: 2
     modifierType: 0
-    value: 3
+    value: 5
     priority: 0
   - statType: 7
     modifierType: 1

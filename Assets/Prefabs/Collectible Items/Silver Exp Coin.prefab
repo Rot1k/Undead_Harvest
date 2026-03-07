@@ -141,5 +141,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1942779b14cc11499008d8223fc3884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpCoin
-  _expAmount: 20
+  _expAmount: 10
   _moneyAmount: 10
