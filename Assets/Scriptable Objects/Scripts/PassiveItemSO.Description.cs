@@ -14,7 +14,7 @@ public partial class PassiveItemSO : IDescribableItem
         return stringBuilder.ToString();
     }
 
-    public Dictionary<string, string> GetDescriptionParams()
+    public Dictionary<string, string> GetDescriptionParams(PlayerStatsSO playerStatsSO)
     {
         var dictionary = new Dictionary<string, string>();
 
@@ -27,7 +27,7 @@ public partial class PassiveItemSO : IDescribableItem
 
             dictionary.Add(
                 $"mod_{i}",
-                $"{valueText} {modifier.statType}"
+                $"{valueText} {playerStatsSO.GetName(modifier.statType)}"
             );
         }
 

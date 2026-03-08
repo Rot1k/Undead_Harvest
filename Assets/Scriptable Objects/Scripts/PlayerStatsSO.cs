@@ -19,7 +19,7 @@ public class PlayerStatsSO : ScriptableObject
     [SerializeField] private List<StatEntry> _stats = new();
     private Dictionary<StatType, StatEntry> _statLookup;
 
-    private void OnEnable()
+    private void OnValidate()
     {
         _statLookup = new Dictionary<StatType, StatEntry>(_stats.Count);
 

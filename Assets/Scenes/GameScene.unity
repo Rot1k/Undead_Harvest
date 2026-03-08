@@ -282,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.y
@@ -335,6 +335,10 @@ PrefabInstance:
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3229450075405888492, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+      propertyPath: m_text
+      value: Experimental Serum
       objectReference: {fileID: 0}
     - target: {fileID: 5921379585430500719, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_Name
@@ -2030,7 +2034,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 221658964}
   m_Direction: 2
   m_Value: -0.0060975607
-  m_Size: 0
+  m_Size: 0.9999811
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3884,7 +3888,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
   m_Value: 0.024390243
-  m_Size: 0.012194594
+  m_Size: 0.9999811
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4128,7 +4132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.y
@@ -6976,6 +6980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 217248989}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 1
 --- !u!1 &798392083
 GameObject:
@@ -7180,6 +7185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 1300687079}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 0
 --- !u!1 &813936825
 GameObject:
@@ -7701,6 +7707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 1031296234}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 0
 --- !u!224 &872150329 stripped
 RectTransform:
@@ -12251,6 +12258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 935573036}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 0
 --- !u!1 &1407552907
 GameObject:
@@ -18401,6 +18409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 825397143}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 1
 --- !u!1 &1679961034
 GameObject:
@@ -19125,7 +19134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.y
@@ -19735,6 +19744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfoController
   _itemInfoUI: {fileID: 1460358738}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _shopMode: 0
 --- !u!1 &1860256095
 GameObject:
@@ -20768,7 +20778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 98.63, y: 137.1}
+  m_AnchoredPosition: {x: 18.7, y: 137.1}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1992030530
@@ -20789,7 +20799,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 21.63
+  m_Spacing: 22
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -20816,6 +20826,7 @@ MonoBehaviour:
   - {fileID: 659396096}
   _itemsPool: {fileID: 11400000, guid: 02c31cc2aa3ac454eac12382a84c1177, type: 2}
   _rarityConfigSO: {fileID: 11400000, guid: 2a23f7b80d1071247af8169bdda72972, type: 2}
+  _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
 --- !u!224 &1994538695 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1548620949363421229, guid: 92cec96c482b4214db21a807318319da, type: 3}
@@ -23871,7 +23882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
       propertyPath: m_SizeDelta.y

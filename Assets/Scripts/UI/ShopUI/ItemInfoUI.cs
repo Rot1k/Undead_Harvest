@@ -25,6 +25,8 @@ public class ItemInfoUI : MonoBehaviour
     private InventorySlot _inventorySlot;
     private int _secondWeaponIndex = -1;
 
+    PlayerStatsSO _playerStatsSO;
+
     private int _sellCost;
 
     private void Awake()
@@ -39,6 +41,10 @@ public class ItemInfoUI : MonoBehaviour
             _sellButton.onClick.AddListener(Sell);
 
         Hide();
+    }
+    public void Initialize(PlayerStatsSO playerStats)
+    {
+        _playerStatsSO = playerStats;
     }
 
     public void Close()
@@ -77,7 +83,7 @@ public class ItemInfoUI : MonoBehaviour
 
         if (_itemIconImage != null) _itemIconImage.sprite = slotData.UISprite;
         
-        if (_itemDescriptionText != null) _itemDescriptionText.text = ItemDescriptionBuilder.Build(slotData);
+        if (_itemDescriptionText != null) _itemDescriptionText.text = ItemDescriptionBuilder.Build(slotData, _playerStatsSO);
 
         if (_itemTypeText != null)
         {

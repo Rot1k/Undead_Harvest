@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class RollButtonUI : MonoBehaviour
 {
     [SerializeField] private BuyWindowsHolder _buyWindowsHolder;

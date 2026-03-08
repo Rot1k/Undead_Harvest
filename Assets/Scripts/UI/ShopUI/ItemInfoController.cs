@@ -3,6 +3,7 @@ using UnityEngine;
 public class ItemInfoController : MonoBehaviour
 {
     [SerializeField] private ItemInfoUI _itemInfoUI;
+    [SerializeField] private PlayerStatsSO _playerStatsSO;
     [SerializeField] private bool _shopMode;
 
     private InventorySlot _currentSlot;
@@ -10,6 +11,7 @@ public class ItemInfoController : MonoBehaviour
     private void Awake()
     {
         _itemInfoUI.OnClose += Hide;
+        _itemInfoUI.Initialize(_playerStatsSO);
     }
     public void Toggle(InventorySlot slot)
     {

@@ -27,7 +27,7 @@ public partial class WeaponSO : IDescribableItem
         return sb.ToString();
     }
 
-    public Dictionary<string, string> GetDescriptionParams()
+    public Dictionary<string, string> GetDescriptionParams(PlayerStatsSO playerStatsSO)
     {
         return new Dictionary<string, string>
         {
@@ -35,6 +35,10 @@ public partial class WeaponSO : IDescribableItem
             { "attackSpeed", BaseAttackSpeed.ToString("0.##") },
             { "range", RangeMultiplier.ToString("0.##") },
         };
+    }
+    private string GetScalingStatIcon(ScalingStatsEntry scalingStatsEntry)
+    {
+        return $"<sprite name={scalingStatsEntry.ScalingStatType} Icon>";
     }
     private string BuildScalingString()
     {
@@ -49,7 +53,7 @@ public partial class WeaponSO : IDescribableItem
             var entry = ScalingStats[i];
 
             sb.Append("+");
-            sb.Append($"<sprite name={entry.ScalingStatType} Icon>");
+            sb.Append(GetScalingStatIcon(entry));
 
             sb.Append($"{entry.ScalingFactor:P0}");
         }

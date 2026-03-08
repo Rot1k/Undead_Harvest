@@ -4,5 +4,5 @@ using UnityEngine;
 public interface IDescribableItem
 {
     string GetDescriptionTemplate();
-    Dictionary<string, string> GetDescriptionParams();
+    Dictionary<string, string> GetDescriptionParams(PlayerStatsSO playerStatsSO);
 }

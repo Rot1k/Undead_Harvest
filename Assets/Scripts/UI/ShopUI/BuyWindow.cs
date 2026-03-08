@@ -21,6 +21,7 @@ public class BuyWindow : MonoBehaviour
     private InventoryItemSO _currentItem;
     private InventoryItemsPoolSO _itemsPool;
     private RarityConfigSO _rarityConfig;
+    private PlayerStatsSO _playerStatsSO;
     public bool IsLocked { get; private set; } = false;
 
     private void Awake()
@@ -83,10 +84,11 @@ public class BuyWindow : MonoBehaviour
         }
     }
 
-    public void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfigSO)
+    public void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfigSO, PlayerStatsSO playerStatsSO)
     {
         _itemsPool = itemsPool;
         _rarityConfig = rarityConfigSO;
+        _playerStatsSO = playerStatsSO;
     }
 
     public void SetItem(InventoryItemSO item)
@@ -101,7 +103,7 @@ public class BuyWindow : MonoBehaviour
         _rarityText.color = color;
         string typeLabel = item is WeaponSO ? "Weapon" : "Item"; 
         _itemTypeText.text = typeLabel;
-        _descriptionText.text = ItemDescriptionBuilder.Build(item);
+        _descriptionText.text = ItemDescriptionBuilder.Build(item, _playerStatsSO);
     }
 
     public void SetRandomItem()
