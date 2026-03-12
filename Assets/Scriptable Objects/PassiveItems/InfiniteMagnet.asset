@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: FirePepper
+  m_Name: InfiniteMagnet
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: 1950229423, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
-  ItemName: Fire Pepper
-  Rarity: 1
-  Price: 40
+  UISprite: {fileID: 0}
+  ItemName: Infinite Magnet
+  Rarity: 4
+  Price: 500
   SpecialDescription: 
   Modifiers:
-  - statType: 16
-    modifierType: 0
-    value: 5
+  - statType: 10
+    modifierType: 1
+    value: 200
+    priority: 0
+  - statType: 11
+    modifierType: 1
+    value: 50
     priority: 0

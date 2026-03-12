@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,6 +49,8 @@ public class StatusEffectsManager : MonoBehaviour
             newInstance.AddStack(effectSO.Duration);
             _activeEffects.Add(effectSO, newInstance);
         }
+
+        OnApplyEffectColorSetter(effectSO.Color);
     }
     public void ClearAllEffects()
     {
@@ -57,5 +60,12 @@ public class StatusEffectsManager : MonoBehaviour
         }
 
         _activeEffects.Clear();
+    }
+    private void OnApplyEffectColorSetter(Color color)
+    {
+        if (TryGetComponent<EnemyVisual>(out var visual))
+        {
+            StartCoroutine(visual.SetTempColor(color, 0.2f));
+        }
     }
 }

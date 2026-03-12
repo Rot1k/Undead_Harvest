@@ -5,6 +5,7 @@ using UnityEngine;
 public class StatusEffectSO : ScriptableObject
 {
     public string Id;
+    public string Name;
     public StatType LinkedChanceStat;
     public float Duration;
     public float TickInterval;
@@ -16,4 +17,5 @@ public class StatusEffectSO : ScriptableObject
 
     public GameObject VFX;
     public AudioClip ApplySound;
+    public Color Color;
 }

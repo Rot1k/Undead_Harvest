@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FreezeEffectSO
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectSO
   Id: 2
+  Name: Freeze
   LinkedChanceStat: 15
   Duration: 3
   TickInterval: 0
@@ -22,3 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c03ef42fa2fc1f4db14811e9b4bd978, type: 2}
   VFX: {fileID: 0}
   ApplySound: {fileID: 0}
+  Color: {r: 0.08036668, g: 0.5785791, b: 0.8113208, a: 1}

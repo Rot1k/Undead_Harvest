@@ -9,7 +9,7 @@ public class PercentDamageEffectModifierSO : EffectModifierSO
     {
         if (target is BossEnemy) return;
 
-        target.HealthSystem.Damage(Mathf.RoundToInt(target.HealthSystem.HealthMax * PercentDamageAmount * stackCount));
+        target.HealthSystem.Damage(Mathf.RoundToInt(target.HealthSystem.HealthMax * PercentDamageAmount * stackCount / 100));
     }
 }
     

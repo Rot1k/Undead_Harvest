@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BleedEffectSO
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectSO
   Id: 3
+  Name: Bleed
   LinkedChanceStat: 13
   Duration: 3
   TickInterval: 1
@@ -22,3 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ac4b028f23f6174a88563a9b7607ab4, type: 2}
   VFX: {fileID: 0}
   ApplySound: {fileID: 0}
+  Color: {r: 0.745283, g: 0.10898005, b: 0.10898005, a: 1}

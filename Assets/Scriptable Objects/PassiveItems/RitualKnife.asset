@@ -18,11 +18,11 @@ MonoBehaviour:
   Price: 80
   SpecialDescription: 
   Modifiers:
-  - statType: 13
-    modifierType: 1
+  - statType: 8
+    modifierType: 0
     value: 5
     priority: 0
-  - statType: 8
-    modifierType: 1
+  - statType: 13
+    modifierType: 0
     value: 5
     priority: 0

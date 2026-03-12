@@ -2034,7 +2034,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 221658964}
   m_Direction: 2
   m_Value: -0.0060975607
-  m_Size: 0.9999811
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3887,8 +3887,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195672332}
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
-  m_Value: 0.024390243
-  m_Size: 0.9999811
+  m_Value: 0.0121951215
+  m_Size: 0.024389878
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3998,6 +3998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTransform: {fileID: 413318956}
   _waves:
+  - {fileID: 11400000, guid: 3c9d3483118658b4aa1ce9e67b9b548d, type: 2}
   - {fileID: 11400000, guid: ad970f082605f69409d5e9d2fb13c108, type: 2}
   - {fileID: 11400000, guid: 40fa91ddd7e32a349b7f27c4b57fe8fa, type: 2}
   - {fileID: 11400000, guid: 84d654dde5180af458b0c28334d7d790, type: 2}
@@ -4018,7 +4019,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e093920fe0121f4b848b14da0ae81e0, type: 2}
   - {fileID: 11400000, guid: bb570c57fbbd52048a57b81cd040f382, type: 2}
   - {fileID: 11400000, guid: b8525214fc2ecaf4e8ac91a95e5e696b, type: 2}
-  - {fileID: 11400000, guid: 3c9d3483118658b4aa1ce9e67b9b548d, type: 2}
 --- !u!4 &413215188
 Transform:
   m_ObjectHideFlags: 0
@@ -5553,7 +5553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.00491333}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049743652}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -19690,7 +19690,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
   _playerStats: {fileID: 1782614997}
-  _startingItems: []
+  _startingItems:
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
+  - {fileID: 11400000, guid: 72c236a0f440730479123b941be2300f, type: 2}
   _startingWeapons:
   - {fileID: 11400000, guid: 2972c9264b933ee42b2b5c6f3b2d7c4d, type: 2}
   - {fileID: 11400000, guid: 7c9895fd6614c6844b1c46df774601f0, type: 2}
@@ -20778,7 +20788,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 18.7, y: 137.1}
+  m_AnchoredPosition: {x: 18.699951, y: 137.1}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1992030530

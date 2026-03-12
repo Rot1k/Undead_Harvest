@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: FirePepper
+  m_Name: LuckyCoin
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: 1950229423, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
-  ItemName: Fire Pepper
-  Rarity: 1
-  Price: 40
+  UISprite: {fileID: 0}
+  ItemName: Lucky Coin
+  Rarity: 0
+  Price: 30
   SpecialDescription: 
   Modifiers:
-  - statType: 16
+  - statType: 8
     modifierType: 0
-    value: 5
+    value: 3
     priority: 0

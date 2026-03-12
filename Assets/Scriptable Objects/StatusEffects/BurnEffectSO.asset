@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26e4c0ccf93e2f44acc4bc79518f0dc, type: 3}
   m_Name: BurnEffectSO
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectSO
-  Id: 
-  LinkedChanceStat: 0
-  Duration: 0
-  TickInterval: 0
-  IsStackable: 0
-  MaxStacks: 0
+  Id: 4
+  Name: Burn
+  LinkedChanceStat: 16
+  Duration: 3
+  TickInterval: 1
+  IsStackable: 1
+  MaxStacks: 5
   Modifiers:
   - {fileID: 11400000, guid: 98c288c88bc095a4f8ce9921795d77fe, type: 2}
   VFX: {fileID: 0}
   ApplySound: {fileID: 0}
+  Color: {r: 0.764151, g: 0.30734634, b: 0.13336597, a: 1}

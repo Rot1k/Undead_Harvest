@@ -95,6 +95,12 @@ public class EnemyVisual : MonoBehaviour, ISpawnable
             yield return null;
         }
     }
+    public IEnumerator SetTempColor(Color color, float duration)
+    {
+        _spriteRenderer.color = color;
+        yield return new WaitForSeconds(duration);
+        _spriteRenderer.color = _originalColor;
+    }
     public void OnSpawn()
     {
         _spriteRenderer.sortingOrder = _originalSortingOrder;

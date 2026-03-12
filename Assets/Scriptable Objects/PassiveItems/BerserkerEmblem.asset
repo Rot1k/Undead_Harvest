@@ -10,15 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: FirePepper
+  m_Name: BerserkerEmblem
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: 1950229423, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
-  ItemName: Fire Pepper
-  Rarity: 1
-  Price: 40
+  UISprite: {fileID: 0}
+  ItemName: Berserker Emblem
+  Rarity: 2
+  Price: 150
   SpecialDescription: 
   Modifiers:
-  - statType: 16
+  - statType: 5
+    modifierType: 1
+    value: 10
+    priority: 0
+  - statType: 7
+    modifierType: 1
+    value: 7
+    priority: 0
+  - statType: 0
     modifierType: 0
-    value: 5
+    value: -5
     priority: 0
