@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private readonly float _threshold = 0.1f;
     private readonly float _stopDistance = 0.15f; // Distance at which the enemy stops moving towards the player
     private Vector3 _localScale = Vector3.one;
+
+    private readonly float _healthMultiplierPerWave = 0.10f;
     protected Rigidbody2D Rigidbody => _rigidbody;
     protected Transform Player => _player;
     protected bool IsDead => _isDead;
@@ -62,6 +64,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         _isDead = true;
         _collider.enabled = false;
         _rigidbody.simulated = false;
+        _statusEffectsManager.ClearAllEffects();
 
         if (!(WavesManager.Instance.GetCurrentWave().IsBossWave))
         {
@@ -127,7 +130,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         _collider.enabled = true;
         _rigidbody.simulated = true;
         _rigidbody.linearVelocity = Vector2.zero;
-        HealthSystem.Heal(_enemyStats.BaseHealth);
+        HealthSystem.SetMaxHealth(Mathf.RoundToInt(_enemyStats.BaseHealth + (_enemyStats.BaseHealth * (WavesManager.Instance.CurrentWave * _healthMultiplierPerWave))));
+        HealthSystem.Heal(HealthSystem.HealthMax);
         transform.rotation = Quaternion.identity;
         transform.localScale = _localScale;
         _statusEffectsManager.ClearAllEffects();
@@ -135,6 +139,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     }
     public void ApplyModifier(StatType type, ModifierType modifierType, float value)
     {
+        if(_isDead) return;
+
         if (!_runtimeStats.ContainsKey(type))
         {
             Debug.LogWarning($"Enemy {name} не має StatType {type}, modifier пропущено");
@@ -156,6 +162,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     }
     public void ApplyEffect(StatusEffectSO statusEffectSO)
     {
+        if(_isDead) return;
+
         _statusEffectsManager.ApplyEffect(statusEffectSO);
     }
 }

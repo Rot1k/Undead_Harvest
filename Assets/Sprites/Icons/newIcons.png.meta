@@ -299,7 +299,29 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 96
+        y: 95
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7520e15678262844b2863264e71afe8
+      internalID: -819573008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CriticalDamageMultiplier Icon
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 95
         width: 16
         height: 16
       alignment: 0
@@ -310,8 +332,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7520e15678262844b2863264e71afe8
-      internalID: -819573008
+      spriteID: feb4ed2abdfd1e643b784066bf2cd8af
+      internalID: 1027303124
       vertices: []
       indices: 
       edges: []
@@ -335,6 +357,7 @@ TextureImporter:
       AttackSpeedMultiplier: -582036849
       AttackSpeedMultiplier Icon: -582036849
       CriticalChance Icon: -819573008
+      CriticalDamageMultiplier Icon: 1027303124
       HealthRegen Icon: -7844283405706392211
       MaxHealth Icon: -6578210934083765288
       MeleeDamage Icon: -7793600865805281058

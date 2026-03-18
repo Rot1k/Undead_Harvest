@@ -15,7 +15,7 @@ MonoBehaviour:
   _stats:
   - Name: Max Health
     Type: 0
-    BaseValue: 20000
+    BaseValue: 20
     Icon: {fileID: -6578210934083765288, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
     BaseIncreaseAmount: 1
     Tags: 1
@@ -29,19 +29,19 @@ MonoBehaviour:
     Type: 2
     BaseValue: 5
     Icon: {fileID: 1453296145, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
-    BaseIncreaseAmount: 2
+    BaseIncreaseAmount: 0.5
     Tags: 1
   - Name: Melee Damage
     Type: 3
     BaseValue: 0
     Icon: {fileID: -7793600865805281058, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
-    BaseIncreaseAmount: 2
+    BaseIncreaseAmount: 1
     Tags: 1
   - Name: Ranged Damage
     Type: 4
     BaseValue: 0
     Icon: {fileID: 1325528593, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
-    BaseIncreaseAmount: 2
+    BaseIncreaseAmount: 1
     Tags: 1
   - Name: Attack Speed
     Type: 5
@@ -70,12 +70,12 @@ MonoBehaviour:
   - Name: Critical Damage
     Type: 9
     BaseValue: 1.5
-    Icon: {fileID: 21300000, guid: 2f20da1f98cc3e24ab4972417b03402a, type: 3}
+    Icon: {fileID: 1027303124, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
     BaseIncreaseAmount: 0.05
     Tags: 1
   - Name: Pickup Radius
     Type: 10
-    BaseValue: 1.5
+    BaseValue: 1.7
     Icon: {fileID: 0}
     BaseIncreaseAmount: 0.05
     Tags: 2
@@ -95,23 +95,23 @@ MonoBehaviour:
     Type: 15
     BaseValue: 0
     Icon: {fileID: 0}
-    BaseIncreaseAmount: 0.05
+    BaseIncreaseAmount: 1
     Tags: 2
   - Name: Poison Chance
     Type: 14
     BaseValue: 0
     Icon: {fileID: 0}
-    BaseIncreaseAmount: 0.05
+    BaseIncreaseAmount: 1
     Tags: 2
   - Name: Bleed Chance
     Type: 13
     BaseValue: 0
     Icon: {fileID: 0}
-    BaseIncreaseAmount: 0.05
+    BaseIncreaseAmount: 1
     Tags: 2
   - Name: Burn Chance
     Type: 16
     BaseValue: 0
     Icon: {fileID: 0}
-    BaseIncreaseAmount: 0.05
+    BaseIncreaseAmount: 1
     Tags: 2

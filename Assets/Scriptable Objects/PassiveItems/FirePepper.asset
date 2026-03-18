@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 1950229423, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Fire Pepper
   Rarity: 1
-  Price: 40
+  Price: 30
   SpecialDescription: 
   Modifiers:
   - statType: 16

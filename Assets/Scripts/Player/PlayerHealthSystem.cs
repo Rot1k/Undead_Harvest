@@ -7,7 +7,7 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
     public HealthSystem HealthSystem { get; private set; }
 
     private PlayerStats _playerStats;
-    private int _maxHealth => Mathf.RoundToInt(_playerStats.Get(StatType.MaxHealth));
+    private int MaxHealth => Mathf.RoundToInt(_playerStats.Get(StatType.MaxHealth));
     private float _healthRegen;
     private float _regenAccumulator = 0f;
 
@@ -21,14 +21,14 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerStats = GetComponent<PlayerStats>();
-        HealthSystem = new HealthSystem(_maxHealth);
+        HealthSystem = new HealthSystem(MaxHealth);
         _healthRegen = _playerStats.Get(StatType.HealthRegen);
     }
     private void OnStatChanged(StatType type, float newValue)
     {
         if (type == StatType.MaxHealth)
         {
-            HealthSystem.SetMaxHealth(_maxHealth, true);
+            HealthSystem.SetMaxHealth(MaxHealth, true);
         }
         if (type == StatType.HealthRegen)
         {

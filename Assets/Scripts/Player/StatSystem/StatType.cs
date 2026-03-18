@@ -8,15 +8,15 @@ public enum StatType
     AttackSpeedMultiplier,
     AttackRange,
     MoveSpeed,
-    CriticalChance,
+    CriticalChance, // 0 - 100
     CriticalDamageMultiplier,
     ItemPickupRange,
     ExperienceMultiplier,
     GlobalEffectChanceMultiplier,
-    BleedChance,
-    PoisonChance,
-    FreezeChance,
-    BurnChance,
+    BleedChance, // 0 - 100
+    PoisonChance, // 0 - 100
+    FreezeChance, // 0 - 100
+    BurnChance, // 0 - 100
 }
 
 [System.Flags]

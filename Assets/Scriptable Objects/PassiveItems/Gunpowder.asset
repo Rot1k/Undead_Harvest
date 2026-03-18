@@ -10,23 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: BerserkerEmblem
+  m_Name: Gunpowder
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: 0}
-  ItemName: Berserker Emblem
+  UISprite: {fileID: 1303582746, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Gunpowder
   Rarity: 2
-  Price: 150
+  Price: 50
   SpecialDescription: 
   Modifiers:
-  - statType: 5
-    modifierType: 1
+  - statType: 16
+    modifierType: 0
     value: 10
     priority: 0
-  - statType: 7
-    modifierType: 1
-    value: 7
-    priority: 0
-  - statType: 0
+  - statType: 4
     modifierType: 0
-    value: -5
+    value: 2
     priority: 0

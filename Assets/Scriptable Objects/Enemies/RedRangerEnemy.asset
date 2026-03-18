@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RedRangerEnemy
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 1140011490426597685, guid: 1695a94edab00c047a41194616122e2e, type: 3}
-  BaseHealth: 200
+  BaseHealth: 170
   BaseDamage: 2
   BaseMoveSpeed: 2.2
   ShootingRange: 8

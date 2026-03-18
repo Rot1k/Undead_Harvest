@@ -10,15 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: TEST2
+  m_Name: NeuroFocusPill
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: 0}
-  ItemName: 
-  Rarity: 0
-  Price: 0
-  SpecialDescription: 
+  UISprite: {fileID: 1886968047, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Neuro Focus Pill
+  Rarity: 3
+  Price: 100
+  SpecialDescription: Slows the body. Sharpens the mind
   Modifiers:
-  - statType: 11
+  - statType: 5
     modifierType: 1
-    value: 10
+    value: -10
+    priority: 0
+  - statType: 8
+    modifierType: 0
+    value: 15
+    priority: 0
+  - statType: 9
+    modifierType: 1
+    value: 30
     priority: 0

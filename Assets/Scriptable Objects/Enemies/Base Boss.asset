@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Base Boss
   m_EditorClassIdentifier: Assembly-CSharp::BossEnemyStatsSO
   EnemyPrefab: {fileID: 3042489820640025191, guid: 7b503b3254df0504283246f24111efe6, type: 3}
-  BaseHealth: 100000
-  BaseDamage: 1
-  BaseMoveSpeed: 5
-  FireRate: 5
-  BulletSpeed: 7
+  BaseHealth: 10000
+  BaseDamage: 5
+  BaseMoveSpeed: 5.2
+  FireRate: 5.2
+  BulletSpeed: 7.5

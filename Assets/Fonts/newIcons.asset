@@ -125,6 +125,11 @@ MonoBehaviour:
     m_GlyphIndex: 8
     m_Scale: 1
     m_Name: AttackDamage Icon
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 9
+    m_Scale: 1
+    m_Name: CriticalDamageMultiplier Icon
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -247,7 +252,7 @@ MonoBehaviour:
       m_HorizontalAdvance: 17
     m_GlyphRect:
       m_X: 16
-      m_Y: 96
+      m_Y: 95
       m_Width: 16
       m_Height: 16
     m_Scale: 1.4
@@ -270,5 +275,21 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1453296145, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
+  - m_Index: 9
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 13
+      m_HorizontalAdvance: 17
+    m_GlyphRect:
+      m_X: 32
+      m_Y: 95
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 1027303124, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: WeakRangerEnemy
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 1140011490426597685, guid: c1e7f5f30bf93014f95b2e270b7ac034, type: 3}
-  BaseHealth: 100
+  BaseHealth: 80
   BaseDamage: 1
   BaseMoveSpeed: 2
   ShootingRange: 7
   RunAwayDistance: 4
   FireRate: 1
+  BulletSpeed: 7

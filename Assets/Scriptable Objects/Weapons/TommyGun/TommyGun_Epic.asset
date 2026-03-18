@@ -15,13 +15,13 @@ MonoBehaviour:
   UISprite: {fileID: 5170852359373786387, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Tommy Gun
   Rarity: 3
-  Price: 360
+  Price: 300
   SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: 25b0e0dc090696d4db736f7eb06f2697, type: 3}
   MaskSprite: {fileID: -5149844933718228065, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 160
   RangeMultiplier: 1
-  BaseAttackSpeed: 1.4
+  BaseAttackSpeed: 1
   _unionResult: {fileID: 11400000, guid: 1b34d36bd524b2a4789f6a6b8c7fc352, type: 2}
   _scalingStats:
   - ScalingStatType: 4

@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: -461037422, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Energy Crystal
   Rarity: 3
-  Price: 200
+  Price: 100
   SpecialDescription: 
   Modifiers:
   - statType: 2

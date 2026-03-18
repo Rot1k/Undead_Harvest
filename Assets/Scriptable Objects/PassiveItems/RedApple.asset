@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 1907061452, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Apple
   Rarity: 0
-  Price: 25
+  Price: 20
   SpecialDescription: 
   Modifiers:
   - statType: 0

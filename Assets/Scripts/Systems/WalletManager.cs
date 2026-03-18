@@ -5,7 +5,7 @@ public class WalletManager : MonoBehaviour
 {
     public static WalletManager Instance { get; private set; }
 
-    public float Balance { get; private set; } = 10000f;
+    public float Balance { get; private set; } = 0f;
 
     public event Action<float> OnBalanceChanged;
 

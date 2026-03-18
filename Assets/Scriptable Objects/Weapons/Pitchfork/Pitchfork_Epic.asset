@@ -15,13 +15,13 @@ MonoBehaviour:
   UISprite: {fileID: -2104392166141275152, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Pitchfork
   Rarity: 3
-  Price: 320
+  Price: 280
   SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: 1c01bdb373139e049af90cad51917f5f, type: 3}
   MaskSprite: {fileID: 3529149275660272584, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 65
   RangeMultiplier: 1
-  BaseAttackSpeed: 5.15
+  BaseAttackSpeed: 5
   _unionResult: {fileID: 11400000, guid: 6a8dc5bf36c18c94cb819a9515760e1c, type: 2}
   _scalingStats:
   - ScalingStatType: 3

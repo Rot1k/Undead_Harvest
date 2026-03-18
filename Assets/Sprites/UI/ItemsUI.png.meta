@@ -303,7 +303,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ItemsUI_7
+      name: SniperBullet Icon
       rect:
         serializedVersion: 2
         x: 0
@@ -589,7 +589,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Experimental Serum Icon
+      name: ExperimentalSerum Icon
       rect:
         serializedVersion: 2
         x: 57
@@ -676,6 +676,182 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: BerserkMark Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 1006
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e90bb0feeb9bfd84896c97118f745930
+      internalID: 557984568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LuckyCoin Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 987
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4d7d08b7d792d14e8b5721d44f65e75
+      internalID: -1129026298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InfiniteMagnet Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 968
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 402202d18b759e048bd892d429d3ad51
+      internalID: 1019498182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pill Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 949
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07cf969922ed92b459fbd53dc9d5657f
+      internalID: 1886968047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SharpStone Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 930
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9971b5c52715b44081ecd8637bf3a33
+      internalID: -609310343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Battery Icon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 911
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a865d702281c5a4a9b952814147692a
+      internalID: -262236774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gunpowder Icon
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 987
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ea80535e060f9e44b57a68943844e72
+      internalID: 1303582746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserPointer Icon
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 968
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13a6a5deb97452645aad8a535fc1eeb2
+      internalID: -123701894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -690,27 +866,35 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Battery Icon: -262236774
+      BerserkMark Icon: 557984568
       Boots Icon: 2810372302288489549
       ChickenDrumstick Icon: 1514287546
       Empty Slot Icon: 2053126153914737270
       EnergyCrystal Icon: -461037422
-      Experimental Serum Icon: 1069596567
+      ExperimentalSerum Icon: 1069596567
       FirePepper Icon: 1950229423
       GlassHeart Icon: 8868715406678941153
       GreenApple Icon: -706262020
+      Gunpowder Icon: 1303582746
       IceCube Icon: 1501995075
+      InfiniteMagnet Icon: 1019498182
       ItemsUI_10: -4833698088164496743
       ItemsUI_6: -1409614913619087032
-      ItemsUI_7: -2871574967968945493
+      LaserPointer Icon: 1306179916
+      LuckyCoin Icon: -1129026298
+      Pill Icon: 1886968047
       Pistol Icon: 7826866793240692649
       Pitchfork Icon: -2104392166141275152
       RedApple Icon: 1907061452
       RitualKnife Icon: 2033344101
       Scythe Icon: 7902701637492136988
+      SharpStone Icon: -609310343
       ShotGun Icon: -8930843003216789197
       Shovel Icon: 7332373752705763435
       Slot Background: -6997041179875537021
       Slot Background 2: 338811042
+      SniperBullet Icon: -2871574967968945493
       SniperScope Icon: 1826417949
       TommyGun Icon: 5170852359373786387
       Warbanner Icon: -292702808

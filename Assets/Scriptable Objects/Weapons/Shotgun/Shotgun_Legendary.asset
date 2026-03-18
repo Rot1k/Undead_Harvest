@@ -15,13 +15,13 @@ MonoBehaviour:
   UISprite: {fileID: -8930843003216789197, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Shotgun
   Rarity: 4
-  Price: 640
+  Price: 520
   SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: b1a542e37e81da54e86a0df07f729a21, type: 3}
   MaskSprite: {fileID: -1747592657822508401, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}
   BaseDamage: 330
   RangeMultiplier: 0.7
-  BaseAttackSpeed: 1.15
+  BaseAttackSpeed: 0.8
   _unionResult: {fileID: 0}
   _scalingStats:
   - ScalingStatType: 4

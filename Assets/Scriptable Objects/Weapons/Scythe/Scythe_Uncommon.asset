@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 7902701637492136988, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Scythe
   Rarity: 1
-  Price: 80
+  Price: 60
   SpecialDescription: 
   Prefab: {fileID: 336198951520307596, guid: 6d240322526a5ae4e93a1f3be00ffb7d, type: 3}
   MaskSprite: {fileID: -1694369758766683232, guid: 295861c4533826d4bbd6ca2afb894bd1, type: 3}

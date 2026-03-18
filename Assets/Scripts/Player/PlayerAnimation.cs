@@ -11,15 +11,15 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private PlayerHealthSystem _playerHealthSystem;
     [SerializeField] private Transform _shadow;
 
-    private Animator animator;
+    private Animator _animator;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
     private void Update()
     {
-        animator.SetBool(ANIMATOR_IS_WALKING, _playerMovement.IsWalking);
+        _animator.SetBool(ANIMATOR_IS_WALKING, _playerMovement.IsWalking);
     }
     private void OnEnable()
     {
@@ -32,7 +32,8 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnDead(object sender, EventArgs e)
     {
-        animator.SetTrigger(ANIMATOR_DEAD);
+        _animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        _animator.SetTrigger(ANIMATOR_DEAD);
         SoundManager.PlaySound(SoundType.ONDEAD);
         _shadow.localScale = new Vector3(1.8f, 1.4f, 1);
     }

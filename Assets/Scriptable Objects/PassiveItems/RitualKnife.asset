@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 2033344101, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Ritual Knife
   Rarity: 2
-  Price: 80
+  Price: 45
   SpecialDescription: 
   Modifiers:
   - statType: 8

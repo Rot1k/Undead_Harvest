@@ -91,7 +91,7 @@ public class PlayerStats : MonoBehaviour
     {
         foreach (var effect in _effects.StatusEffects)
         {
-            float finalChance = Get(effect.LinkedChanceStat) * Get(StatType.GlobalEffectChanceMultiplier);
+            float finalChance = Get(effect.LinkedChanceStat) / 100f * Get(StatType.GlobalEffectChanceMultiplier);
             if (UnityEngine.Random.value <= finalChance)
             {
                 enemy.ApplyEffect(effect);

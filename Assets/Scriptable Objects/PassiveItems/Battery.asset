@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a78335090dd3a3408f2d57610e1f53e, type: 3}
-  m_Name: LuckyCoin
+  m_Name: Battery
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemSO
-  UISprite: {fileID: -1129026298, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
-  ItemName: Lucky Coin
-  Rarity: 0
-  Price: 25
+  UISprite: {fileID: -262236774, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
+  ItemName: Battery
+  Rarity: 1
+  Price: 35
   SpecialDescription: 
   Modifiers:
-  - statType: 11
+  - statType: 12
     modifierType: 1
     value: 10
+    priority: 0
+  - statType: 0
+    modifierType: 0
+    value: -1
     priority: 0

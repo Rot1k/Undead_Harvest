@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 8868715406678941153, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Glass Heart
   Rarity: 4
-  Price: 450
+  Price: 180
   SpecialDescription: 
   Modifiers:
   - statType: 0

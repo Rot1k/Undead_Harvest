@@ -41,13 +41,14 @@ public class BuyWindow : MonoBehaviour
             Debug.LogWarning("No item selected to buy.");
             return;
         }
-        if (WalletManager.Instance.Balance >= _currentItem.Price)
+        int itemPrice = CalculateItemPrice(_currentItem);
+        if (WalletManager.Instance.Balance >= itemPrice)
         {
             switch (_currentItem)
             {
                 case PassiveItemSO itemSO:
                     EquipmentManager.Instance.AddItem(itemSO);
-                    WalletManager.Instance.TrySpendMoney(_currentItem.Price);
+                    WalletManager.Instance.TrySpendMoney(itemPrice);
                     SoundManager.PlaySound(SoundType.BUY);
                     SetRandomItem();
                     break;
@@ -73,7 +74,7 @@ public class BuyWindow : MonoBehaviour
                         EquipmentManager.Instance.EquipWeapon(weaponSO, weaponSlot);
                     }
 
-                    WalletManager.Instance.TrySpendMoney(_currentItem.Price);
+                    WalletManager.Instance.TrySpendMoney(itemPrice);
                     SetRandomItem();
                     break;
                 default:
@@ -97,7 +98,7 @@ public class BuyWindow : MonoBehaviour
         _currentItem = item;
         _itemImage.sprite = item.UISprite;
         _itemNameText.text = item.ItemName;
-        _buyButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy ({item.Price})";
+        _buyButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy ({CalculateItemPrice(item)})";
         _backgroundOutline.effectColor = color;
         _rarityText.text = item.Rarity.ToString();
         _rarityText.color = color;
@@ -133,5 +134,11 @@ public class BuyWindow : MonoBehaviour
 
         var picked = candidates[Random.Range(0, candidates.Count)];
         SetItem(picked);
+    }
+    private int CalculateItemPrice(InventoryItemSO item)
+    {
+        float basePrice = item.Price;
+        int currentWave = WavesManager.Instance.CurrentWave;
+        return Mathf.RoundToInt(basePrice + currentWave + (basePrice * 0.1f * currentWave));
     }
 }

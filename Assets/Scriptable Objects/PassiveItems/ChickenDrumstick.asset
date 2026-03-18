@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 1514287546, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Chicken Drumstick
   Rarity: 2
-  Price: 90
+  Price: 45
   SpecialDescription: 
   Modifiers:
   - statType: 1

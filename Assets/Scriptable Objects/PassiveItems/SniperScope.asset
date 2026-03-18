@@ -15,7 +15,8 @@ MonoBehaviour:
   UISprite: {fileID: 1826417949, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Sniper Scope
   Rarity: 2
-  Price: 120
+  Price: 50
+  SpecialDescription: 
   Modifiers:
   - statType: 4
     modifierType: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   UISprite: {fileID: 2810372302288489549, guid: 78f9878f98c2d61408d9db357a001039, type: 3}
   ItemName: Boots
   Rarity: 0
-  Price: 20
+  Price: 15
   SpecialDescription: 
   Modifiers:
   - statType: 7
