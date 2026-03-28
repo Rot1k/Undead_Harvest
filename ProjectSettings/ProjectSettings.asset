@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Rotik inc.
-  productName: "Brotato(\u0441\u0430\u043C \u043F\u0440\u0438\u0434\u0443\u043C\u0430\u0432)"
+  productName: Undead Harvest
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
