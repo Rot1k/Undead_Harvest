@@ -1,8 +1,8 @@
 # Undead Harvest
 
-Genre: Roguelike / Survival
-Tone: Fun, humorous
-Main Character: A farmer who fights off waves of zombies using firearms and gardening tools
+**Genre:** Roguelike / Survival
+**Tone:** Fun, humorous
+**Main Character:** A farmer who fights off waves of zombies using firearms and gardening tools
 
 ---
 
@@ -30,15 +30,8 @@ Features:
 
 ## Technology & Stack
 
-* Unity – game engine
-* C# – main programming language
+* **Unity** – game engine
+* **C#** – main programming language
 * OOP, SOLID, programming patterns (Singleton, Observer, Object Pool) – for code structure and scalability
 * ScriptableObject – for configuring enemy waves and items
 * Git/GitHub – version control and repository
-
-
----
-
-## Ліцензія
-
-Вільна для навчальних та демонстраційних цілей.
