@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 public class WaveEndWindow : MonoBehaviour
 {
@@ -17,32 +18,40 @@ public class WaveEndWindow : MonoBehaviour
 
     private Sequence _sequence;
 
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Constuct(WavesManager wavesManager)
+    {
+        _wavesManager = wavesManager;
+    }
+
     private void Awake()
     {
         Instance = this;
-        if(WavesManager.Instance == null)
+        if(_wavesManager == null)
         {
             Debug.LogError("WavesManager instance is null!");
             return;
         }
-        WavesManager.Instance.OnWaveCompleted += OnWaveCompleted;
+        _wavesManager.OnWaveCompleted += OnWaveCompleted;
         _playerHealthSystem.HealthSystem.OnDead += OnPlayerDead;
         Hide();
     }
 
     private void OnDestroy()
     {
-        WavesManager.Instance.OnWaveCompleted -= OnWaveCompleted;
+        _wavesManager.OnWaveCompleted -= OnWaveCompleted;
         _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDead;
     }
 
     private void OnWaveCompleted()
     {
         ShowMessage(
-            $"Wave {WavesManager.Instance.CurrentWave + 1} Completed!",
+            $"Wave {_wavesManager.CurrentWave + 1} Completed!",
             () =>
             {
-                if (WavesManager.Instance.IsAllWavesCompleted)
+                if (_wavesManager.IsAllWavesCompleted)
                     OnWindowHiddenAllWavesCompleted?.Invoke();
                 else
                     OnWindowHidden?.Invoke();

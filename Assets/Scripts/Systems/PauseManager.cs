@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 public class PauseManager : MonoBehaviour
 {
@@ -11,6 +12,14 @@ public class PauseManager : MonoBehaviour
 
     public bool IsPaused => (IsWaveEnded || IsPlayerPaused);
 
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Constuct(WavesManager wavesManager)
+    {
+        _wavesManager = wavesManager;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,22 +31,22 @@ public class PauseManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        if (WavesManager.Instance == null)
+        if (_wavesManager == null)
         {
             Debug.LogError("WavesManager instance is null in PauseManager.");
             return;
         }
-        WavesManager.Instance.OnWaveStarted += () =>
+        _wavesManager.OnWaveStarted += () =>
         {
             IsWaveEnded = false;
             UpdatePauseState();
         };
-        WavesManager.Instance.OnWaveCompleted += () =>
+        _wavesManager.OnWaveCompleted += () =>
         {
             IsWaveEnded = true;
             UpdatePauseState();
         };
-        WavesManager.Instance.OnAllWavesCompleted += () =>
+        _wavesManager.OnAllWavesCompleted += () =>
         {
             IsWaveEnded = true;
             UpdatePauseState();

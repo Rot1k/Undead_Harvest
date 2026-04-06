@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 [RequireComponent(typeof(PlayerStats), typeof(Rigidbody2D), typeof(PlayerHealthSystem))]
 public class PlayerMovement : MonoBehaviour
@@ -15,12 +16,19 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsWalking => _input != Vector2.zero;
 
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Constuct(WavesManager wavesManager)
+    {
+        _wavesManager = wavesManager;
+    }
     private void Awake()
     {
         _playerHealthSystem = GetComponent<PlayerHealthSystem>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        WavesManager.Instance.OnWaveStarted += OnWaveStarted;
+        _wavesManager.OnWaveStarted += OnWaveStarted;
     }
     private void OnEnable()
     {

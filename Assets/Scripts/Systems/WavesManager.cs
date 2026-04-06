@@ -38,13 +38,13 @@ public class WavesManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Debug.LogWarning("Multiple WavesManager instances detected! Destroying duplicate.");
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
+
     private void Start()
     {
         if(_waveCoroutine != null)

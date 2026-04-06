@@ -2,10 +2,19 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 public class WaveTimerUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _waveTimerText;
+
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Constuct(WavesManager wavesManager)
+    {
+        _wavesManager = wavesManager;
+    }
 
     private void Awake()
     {
@@ -13,7 +22,7 @@ public class WaveTimerUI : MonoBehaviour
     }
     private void UpdateUI()
     {
-        var wave = WavesManager.Instance.GetCurrentWave();
+        var wave = _wavesManager.GetCurrentWave();
         if (wave == null)
             return;
         int waveDuration = wave.WaveDuration;
@@ -27,8 +36,8 @@ public class WaveTimerUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (WavesManager.Instance != null)
-            WavesManager.Instance.OnWaveStarted -= UpdateUI;
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted -= UpdateUI;
     }
     private void Hide()
     {

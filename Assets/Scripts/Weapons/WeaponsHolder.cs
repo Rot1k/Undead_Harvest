@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using NTC.Pool;
+using VContainer;
 
 public class WeaponsHolder : MonoBehaviour
 {
@@ -11,12 +12,20 @@ public class WeaponsHolder : MonoBehaviour
 
     private readonly Dictionary<int, GameObject> _spawnedWeapons = new();
 
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Constuct(WavesManager wavesManager)
+    {
+        _wavesManager = wavesManager;
+    }
+
     private void Awake()
     {
         Arrange();
         EquipmentManager.Instance.OnWeaponEquipped += SpawnWeapon;
         EquipmentManager.Instance.OnWeaponUnequipped += DespawnWeapon;
-        WavesManager.Instance.OnWaveCompleted += ResetWeapons;
+        _wavesManager.OnWaveCompleted += ResetWeapons;
     }
     private void OnDestroy()
     {

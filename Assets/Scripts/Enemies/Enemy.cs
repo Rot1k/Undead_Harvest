@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     protected Transform Player => _player;
     protected bool IsDead => _isDead;
 
+
+
     protected virtual void Awake()
     {
         _runtimeStats[StatType.MoveSpeed] = _enemyStats.BaseMoveSpeed;
