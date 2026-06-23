@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
-    public static EquipmentManager Instance { get; private set; }
 
     public event Action<PassiveItemInstance> OnItemEquipped;
     public event Action<PassiveItemInstance> OnItemUnequipped;
@@ -25,17 +24,9 @@ public class EquipmentManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
         _weapons = new WeaponSO[_maxWeapons];
     }
-    private void Start()
+    public void OnInit()
     {
         foreach (var item in _startingItems)
         {
@@ -86,6 +77,7 @@ public class EquipmentManager : MonoBehaviour
             return;
         }
         _weapons[slot] = weapon;
+        Debug.Log("Weapon equipped in slot " + slot);
         OnWeaponEquipped?.Invoke(slot, weapon);
     }
     public void UnequipWeapon(int slot)

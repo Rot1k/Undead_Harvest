@@ -2,30 +2,21 @@ using UnityEngine;
 
 public class MasterVolumeManager : MonoBehaviour
 {
-    public static MasterVolumeManager Instance { get; private set; }
-
     private const string PLAYER_PREFS_MASTER_VOLUME = "MasterVolume";
 
     public float Volume { get; private set; } = 1f;
 
     private void Awake()
     {
-
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Loader.OnAfterSceneLoad += OnAfterSceneLoad;
         OnAfterSceneLoad();
 
         AudioListener.volume = Volume;
+    }
 
+    private void OnDestroy()
+    {
+        Loader.OnAfterSceneLoad -= OnAfterSceneLoad;
     }
 
     public void SetVolume(float value)
@@ -38,5 +29,6 @@ public class MasterVolumeManager : MonoBehaviour
     private void OnAfterSceneLoad()
     {
         Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_MASTER_VOLUME, 1f);
+        AudioListener.volume = Volume;
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 public class StatsTableUI : MonoBehaviour
 {
@@ -6,6 +7,14 @@ public class StatsTableUI : MonoBehaviour
     [SerializeField] private PlayerStatsSO _statsSO;
 
     private StatUI[] _statUIs;
+
+    private EquipmentManager _equipmentManager;
+
+    [Inject]
+    public void Construct(EquipmentManager equipmentManager)
+    {
+        _equipmentManager = equipmentManager;
+    }
 
     private void Awake()
     {
@@ -23,9 +32,9 @@ public class StatsTableUI : MonoBehaviour
     }
     private void Refresh()
     {
-        if (_playerStats == null && EquipmentManager.Instance != null)
+        if (_playerStats == null && _equipmentManager != null)
         {
-            _playerStats = EquipmentManager.Instance.PlayerStats;
+            _playerStats = _equipmentManager.PlayerStats;
         }
         if (_playerStats == null) Debug.LogWarning($"{name}: PlayerStats not assigned.");
         if (_statsSO == null) Debug.LogWarning($"{name}: PlayerStatsSO not assigned.");

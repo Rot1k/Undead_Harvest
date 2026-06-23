@@ -44,10 +44,6 @@ public class RangeWeapon : Weapon
         if (shootDirection == Vector2.zero)
             return;
 
-        int damage = Mathf.RoundToInt(
-            CombatSystem.CalculateDamage(_playerStats, _weaponBaseStats)
-        );
-
         _weaponBehavior.Shoot(
             this,
             _muzzleTopPoint,

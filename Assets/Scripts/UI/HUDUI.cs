@@ -1,11 +1,27 @@
 using UnityEngine;
+using VContainer;
 
 public class HUDUI : MonoBehaviour
 {
-    private void Awake()
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Construct(WavesManager wavesManager)
     {
-        WavesManager.Instance.OnAllWavesCompleted += Hide;
-        WavesManager.Instance.OnWaveStarted += Show;
+        _wavesManager = wavesManager;
+    }
+    private void Start()
+    {
+        _wavesManager.OnAllWavesCompleted += Hide;
+        _wavesManager.OnWaveStarted += Show;
+    }
+    private void OnDestroy()
+    {
+        if (_wavesManager == null)
+            return;
+
+        _wavesManager.OnAllWavesCompleted -= Hide;
+        _wavesManager.OnWaveStarted -= Show;
     }
     private void Show()
     {

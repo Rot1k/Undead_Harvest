@@ -2,6 +2,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class BuyWindow : MonoBehaviour
 {
@@ -22,8 +23,21 @@ public class BuyWindow : MonoBehaviour
     private InventoryItemsPoolSO _itemsPool;
     private RarityConfigSO _rarityConfig;
     private PlayerStatsSO _playerStatsSO;
+    private WavesManager _wavesManager;
+    private EquipmentManager _equipmentManager;
+    private WalletManager _walletManager;
+    private SoundManager _soundManager;
+
     public bool IsLocked { get; private set; } = false;
 
+    [Inject]
+    public void Construct(WavesManager wavesManager, EquipmentManager equipmentManager, WalletManager walletManager, SoundManager soundManager)
+    {
+        _wavesManager = wavesManager;
+        _equipmentManager = equipmentManager;
+        _walletManager = walletManager;
+        _soundManager = soundManager;
+    }
     private void Awake()
     {
         _buyButton.onClick.AddListener(OnBuyButtonClicked);
@@ -42,24 +56,23 @@ public class BuyWindow : MonoBehaviour
             return;
         }
         int itemPrice = CalculateItemPrice(_currentItem);
-        if (WalletManager.Instance.Balance >= itemPrice)
+        if (_walletManager.Balance >= itemPrice)
         {
             switch (_currentItem)
             {
                 case PassiveItemSO itemSO:
-                    EquipmentManager.Instance.AddItem(itemSO);
-                    WalletManager.Instance.TrySpendMoney(itemPrice);
-                    SoundManager.PlaySound(SoundType.BUY);
+                    _equipmentManager.AddItem(itemSO);
+                    _walletManager.TrySpendMoney(itemPrice);
+                    _soundManager.PlaySound(SoundType.BUY);
                     SetRandomItem();
                     break;
                 case WeaponSO weaponSO:
 
-                    int weaponSlot = EquipmentManager.Instance.GetFirstEmptyWeaponSlot();
+                    int weaponSlot = _equipmentManager.GetFirstEmptyWeaponSlot();
 
                     if (weaponSlot == -1)
                     {
-                        int secondWeaponIndex = EquipmentManager.Instance.FindWeaponIndex(weaponSO);
-
+                        int secondWeaponIndex = _equipmentManager.FindWeaponIndex(weaponSO);
                         bool canUnion = (secondWeaponIndex != -1) && weaponSO.CanUnion;
                         if (!canUnion)
                         {
@@ -67,14 +80,15 @@ public class BuyWindow : MonoBehaviour
                             break;
                         }
 
-                        EquipmentManager.Instance.ReplaceWeapon(secondWeaponIndex, weaponSO.UnionResult);
+                        _equipmentManager.ReplaceWeapon(secondWeaponIndex, weaponSO.UnionResult);
                     }
                     else
                     {
-                        EquipmentManager.Instance.EquipWeapon(weaponSO, weaponSlot);
+                        _equipmentManager.EquipWeapon(weaponSO, weaponSlot);
                     }
 
-                    WalletManager.Instance.TrySpendMoney(itemPrice);
+                    _walletManager.TrySpendMoney(itemPrice);
+                    _soundManager.PlaySound(SoundType.BUY);
                     SetRandomItem();
                     break;
                 default:
@@ -138,7 +152,7 @@ public class BuyWindow : MonoBehaviour
     private int CalculateItemPrice(InventoryItemSO item)
     {
         float basePrice = item.Price;
-        int currentWave = WavesManager.Instance.CurrentWave;
+        int currentWave = _wavesManager.CurrentWave;
         return Mathf.RoundToInt(basePrice + currentWave + (basePrice * 0.1f * currentWave));
     }
 }

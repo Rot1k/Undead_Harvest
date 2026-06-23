@@ -3,7 +3,6 @@ using VContainer;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager Instance { get; private set; }
 
     [SerializeField] private PlayerHealthSystem _playerHealthSystem;
 
@@ -13,58 +12,77 @@ public class PauseManager : MonoBehaviour
     public bool IsPaused => (IsWaveEnded || IsPlayerPaused);
 
     private WavesManager _wavesManager;
-
+    private GameInput _gameInput;
+   
     [Inject]
-    public void Constuct(WavesManager wavesManager)
+    public void Construct(WavesManager wavesManager, GameInput gameInput)
     {
         _wavesManager = wavesManager;
+        _gameInput = gameInput;
     }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-        Instance = this;
-
         Time.timeScale = 1f;
-
-        if (_wavesManager == null)
-        {
-            Debug.LogError("WavesManager instance is null in PauseManager.");
-            return;
-        }
-        _wavesManager.OnWaveStarted += () =>
-        {
-            IsWaveEnded = false;
-            UpdatePauseState();
-        };
-        _wavesManager.OnWaveCompleted += () =>
-        {
-            IsWaveEnded = true;
-            UpdatePauseState();
-        };
-        _wavesManager.OnAllWavesCompleted += () =>
-        {
-            IsWaveEnded = true;
-            UpdatePauseState();
-        };
-        _playerHealthSystem.HealthSystem.OnDead += (sender, e) =>
-        {
-            IsPlayerPaused = true;
-            UpdatePauseState();
-        };
     }
 
     private void Start()
     {
-        GameInput.Instance.OnPause += () =>
+        if (_wavesManager == null || _gameInput == null || _playerHealthSystem == null)
         {
-            IsPlayerPaused = !IsPlayerPaused;
-            UpdatePauseState();
-        };
+            Debug.LogError("PauseManager dependencies are not assigned.");
+            return;
+        }
+
+        _wavesManager.OnWaveStarted += OnWaveStarted;
+        _wavesManager.OnWaveCompleted += OnWaveEnded;
+        _wavesManager.OnAllWavesCompleted += OnWaveEnded;
+        _playerHealthSystem.HealthSystem.OnDead += OnPlayerDied;
+        _gameInput.OnPause += OnPausePressed;
+    }
+
+    private void OnDestroy()
+    {
+        if (_wavesManager != null)
+        {
+            _wavesManager.OnWaveStarted -= OnWaveStarted;
+            _wavesManager.OnWaveCompleted -= OnWaveEnded;
+            _wavesManager.OnAllWavesCompleted -= OnWaveEnded;
+        }
+
+        if (_playerHealthSystem != null)
+        {
+            _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDied;
+        }
+
+        if (_gameInput != null)
+        {
+            _gameInput.OnPause -= OnPausePressed;
+        }
+    }
+
+    private void OnWaveStarted()
+    {
+        IsWaveEnded = false;
+        UpdatePauseState();
+    }
+
+    private void OnWaveEnded()
+    {
+        IsWaveEnded = true;
+        UpdatePauseState();
+    }
+
+    private void OnPlayerDied(object sender, System.EventArgs e)
+    {
+        IsPlayerPaused = true;
+        UpdatePauseState();
+    }
+
+    private void OnPausePressed()
+    {
+        IsPlayerPaused = !IsPlayerPaused;
+        UpdatePauseState();
     }
 
     private void UpdatePauseState()

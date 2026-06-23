@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossEnemy
   _enemyStats: {fileID: 11400000, guid: 3bd893eea09bd4b40b3e7a5fe3c93aac, type: 2}
-  _expPrefab: {fileID: 3847954848404346988, guid: f5a354f61879e2645bd90adf311f494f, type: 3}
+  _expPrefab: {fileID: 3192491187996405448, guid: 30f33afa882d4f04da612e227f5654e4, type: 3}
   _bulletPrefab: {fileID: 620818728340652242, guid: 09f7f4ca357006d449fcfa2993b86d37, type: 3}
 --- !u!114 &877149969572591370
 MonoBehaviour:

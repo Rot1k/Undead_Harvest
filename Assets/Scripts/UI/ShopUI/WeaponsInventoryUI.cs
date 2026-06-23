@@ -1,22 +1,31 @@
 using UnityEngine;
+using VContainer;
 
 public class WeaponsInventoryUI : MonoBehaviour
 {
     [SerializeField] private WeaponInventorySlot[] _slots;
     [SerializeField] private RarityConfigSO _rarityConfig;
 
-    private void Awake()
+    private EquipmentManager _equipmentManager;
+
+    [Inject]
+    public void Construct(EquipmentManager equipmentManager)
     {
-        EquipmentManager.Instance.OnWeaponEquipped += UpdateUI;
-        EquipmentManager.Instance.OnWeaponUnequipped += UpdateUI;
+        _equipmentManager = equipmentManager;
+    }
+
+    private void Start()
+    {
+        _equipmentManager.OnWeaponEquipped += UpdateUI;
+        _equipmentManager.OnWeaponUnequipped += UpdateUI;
     }
 
     private void OnDestroy()
     {
-        if (EquipmentManager.Instance == null) return;
+        if (_equipmentManager == null) return;
 
-        EquipmentManager.Instance.OnWeaponEquipped -= UpdateUI;
-        EquipmentManager.Instance.OnWeaponUnequipped -= UpdateUI;
+        _equipmentManager.OnWeaponEquipped -= UpdateUI;
+        _equipmentManager.OnWeaponUnequipped -= UpdateUI;
     }
 
     public void UpdateUI(int slot, WeaponSO weapon)

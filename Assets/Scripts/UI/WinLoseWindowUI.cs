@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using VContainer;
 
 public class WinLoseWindowUI : MonoBehaviour
 {
@@ -9,13 +10,18 @@ public class WinLoseWindowUI : MonoBehaviour
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private PlayerHealthSystem _playerHealthSystem;
 
+    private WaveEndWindow _waveEndWindow;
+    private SoundManager _soundManager;
+
+    [Inject]
+    public void Construct(WaveEndWindow waveEndWindow, SoundManager soundManager)
+    {
+        _waveEndWindow = waveEndWindow;
+        _soundManager = soundManager;
+    }
+
     private void Awake()
     {
-        gameObject.SetActive(false);
-
-        WaveEndWindow.Instance.OnWindowHiddenAllWavesCompleted += OnAllWavesCompleted;
-        WaveEndWindow.Instance.OnWindowHiddenPlayerDead += OnPlayerDead;
-
         _mainMenuButton.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.MainMenuScene);
@@ -26,12 +32,19 @@ public class WinLoseWindowUI : MonoBehaviour
         });
     }
 
+    private void Start()
+    {
+        _waveEndWindow.OnWindowHiddenAllWavesCompleted += OnAllWavesCompleted;
+        _waveEndWindow.OnWindowHiddenPlayerDead += OnPlayerDead;
+        gameObject.SetActive(false);
+    }
+
     private void OnDestroy()
     {
-        if (WaveEndWindow.Instance != null)
+        if (_waveEndWindow != null)
         {
-            WaveEndWindow.Instance.OnWindowHiddenAllWavesCompleted -= OnAllWavesCompleted;
-            WaveEndWindow.Instance.OnWindowHiddenPlayerDead -= OnPlayerDead;
+            _waveEndWindow.OnWindowHiddenAllWavesCompleted -= OnAllWavesCompleted;
+            _waveEndWindow.OnWindowHiddenPlayerDead -= OnPlayerDead;
         }
 
     }
@@ -39,14 +52,14 @@ public class WinLoseWindowUI : MonoBehaviour
     private void OnAllWavesCompleted()
     {
         _resultText.text = "CONGRATULATION!";
-        SoundManager.PlaySound(SoundType.ONWIN);
+        _soundManager.PlaySound(SoundType.ONWIN);
         gameObject.SetActive(true);
     }
 
     private void OnPlayerDead()
     {
         _resultText.text = "YOU LOSE!";
-        SoundManager.PlaySound(SoundType.ONLOSE);
+        _soundManager.PlaySound(SoundType.ONLOSE);
         gameObject.SetActive(true);
     }
 }

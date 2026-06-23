@@ -11,6 +11,7 @@ public class LevelSystem
     public int SkillPoints { get; private set; }
     private float _currentExp;
     private float _expToNextLevel;
+    private SoundManager _soundManager;
 
     private readonly float _baseExp = 100f;
     private readonly float _growthFactor = 1.15f;
@@ -22,6 +23,11 @@ public class LevelSystem
         RecalculateExpToNextLevel();
     }
 
+    public void SetSoundManager(SoundManager soundManager)
+    {
+        _soundManager = soundManager;
+    }
+
     public void AddExp(float exp)
     {
         _currentExp += exp;
@@ -31,7 +37,7 @@ public class LevelSystem
             _currentExp -= _expToNextLevel;
             Level++;
             SkillPoints++;
-            SoundManager.PlaySound(SoundType.LEVELUP);
+            _soundManager?.PlaySound(SoundType.LEVELUP);
             RecalculateExpToNextLevel();
             OnLevelChanged?.Invoke(this, EventArgs.Empty);
         }

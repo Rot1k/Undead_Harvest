@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class ItemInfoUI : MonoBehaviour
 {
@@ -26,8 +27,17 @@ public class ItemInfoUI : MonoBehaviour
     private int _secondWeaponIndex = -1;
 
     PlayerStatsSO _playerStatsSO;
+    private EquipmentManager _equipmentManager;
+    private WalletManager _walletManager;
 
     private int _sellCost;
+
+    [Inject]
+    public void Construct(EquipmentManager equipmentManager, WalletManager walletManager)
+    {
+        _equipmentManager = equipmentManager;
+        _walletManager = walletManager;
+    }
 
     private void Awake()
     {
@@ -104,9 +114,9 @@ public class ItemInfoUI : MonoBehaviour
 
         if (_inventorySlot is WeaponInventorySlot weaponSlot)
         {
-            WeaponSO weapon = EquipmentManager.Instance.GetWeapon(weaponSlot.SlotIndex);
+            WeaponSO weapon = _equipmentManager.GetWeapon(weaponSlot.SlotIndex);
 
-            _secondWeaponIndex = EquipmentManager.Instance.FindSecondWeaponIndex(weapon, weaponSlot.SlotIndex);
+            _secondWeaponIndex = _equipmentManager.FindSecondWeaponIndex(weapon, weaponSlot.SlotIndex);
 
             bool canUnion = (_secondWeaponIndex != -1) && weapon.CanUnion;
 
@@ -126,7 +136,7 @@ public class ItemInfoUI : MonoBehaviour
         switch (slot)
         {
             case WeaponInventorySlot weaponSlot:
-                return EquipmentManager.Instance.GetWeapon(weaponSlot.SlotIndex);
+                return _equipmentManager.GetWeapon(weaponSlot.SlotIndex);
             case ItemInventorySlot itemSlot:
                 return itemSlot.Item.PassiveItemSO;
             default:
@@ -151,23 +161,23 @@ public class ItemInfoUI : MonoBehaviour
         switch (_inventorySlot)
         {
             case WeaponInventorySlot weaponSlot:
-                EquipmentManager.Instance.UnequipWeapon(weaponSlot.SlotIndex);
+                _equipmentManager.UnequipWeapon(weaponSlot.SlotIndex);
                 break;
             case ItemInventorySlot itemSlot:
-                EquipmentManager.Instance.RemovePassiveItem(itemSlot.Item);
+                _equipmentManager.RemovePassiveItem(itemSlot.Item);
                 break;
             default:
                 Debug.LogError("Unsupported inventory slot type.");
                 return;
         }
 
-        WalletManager.Instance.AddMoney(_sellCost);
+        _walletManager.AddMoney(_sellCost);
         Close();
     }
 
     private void Union()
     {
-        EquipmentManager.Instance.Union(_inventorySlot);
+        _equipmentManager.Union(_inventorySlot);
         Close();
     }
 

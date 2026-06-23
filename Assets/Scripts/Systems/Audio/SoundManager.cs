@@ -16,24 +16,17 @@ public enum SoundType
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance { get; private set; }
-
     private const string PLAYER_PREFS_SFX_VOLUME = "SFXVolume";
 
     [SerializeField] private SoundList[] _audioClips;
 
     private AudioSource _audioSource;
-    public float Volume {get; private set;} = 1f;
+
+    public float Volume { get; private set; } = 1f;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
 
         Loader.OnAfterSceneLoad += OnAfterSceneLoad;
         OnAfterSceneLoad();
@@ -41,34 +34,50 @@ public class SoundManager : MonoBehaviour
         _audioSource.volume = Volume;
     }
 
-    public static void PlaySound(SoundType soundType, float volume = 1)
+    private void OnDestroy()
     {
-        if (Instance == null || Instance._audioClips == null || Instance._audioClips.Length == 0)
+        Loader.OnAfterSceneLoad -= OnAfterSceneLoad;
+    }
+
+    public void PlaySound(SoundType soundType, float volume = 1)
+    {
+        if (_audioClips == null || _audioClips.Length == 0)
         {
             Debug.LogWarning("SoundManager not initialized or no audio clips assigned.");
             return;
         }
+
         int index = (int)soundType;
-        if (index < 0 || index >= Instance._audioClips.Length)
+        if (index < 0 || index >= _audioClips.Length)
         {
             Debug.LogWarning($"Invalid sound type: {soundType}");
             return;
         }
-        AudioClip[] clips = Instance._audioClips[index].AudioClips;
-        AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
 
-        Instance._audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.101f);
-
-        Instance._audioSource.PlayOneShot(randomClip, volume);
-    }
-    public void SetVolume(float volume)
-    {
-        if (_audioSource != null)
+        AudioClip[] clips = _audioClips[index].AudioClips;
+        if (clips == null || clips.Length == 0)
         {
-            _audioSource.volume = volume;
+            Debug.LogWarning($"No audio clips assigned for sound type: {soundType}");
+            return;
         }
 
-        PlayerPrefs.SetFloat(PLAYER_PREFS_SFX_VOLUME, volume);
+        AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+
+        _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.101f);
+
+        _audioSource.PlayOneShot(randomClip, volume);
+    }
+
+    public void SetVolume(float volume)
+    {
+        Volume = Mathf.Clamp01(volume);
+
+        if (_audioSource != null)
+        {
+            _audioSource.volume = Volume;
+        }
+
+        PlayerPrefs.SetFloat(PLAYER_PREFS_SFX_VOLUME, Volume);
         PlayerPrefs.Save();
     }
 
@@ -86,6 +95,10 @@ public class SoundManager : MonoBehaviour
     private void OnAfterSceneLoad()
     {
         Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SFX_VOLUME, 1f);
+        if (_audioSource != null)
+        {
+            _audioSource.volume = Volume;
+        }
     }
 }
 

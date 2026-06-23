@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
@@ -12,6 +13,13 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private Transform _shadow;
 
     private Animator _animator;
+    private SoundManager _soundManager;
+
+    [Inject]
+    public void Construct(SoundManager soundManager)
+    {
+        _soundManager = soundManager;
+    }
 
     private void Awake()
     {
@@ -34,7 +42,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         _animator.SetTrigger(ANIMATOR_DEAD);
-        SoundManager.PlaySound(SoundType.ONDEAD);
+        _soundManager?.PlaySound(SoundType.ONDEAD);
         _shadow.localScale = new Vector3(1.8f, 1.4f, 1);
     }
 }

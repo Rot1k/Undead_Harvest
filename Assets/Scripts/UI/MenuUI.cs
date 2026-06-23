@@ -1,23 +1,35 @@
 using UnityEngine;
 using System;
+using VContainer;
 
 public class MenuUI : MonoBehaviour
 {
     private Action _onPauseAction;
+    private GameInput _gameInput;
 
-    private void Awake()
+    [Inject]
+    private void Construct(GameInput gameInput)
+    {
+        _gameInput = gameInput;
+    }
+
+    private void Start()
     {
         _onPauseAction = ToggleMenu;
-        GameInput.Instance.OnPause += _onPauseAction;
+
+        if (_gameInput != null)
+        {
+            _gameInput.OnPause += _onPauseAction;
+        }
 
         Hide();
     }
 
     private void OnDestroy()
     {
-        if (GameInput.Instance != null)
+        if (_gameInput != null)
         {
-            GameInput.Instance.OnPause -= _onPauseAction;
+            _gameInput.OnPause -= _onPauseAction;
         }
     }
 

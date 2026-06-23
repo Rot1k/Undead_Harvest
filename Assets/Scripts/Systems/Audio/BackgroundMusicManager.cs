@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class BackgroundMusicManager : MonoBehaviour
 {
-    public static BackgroundMusicManager Instance { get; private set; }
-
     private const string PLAYER_PREFS_BACKGROUND_MUSIC_VOLUME = "BackgroundMusicVolume";
 
     [SerializeField] private AudioClip[] _backgroundMusicClips;
@@ -22,16 +20,6 @@ public class BackgroundMusicManager : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
 
         Loader.OnAfterSceneLoad += OnAfterSceneLoad;
         OnAfterSceneLoad();
@@ -58,6 +46,8 @@ public class BackgroundMusicManager : MonoBehaviour
         {
             StopCoroutine(_trackCoroutine);
         }
+
+        Loader.OnAfterSceneLoad -= OnAfterSceneLoad;
     }
 
     private void PrepareShuffledPlaylist()
@@ -87,7 +77,7 @@ public class BackgroundMusicManager : MonoBehaviour
         _audioSource.Play();
         _currentIndex++;
 
-        _trackCoroutine =StartCoroutine(WaitUntilTrackEnds(clipToPlay.length));
+        _trackCoroutine = StartCoroutine(WaitUntilTrackEnds(clipToPlay.length));
     }
 
     private IEnumerator PlayMusicWithDelay()
@@ -113,20 +103,26 @@ public class BackgroundMusicManager : MonoBehaviour
 
     public void SetVolume(float volume)
     {
+        Volume = Mathf.Clamp01(volume);
+
         if (_audioSource != null)
         {
-            _audioSource.volume = volume;// * MasterVolumeManager.Instance.GetVolume();
+            _audioSource.volume = Volume;
         }
         else
         {
             Debug.LogWarning("AudioSource not initialized.");
         }
 
-        PlayerPrefs.SetFloat(PLAYER_PREFS_BACKGROUND_MUSIC_VOLUME, volume);
+        PlayerPrefs.SetFloat(PLAYER_PREFS_BACKGROUND_MUSIC_VOLUME, Volume);
         PlayerPrefs.Save();
     }
     private void OnAfterSceneLoad()
     {
         Volume = PlayerPrefs.GetFloat(PLAYER_PREFS_BACKGROUND_MUSIC_VOLUME, 1f);
+        if (_audioSource != null)
+        {
+            _audioSource.volume = Volume;
+        }
     }
 }

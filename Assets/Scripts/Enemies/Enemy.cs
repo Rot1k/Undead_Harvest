@@ -2,6 +2,8 @@ using NTC.Pool;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
 [RequireComponent(typeof(StatusEffectsManager))]
@@ -11,7 +13,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
 
 
     [SerializeField] protected EnemyStatsSO _enemyStats;
-    [SerializeField] private Transform _expPrefab;
+    [SerializeField] private GameObject _expPrefab;
 
     public HealthSystem HealthSystem { get; private set; }
     private Rigidbody2D _rigidbody;
@@ -27,14 +29,20 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private readonly float _threshold = 0.1f;
     private readonly float _stopDistance = 0.15f; // Distance at which the enemy stops moving towards the player
     private Vector3 _localScale = Vector3.one;
+    private IObjectResolver _objectResolver;
 
     private readonly float _healthMultiplierPerWave = 0.10f;
     protected Rigidbody2D Rigidbody => _rigidbody;
     protected Transform Player => _player;
     protected bool IsDead => _isDead;
+    protected WavesManager _wavesManager;
 
-
-
+    [Inject]
+    public void Construct(WavesManager wavesManager, IObjectResolver objectResolver)
+    {
+        _wavesManager = wavesManager;
+        _objectResolver = objectResolver;
+    }
     protected virtual void Awake()
     {
         _runtimeStats[StatType.MoveSpeed] = _enemyStats.BaseMoveSpeed;
@@ -68,10 +76,12 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         _rigidbody.simulated = false;
         _statusEffectsManager.ClearAllEffects();
 
-        if (!(WavesManager.Instance.GetCurrentWave().IsBossWave))
+        if (_wavesManager == null || _wavesManager.GetCurrentWave().IsBossWave != true)
         {
             Vector2 deathPos = transform.position;
-            NightPool.Spawn(_expPrefab, UnityEngine.Random.insideUnitCircle.normalized * 0.5f + deathPos, Quaternion.identity);
+            GameObject expInstance = NightPool.Spawn(_expPrefab, UnityEngine.Random.insideUnitCircle.normalized * 0.5f + deathPos, Quaternion.identity);
+            _objectResolver.InjectGameObject(expInstance);
+
         }
  
         OnDied?.Invoke(this);
@@ -80,7 +90,6 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     }
     private void OnHealthChanged(object sender, System.EventArgs e)
     {
-        Debug.Log($"Enemy Health: {HealthSystem.Health} / {HealthSystem.HealthMax}");
     }
 
     protected virtual void Start()
@@ -132,12 +141,12 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         _collider.enabled = true;
         _rigidbody.simulated = true;
         _rigidbody.linearVelocity = Vector2.zero;
-        HealthSystem.SetMaxHealth(Mathf.RoundToInt(_enemyStats.BaseHealth + (_enemyStats.BaseHealth * (WavesManager.Instance.CurrentWave * _healthMultiplierPerWave))));
+        int currentWave = _wavesManager != null ? _wavesManager.CurrentWave : 0;
+        HealthSystem.SetMaxHealth(Mathf.RoundToInt(_enemyStats.BaseHealth + (_enemyStats.BaseHealth * (currentWave * _healthMultiplierPerWave))));
         HealthSystem.Heal(HealthSystem.HealthMax);
         transform.rotation = Quaternion.identity;
         transform.localScale = _localScale;
         _statusEffectsManager.ClearAllEffects();
-        Debug.Log($"Enemy spawned with {HealthSystem.Health} health.");
     }
     public void ApplyModifier(StatType type, ModifierType modifierType, float value)
     {

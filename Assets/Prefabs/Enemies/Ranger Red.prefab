@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStats: {fileID: 11400000, guid: c1af3a5282985d642b92fcf953f63bbe, type: 2}
-  _expPrefab: {fileID: 3847954848404346988, guid: f5a354f61879e2645bd90adf311f494f, type: 3}
+  _expPrefab: {fileID: 3192491187996405448, guid: f5a354f61879e2645bd90adf311f494f, type: 3}
   _bulletPrefab: {fileID: 620818728340652242, guid: 09f7f4ca357006d449fcfa2993b86d37, type: 3}
 --- !u!114 &5601612918677887873
 MonoBehaviour:

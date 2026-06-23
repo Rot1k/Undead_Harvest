@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 [RequireComponent(typeof(Button))]
 public class RollButtonUI : MonoBehaviour
@@ -9,8 +10,16 @@ public class RollButtonUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _buttonText;
     [SerializeField] private int _baseRerollCost = 15;
 
+    private WalletManager _walletManager;
+
     private Button _rollButton;
     private int _rerollCost = 0;
+
+    [Inject]
+    public void Construct(WalletManager walletManager)
+    {
+        _walletManager = walletManager;
+    }
 
     private void Awake()
     {
@@ -18,7 +27,7 @@ public class RollButtonUI : MonoBehaviour
         _buttonText.text = $"Reroll ({_rerollCost})";
         _rollButton.onClick.AddListener(() =>
         {
-            if (WalletManager.Instance.TrySpendMoney(_rerollCost))
+            if (_walletManager.TrySpendMoney(_rerollCost))
             {
                 _buyWindowsHolder.RerollWindows();
                 _rerollCost = Mathf.RoundToInt(_rerollCost * 1.3f);

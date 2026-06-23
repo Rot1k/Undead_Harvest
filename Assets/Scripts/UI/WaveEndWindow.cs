@@ -6,7 +6,6 @@ using VContainer;
 
 public class WaveEndWindow : MonoBehaviour
 {
-    public static WaveEndWindow Instance { get; private set; }
 
     public event Action OnWindowHidden;
     public event Action OnWindowHiddenAllWavesCompleted;
@@ -26,9 +25,8 @@ public class WaveEndWindow : MonoBehaviour
         _wavesManager = wavesManager;
     }
 
-    private void Awake()
+    private void Start()
     {
-        Instance = this;
         if(_wavesManager == null)
         {
             Debug.LogError("WavesManager instance is null!");
@@ -41,8 +39,11 @@ public class WaveEndWindow : MonoBehaviour
 
     private void OnDestroy()
     {
-        _wavesManager.OnWaveCompleted -= OnWaveCompleted;
-        _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDead;
+        if (_wavesManager != null)
+            _wavesManager.OnWaveCompleted -= OnWaveCompleted;
+
+        if (_playerHealthSystem != null && _playerHealthSystem.HealthSystem != null)
+            _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDead;
     }
 
     private void OnWaveCompleted()

@@ -17,18 +17,28 @@ public class PlayerMovement : MonoBehaviour
     public bool IsWalking => _input != Vector2.zero;
 
     private WavesManager _wavesManager;
+    private GameInput _gameInput;
 
     [Inject]
-    public void Constuct(WavesManager wavesManager)
+    public void Construct(WavesManager wavesManager, GameInput gameInput)
     {
         _wavesManager = wavesManager;
+        _gameInput = gameInput;
     }
     private void Awake()
     {
         _playerHealthSystem = GetComponent<PlayerHealthSystem>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
+    }
+    private void Start()
+    {
         _wavesManager.OnWaveStarted += OnWaveStarted;
+    }
+    private void OnDestroy()
+    {
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted -= OnWaveStarted;
     }
     private void OnEnable()
     {
@@ -55,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        _input = GameInput.Instance.MovementVector;
+        _input = _gameInput.MovementVector;
 
         if (_input.x != 0)
         {

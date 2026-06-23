@@ -1,14 +1,30 @@
 using UnityEngine;
+using VContainer;
 
 public class LevelUpWindowUI : MonoBehaviour
 {
     [field: SerializeField] public PlayerLevelSystem PlayerLevelSystem { get; private set; }
     [SerializeField] private LevelUpPanelsController _levelUpPanelsController;
 
-    private void Awake()
+    private WaveEndWindow _waveEndWindow;
+    private WavesManager _wavesManager;
+
+    [Inject]
+    public void Construct(WaveEndWindow waveEndWindow, WavesManager wavesManager)
     {
-        WaveEndWindow.Instance.OnWindowHidden += OnWaveCompleted;
+        _waveEndWindow = waveEndWindow;
+        _wavesManager = wavesManager;
+    }
+
+    private void Start()
+    {
+        _waveEndWindow.OnWindowHidden += OnWaveCompleted;
         Hide();
+    }
+    private void OnDestroy()
+    {
+        if (_waveEndWindow != null)
+            _waveEndWindow.OnWindowHidden -= OnWaveCompleted;
     }
     public void Hide()
     {
@@ -24,7 +40,7 @@ public class LevelUpWindowUI : MonoBehaviour
     }
     public void TryRerollPanels()
     {
-        if(WavesManager.Instance.IsAllWavesCompleted)
+        if(_wavesManager.IsAllWavesCompleted)
         {
             Hide();
             return;

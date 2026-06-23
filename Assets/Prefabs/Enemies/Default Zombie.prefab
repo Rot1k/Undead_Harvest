@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStats: {fileID: 11400000, guid: 32f9578d7f6eee545b7f32ea846ee8f6, type: 2}
-  _expPrefab: {fileID: 3847954848404346988, guid: 30f33afa882d4f04da612e227f5654e4, type: 3}
+  _expPrefab: {fileID: 3192491187996405448, guid: 30f33afa882d4f04da612e227f5654e4, type: 3}
 --- !u!95 &3795155999563678887
 Animator:
   serializedVersion: 7

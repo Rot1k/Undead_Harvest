@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -8,40 +9,58 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Slider _musicVolumeSlider;
     [SerializeField] private Slider _soundVolumeSlider;
 
-    private void Awake()
+    private GameInput _gameInput;
+    private MasterVolumeManager _masterVolumeManager;
+    private SoundManager _soundManager;
+    private BackgroundMusicManager _backgroundMusicManager;
+
+    [Inject]
+    public void Construct(GameInput gameInput,
+                          MasterVolumeManager masterVolumeManager,
+                          SoundManager soundManager,
+                          BackgroundMusicManager backgroundMusicManager
+                         )
+    {
+        _gameInput = gameInput;
+        _masterVolumeManager = masterVolumeManager;
+        _soundManager = soundManager;
+        _backgroundMusicManager = backgroundMusicManager;
+    }
+
+    private void Start()
     {
         _closeButton.onClick.AddListener(Hide);
 
         // MASTER
-        if (_masterVolumeSlider != null && MasterVolumeManager.Instance != null)
+        if (_masterVolumeSlider != null && _masterVolumeManager != null)
         {
-            _masterVolumeSlider.SetValueWithoutNotify(MasterVolumeManager.Instance.Volume);
+            _masterVolumeSlider.SetValueWithoutNotify(_masterVolumeManager.Volume);
 
             _masterVolumeSlider.onValueChanged.AddListener(value =>
             {
-                MasterVolumeManager.Instance.SetVolume(value);
+                _masterVolumeManager.SetVolume(value);
             });
         }
 
         // MUSIC
-        if (_musicVolumeSlider != null && BackgroundMusicManager.Instance != null)
+        if (_musicVolumeSlider != null && _backgroundMusicManager != null)
         {
-            _musicVolumeSlider.SetValueWithoutNotify(BackgroundMusicManager.Instance.Volume);
+            _musicVolumeSlider.SetValueWithoutNotify(_backgroundMusicManager.Volume);
 
             _musicVolumeSlider.onValueChanged.AddListener(value =>
             {
-                BackgroundMusicManager.Instance.SetVolume(value);
+                _backgroundMusicManager.SetVolume(value);
             });
         }
 
         // SFX
-        if (_soundVolumeSlider != null && SoundManager.Instance != null)
+        if (_soundVolumeSlider != null && _soundManager != null)
         {
-            _soundVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Volume);
+            _soundVolumeSlider.SetValueWithoutNotify(_soundManager.Volume);
 
             _soundVolumeSlider.onValueChanged.AddListener(value =>
             {
-                SoundManager.Instance.SetVolume(value);
+                _soundManager.SetVolume(value);
             });
         }
 
@@ -50,14 +69,18 @@ public class SettingsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (GameInput.Instance != null)
-            GameInput.Instance.OnCancel += Hide;
+        if (_gameInput != null)
+        {
+            _gameInput.OnCancel += Hide;
+        }
     }
 
     private void OnDisable()
     {
-        if (GameInput.Instance != null)
-            GameInput.Instance.OnCancel -= Hide;
+        if (_gameInput != null)
+        {
+            _gameInput.OnCancel -= Hide;
+        }
     }
 
     public void Show()

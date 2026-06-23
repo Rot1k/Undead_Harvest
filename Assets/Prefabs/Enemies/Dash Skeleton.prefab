@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DashEnemy
   _enemyStats: {fileID: 11400000, guid: de4c69ec5cf30384fafc68b295d3c633, type: 2}
-  _expPrefab: {fileID: 3847954848404346988, guid: f5a354f61879e2645bd90adf311f494f, type: 3}
+  _expPrefab: {fileID: 3192491187996405448, guid: 30f33afa882d4f04da612e227f5654e4, type: 3}
   _dashCooldown: 2
   _dashSpeed: 12
   _dashDuration: 0.3

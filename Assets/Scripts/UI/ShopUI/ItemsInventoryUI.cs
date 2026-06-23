@@ -1,6 +1,7 @@
 using NTC.Pool;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 public class ItemsInventoryUI : MonoBehaviour
 {
@@ -11,18 +12,26 @@ public class ItemsInventoryUI : MonoBehaviour
 
     private Dictionary<PassiveItemSO, ItemInventorySlot> _slots = new();
 
-    private void Awake()
+    private EquipmentManager _equipmentManager;
+
+    [Inject]
+    public void Construct(EquipmentManager equipmentManager)
     {
-        EquipmentManager.Instance.OnItemEquipped += SpawnItemUI;
-        EquipmentManager.Instance.OnItemUnequipped += DespawnItemUI;
+        _equipmentManager = equipmentManager;
+    }
+
+    private void Start()
+    {
+        _equipmentManager.OnItemEquipped += SpawnItemUI;
+        _equipmentManager.OnItemUnequipped += DespawnItemUI;
     }
 
     private void OnDestroy()
     {
-        if (EquipmentManager.Instance == null) return;
+        if (_equipmentManager == null) return;
 
-        EquipmentManager.Instance.OnItemEquipped -= SpawnItemUI;
-        EquipmentManager.Instance.OnItemUnequipped -= DespawnItemUI;
+        _equipmentManager.OnItemEquipped -= SpawnItemUI;
+        _equipmentManager.OnItemUnequipped -= DespawnItemUI;
     }
 
     public void SpawnItemUI(PassiveItemInstance item)

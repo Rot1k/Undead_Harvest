@@ -77,7 +77,7 @@ public class MeeleWeapon : Weapon
         if (other.TryGetComponent<Enemy>(out Enemy enemy))
         {
             Damage(enemy);
-            SoundManager.PlaySound(SoundType.HIT);
+            _soundManager?.PlaySound(SoundType.HIT);
             OnHit?.Invoke();
             _state = State.Returning;
         }

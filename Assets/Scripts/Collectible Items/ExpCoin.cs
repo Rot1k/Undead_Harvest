@@ -1,5 +1,6 @@
 using NTC.Pool;
 using UnityEngine;
+using VContainer;
 
 public class ExpCoin : MonoBehaviour, ICollectible, ISpawnable
 {
@@ -10,6 +11,14 @@ public class ExpCoin : MonoBehaviour, ICollectible, ISpawnable
     private float _speed = 10f;
     private float _speedMultiplier = 1.5f;
     private bool _isAttracted = false;
+
+    private WalletManager _walletManager;
+
+    [Inject]
+    public void Construct(WalletManager walletManager)
+    {
+        _walletManager = walletManager;
+    }
 
     public void StartAttraction(Transform target, float speed)
     {
@@ -38,7 +47,7 @@ public class ExpCoin : MonoBehaviour, ICollectible, ISpawnable
     public void Collect(ItemCollector itemCollector)
     {
         itemCollector.AddExp(_expAmount);
-        WalletManager.Instance.AddMoney(_moneyAmount);
+        _walletManager.AddMoney(_moneyAmount);
         NightPool.Despawn(this);
     }
 

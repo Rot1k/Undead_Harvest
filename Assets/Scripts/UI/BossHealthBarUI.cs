@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class BossHealthBarUI : MonoBehaviour
 {
@@ -8,18 +9,24 @@ public class BossHealthBarUI : MonoBehaviour
 
     private HealthSystem _healthSystem;
     private BossEnemy _boss;
+    private WavesManager _wavesManager;
 
-    private void Awake()
+    [Inject]
+    public void Construct(WavesManager wavesManager)
     {
-        WavesManager.Instance.OnWaveStarted += OnWaveStarted;
+        _wavesManager = wavesManager;
+    }
+    private void Start()
+    {
+        _wavesManager.OnWaveStarted += OnWaveStarted;
         BossEnemy.OnBossSpawned += BindToBoss;
         gameObject.SetActive(false);
     }
 
     private void OnDestroy()
     {
-        if (WavesManager.Instance != null)
-            WavesManager.Instance.OnWaveStarted -= OnWaveStarted;
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted -= OnWaveStarted;
 
         BossEnemy.OnBossSpawned -= BindToBoss;
         Unbind();
@@ -33,7 +40,7 @@ public class BossHealthBarUI : MonoBehaviour
 
     private void BindToBoss(BossEnemy boss)
     {
-        var wave = WavesManager.Instance.GetCurrentWave();
+        var wave = _wavesManager.GetCurrentWave();
         if (wave == null || !wave.IsBossWave)
             return;
 

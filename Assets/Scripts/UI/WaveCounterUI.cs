@@ -1,25 +1,33 @@
 using UnityEngine;
 using TMPro;
+using VContainer;
 public class WaveCounterUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _waveText;
+    private WavesManager _wavesManager;
 
-    private void Awake()
+    [Inject]
+    public void Construct(WavesManager wavesManager)
     {
-        WavesManager.Instance.OnWaveStarted += UpdateUI;
+        _wavesManager = wavesManager;
+    }
+    private void Start()
+    {
+        _wavesManager.OnWaveStarted += UpdateUI;
+        UpdateUI();
     }
     private void OnDestroy()
     {
-        if (WavesManager.Instance != null)
-            WavesManager.Instance.OnWaveStarted -= UpdateUI;
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted -= UpdateUI;
     }
     private void OnEnable()
     {
-        if(WavesManager.Instance != null)
+        if(_wavesManager != null)
             UpdateUI();
     }
     private void UpdateUI()
     {
-        _waveText.text = $"Wave {WavesManager.Instance.CurrentWave + 1}";
+        _waveText.text = $"Wave {_wavesManager.CurrentWave + 1}";
     }
 }

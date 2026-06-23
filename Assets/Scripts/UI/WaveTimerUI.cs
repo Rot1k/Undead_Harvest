@@ -16,9 +16,14 @@ public class WaveTimerUI : MonoBehaviour
         _wavesManager = wavesManager;
     }
 
-    private void Awake()
+    private void Start()
     {
-        WavesManager.Instance.OnWaveStarted += UpdateUI;
+        _wavesManager.OnWaveStarted += UpdateUI;
+    }
+    private void OnDestroy()
+    {
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted -= UpdateUI;
     }
     private void UpdateUI()
     {
@@ -34,11 +39,7 @@ public class WaveTimerUI : MonoBehaviour
         gameObject.SetActive(true);
         StartCoroutine(Timer(waveDuration));
     }
-    private void OnDestroy()
-    {
-        if (_wavesManager != null)
-            _wavesManager.OnWaveStarted -= UpdateUI;
-    }
+
     private void Hide()
     {
         gameObject.SetActive(false);

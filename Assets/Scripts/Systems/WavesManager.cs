@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 using static WaveConfigSO;
 
 
@@ -13,10 +15,7 @@ public class WavesManager : MonoBehaviour
         public int aliveCount;
     }
 
-    private Dictionary<WaveEntry, SpawnRuntimeData> _runtimeData =
-        new Dictionary<WaveEntry, SpawnRuntimeData>();
-
-    public static WavesManager Instance { get; private set; }
+    private readonly Dictionary<WaveEntry, SpawnRuntimeData> _runtimeData = new();
 
     public event Action OnWaveCompleted;
     public event Action OnWaveStarted;
@@ -33,25 +32,28 @@ public class WavesManager : MonoBehaviour
     public int CurrentWave { get; private set; } = 0;
     private List<Coroutine> _spawnCoroutines = new List<Coroutine>();
     private Coroutine _waveCoroutine;
+    private IObjectResolver _objectResolver;
 
-    private void Awake()
+    [Inject]
+    public void Construct(IObjectResolver objectResolver)
     {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("Multiple WavesManager instances detected! Destroying duplicate.");
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        _objectResolver = objectResolver;
     }
 
     private void Start()
     {
+        StartCoroutine(StartFirstWave());
+    }
+
+    private IEnumerator StartFirstWave()
+    {
         if(_waveCoroutine != null)
         {
             Debug.LogWarning("A wave is already running on Start!");
-            return;
+            yield break;
         }
+
+        yield return null;
         StartNextWave();
     }
 
@@ -134,6 +136,7 @@ public class WavesManager : MonoBehaviour
                         spawnPosition,
                         Quaternion.identity
                     );
+                    _objectResolver?.InjectGameObject(enemyGO);
 
                     runtime.aliveCount++;
 
@@ -191,8 +194,15 @@ public class WavesManager : MonoBehaviour
     }
     private void EndCurrentWave()
     {
+        if (_waveCoroutine == null)
+        {
+            return;
+        }
+
         foreach (var spawnCoroutine in _spawnCoroutines)
+        {
             StopCoroutine(spawnCoroutine);
+        }
 
         _spawnCoroutines.Clear();
         OnWaveCompleted?.Invoke();

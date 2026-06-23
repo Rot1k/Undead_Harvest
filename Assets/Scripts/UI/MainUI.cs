@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class MainUI : MonoBehaviour
 {
@@ -10,54 +11,75 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Slider _musicVolumeSlider;
     [SerializeField] private Slider _soundVolumeSlider;
 
-    private void Awake()
+    private PauseManager _pauseManager;
+    private MasterVolumeManager _masterVolumeManager;
+    private SoundManager _soundManager;
+    private BackgroundMusicManager _backgroundMusicManager;
+
+    [Inject]
+    public void Construct(PauseManager pauseManager,
+                          MasterVolumeManager masterVolumeManager,
+                          SoundManager soundManager,
+                          BackgroundMusicManager backgroundMusicManager
+                         )
+    {
+        _pauseManager = pauseManager;
+        _masterVolumeManager = masterVolumeManager;
+        _soundManager = soundManager;
+        _backgroundMusicManager = backgroundMusicManager;
+    }
+
+    private void Start()
     {
         if (_resumeButton != null)
+        {
             _resumeButton.onClick.AddListener(() => 
             {
                 _menuUI.Hide();
-                PauseManager.Instance.SetPlayerPaused(false);
+                _pauseManager.SetPlayerPaused(false);
             });
+        }
+
         if (_mainMenuButton != null)
+        {
             _mainMenuButton.onClick.AddListener(() => 
             {
                 Loader.Load(Loader.Scene.MainMenuScene);
             });
+        }
 
         // MASTER
-        if (_masterVolumeSlider != null && MasterVolumeManager.Instance != null)
+        if (_masterVolumeSlider != null && _masterVolumeManager != null)
         {
-
-
-            _masterVolumeSlider.SetValueWithoutNotify(MasterVolumeManager.Instance.Volume);
+            _masterVolumeSlider.SetValueWithoutNotify(_masterVolumeManager.Volume);
 
             _masterVolumeSlider.onValueChanged.AddListener(value =>
             {
-                MasterVolumeManager.Instance.SetVolume(value);
+                _masterVolumeManager.SetVolume(value);
             });
         }
 
         // MUSIC
-        if (_musicVolumeSlider != null && BackgroundMusicManager.Instance != null)
+        if (_musicVolumeSlider != null && _backgroundMusicManager != null)
         {
 
-            _musicVolumeSlider.SetValueWithoutNotify(BackgroundMusicManager.Instance.Volume);
+            _musicVolumeSlider.SetValueWithoutNotify(_backgroundMusicManager.Volume);
 
             _musicVolumeSlider.onValueChanged.AddListener(value =>
             {
-                BackgroundMusicManager.Instance.SetVolume(value);
+                _backgroundMusicManager.SetVolume(value);
             });
         }
 
         // SFX
-        if (_soundVolumeSlider != null && SoundManager.Instance != null)
+        if (_soundVolumeSlider != null && _soundManager != null)
         {
 
-            _soundVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Volume);
+            _soundVolumeSlider.SetValueWithoutNotify(_soundManager.Volume);
 
             _soundVolumeSlider.onValueChanged.AddListener(value =>
             {
-                SoundManager.Instance.SetVolume(value);
+                _soundManager.SetVolume(value);
             });
         }
     }

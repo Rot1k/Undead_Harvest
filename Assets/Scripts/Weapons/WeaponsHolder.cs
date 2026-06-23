@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using NTC.Pool;
 using VContainer;
+using VContainer.Unity;
 
 public class WeaponsHolder : MonoBehaviour
 {
@@ -13,26 +14,35 @@ public class WeaponsHolder : MonoBehaviour
     private readonly Dictionary<int, GameObject> _spawnedWeapons = new();
 
     private WavesManager _wavesManager;
+    private EquipmentManager _equipmentManager;
+    private IObjectResolver _objectResolver;
 
     [Inject]
-    public void Constuct(WavesManager wavesManager)
+    public void Construct(WavesManager wavesManager, EquipmentManager equipmentManager, IObjectResolver objectResolver)
     {
         _wavesManager = wavesManager;
+        _equipmentManager = equipmentManager;
+        _objectResolver = objectResolver;
     }
-
-    private void Awake()
+    private void Start()
     {
-        Arrange();
-        EquipmentManager.Instance.OnWeaponEquipped += SpawnWeapon;
-        EquipmentManager.Instance.OnWeaponUnequipped += DespawnWeapon;
+        _equipmentManager.OnWeaponEquipped += SpawnWeapon;
+        _equipmentManager.OnWeaponUnequipped += DespawnWeapon;
+        _equipmentManager.OnInit();
         _wavesManager.OnWaveCompleted += ResetWeapons;
+        Arrange();
     }
     private void OnDestroy()
     {
-        if (EquipmentManager.Instance != null)
+        if (_equipmentManager != null)
         {
-            EquipmentManager.Instance.OnWeaponEquipped -= SpawnWeapon;
-            EquipmentManager.Instance.OnWeaponUnequipped -= DespawnWeapon;
+            _equipmentManager.OnWeaponEquipped -= SpawnWeapon;
+            _equipmentManager.OnWeaponUnequipped -= DespawnWeapon;
+        }
+
+        if (_wavesManager != null)
+        {
+            _wavesManager.OnWaveCompleted -= ResetWeapons;
         }
     }
 
@@ -41,13 +51,14 @@ public class WeaponsHolder : MonoBehaviour
         if (weapon == null) return;
 
         // Despawn old if exists
-        if (_spawnedWeapons.TryGetValue(slot, out var existing))
+        if (_spawnedWeapons.TryGetValue(slot, out GameObject existing))
         {
             NightPool.Despawn(existing);
             _spawnedWeapons.Remove(slot);
         }
 
         GameObject weaponGO = NightPool.Spawn(weapon.Prefab, transform);
+        _objectResolver.InjectGameObject(weaponGO);
         _spawnedWeapons[slot] = weaponGO;
 
         if (weaponGO.TryGetComponent<Weapon>(out var weaponComponent))
@@ -58,9 +69,9 @@ public class WeaponsHolder : MonoBehaviour
         Arrange();
     }
 
-        private void DespawnWeapon(int slot, WeaponSO weapon)
+    private void DespawnWeapon(int slot, WeaponSO weapon)
     {
-        if (_spawnedWeapons.TryGetValue(slot, out var instance))
+        if (_spawnedWeapons.TryGetValue(slot, out GameObject instance))
         {
             NightPool.Despawn(instance);
             _spawnedWeapons.Remove(slot);
@@ -72,7 +83,9 @@ public class WeaponsHolder : MonoBehaviour
     {
         Transform[] children = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
+        {
             children[i] = transform.GetChild(i);
+        }
 
         ArrangeAroundCircle(children);
     }
@@ -80,7 +93,10 @@ public class WeaponsHolder : MonoBehaviour
     private void ArrangeAroundCircle(Transform[] objects)
     {
         int totalCount = objects.Length;
-        if (totalCount == 0) return;
+        if (totalCount == 0)
+        {
+            return;
+        }
 
         int maxPerCircle = 8;
         int circleIndex = 0;
@@ -91,7 +107,7 @@ public class WeaponsHolder : MonoBehaviour
             int remaining = totalCount - placed;
             int countThisCircle = Mathf.Min(remaining, maxPerCircle);
 
-            var angles = BuildVerticalSymmetricAngles(countThisCircle);
+            List<float> angles = BuildVerticalSymmetricAngles(countThisCircle);
             float currentRadius = _radius + circleIndex * _radiusStep;
 
             for (int i = 0; i < countThisCircle; i++)
@@ -100,8 +116,10 @@ public class WeaponsHolder : MonoBehaviour
                 Vector2 pos = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * currentRadius;
                 Transform obj = objects[placed + i];
                 obj.position = transform.position + (Vector3)pos;
-                if (obj.TryGetComponent<Weapon>(out var weapon))
+                if (obj.TryGetComponent<Weapon>(out Weapon weapon))
+                {
                     weapon.UpdateStartPosition(obj.localPosition);
+                }
             }
 
             placed += countThisCircle;
@@ -111,7 +129,7 @@ public class WeaponsHolder : MonoBehaviour
 
     private List<float> BuildVerticalSymmetricAngles(int count)
     {
-        var angles = new List<float>();
+        List<float> angles = new List<float>();
 
         if (count == 1)
         {
@@ -131,7 +149,9 @@ public class WeaponsHolder : MonoBehaviour
         float offset = 90f - (step * (count - 1) / 2f);
 
         for (int i = 0; i < count; i++)
+        {
             angles.Add(offset + i * step);
+        }
 
         return angles;
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class Weapon : MonoBehaviour
@@ -9,6 +10,7 @@ public abstract class Weapon : MonoBehaviour
     protected PlayerMovement _playerMovement;
     protected PlayerStats _playerStats;
     protected SpriteRenderer _spriteRenderer;
+    protected SoundManager _soundManager;
 
     protected Vector3 OriginalLocalPosition;
 
@@ -22,6 +24,13 @@ public abstract class Weapon : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
+    [Inject]
+    public void Construct(SoundManager soundManager)
+    {
+        _soundManager = soundManager;
+    }
+
     public void Initialize(PlayerStats playerStats, PlayerMovement playerMovement, WeaponSO weaponSO)
     {
         _playerStats = playerStats;
