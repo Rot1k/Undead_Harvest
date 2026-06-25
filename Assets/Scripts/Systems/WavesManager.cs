@@ -10,12 +10,6 @@ using static WaveConfigSO;
 
 public class WavesManager : MonoBehaviour
 {
-    private class SpawnRuntimeData
-    {
-        public int aliveCount;
-    }
-
-    private readonly Dictionary<WaveEntry, SpawnRuntimeData> _runtimeData = new();
 
     public event Action OnWaveCompleted;
     public event Action OnWaveStarted;
@@ -79,7 +73,6 @@ public class WavesManager : MonoBehaviour
 
         foreach (var entry in wave.Enemies)
         {
-            _runtimeData[entry] = new SpawnRuntimeData();
 
             var routine = StartCoroutine(SpawnEnemyRoutine(entry, wave.WaveDuration));
             _spawnCoroutines.Add(routine);
@@ -103,7 +96,7 @@ public class WavesManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        while (elapsedTime < waveDuration || waveDuration <= 0f)
+        while (waveDuration <= 0f || elapsedTime < waveDuration)
         {
             for (int i = 0; i < entry.EnemiesPerSpawn; i++)
             {
@@ -124,9 +117,8 @@ public class WavesManager : MonoBehaviour
                     }
                 }
 
-                var runtime = _runtimeData[entry];
 
-                if (runtime.aliveCount >= entry.maxEnemiesInScene)
+                if (EnemyRegistry.CountByType(entry.EnemyStats) >= entry.maxEnemiesInScene)
                     continue;
 
                 if (foundPosition)
@@ -138,7 +130,6 @@ public class WavesManager : MonoBehaviour
                     );
                     _objectResolver?.InjectGameObject(enemyGO);
 
-                    runtime.aliveCount++;
 
                     if (enemyGO.TryGetComponent<Enemy>(out var enemy))
                     {
@@ -149,7 +140,6 @@ public class WavesManager : MonoBehaviour
                             void OnBossDied(Enemy boss)
                             {
                                 boss.OnDied -= OnBossDied;
-                                runtime.aliveCount--;
                                 EndCurrentWave();
                             }
                         }
@@ -160,7 +150,6 @@ public class WavesManager : MonoBehaviour
                             void OnEnemyDied(Enemy e)
                             {
                                 e.OnDied -= OnEnemyDied;
-                                runtime.aliveCount--;
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-public class EffectStack
+public struct EffectStack
 {
     public float RemainingDuration;
 

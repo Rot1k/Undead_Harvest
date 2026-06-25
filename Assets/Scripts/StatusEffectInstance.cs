@@ -37,9 +37,11 @@ public class StatusEffectInstance
     {
         for (int i = _stacks.Count - 1; i >= 0; i--)
         {
-            _stacks[i].RemainingDuration -= deltaTime;
+            var stack = _stacks[i];
+            stack.RemainingDuration -= deltaTime;
+            _stacks[i] = stack;
 
-            if (_stacks[i].RemainingDuration <= 0)
+            if (stack.RemainingDuration <= 0)
                 _stacks.RemoveAt(i);
         }
 
@@ -84,8 +86,16 @@ public class StatusEffectInstance
 
     public void Refresh(float duration)
     {
-        _stacks.Clear();
-        _stacks.Add(new EffectStack(duration));
+        if (_stacks.Count > 0)
+        {
+            var stack = _stacks[0];
+            stack.RemainingDuration = duration;
+            _stacks[0] = stack;
+        }
+        else
+        {
+            _stacks.Add(new EffectStack(duration));
+        }
     }
 
     public int GetStackCount() => _stacks.Count;

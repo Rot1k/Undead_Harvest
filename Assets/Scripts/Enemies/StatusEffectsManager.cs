@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
@@ -9,6 +7,7 @@ public class StatusEffectsManager : MonoBehaviour
     private Enemy _enemy;
 
     private Dictionary<StatusEffectSO, StatusEffectInstance> _activeEffects = new();
+    private List<StatusEffectSO> _effectsToRemove = new();
 
     private void Awake()
     {
@@ -19,12 +18,21 @@ public class StatusEffectsManager : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        foreach (var pair in _activeEffects.ToList())
+        foreach (var pair in _activeEffects)
         {
             pair.Value.Update(dt);
 
             if (pair.Value.IsFinished)
-                _activeEffects.Remove(pair.Key);
+                _effectsToRemove.Add(pair.Key);
+        }
+
+        if (_effectsToRemove.Count > 0)
+        {
+            foreach (var key in _effectsToRemove)
+            {
+                _activeEffects.Remove(key);
+            }
+            _effectsToRemove.Clear();
         }
     }
 

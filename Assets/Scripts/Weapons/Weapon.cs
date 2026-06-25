@@ -15,6 +15,7 @@ public abstract class Weapon : MonoBehaviour
     protected Vector3 OriginalLocalPosition;
 
     protected Transform _lockedEnemy;
+    protected Enemy _lockedEnemyComponent;
     private float _targetLoseTime;
     [SerializeField] private float _targetGraceTime = 0.2f;
 
@@ -39,26 +40,42 @@ public abstract class Weapon : MonoBehaviour
     }
 
 
+    private bool IsLockedEnemyValid()
+    {
+        if (_lockedEnemy == null || _lockedEnemyComponent == null)
+            return false;
+
+        return _lockedEnemy.gameObject.activeInHierarchy && !_lockedEnemyComponent.IsDead;
+    }
+
     protected void UpdateTarget()
     {
+        if (!IsLockedEnemyValid())
+        {
+            _lockedEnemy = null;
+            _lockedEnemyComponent = null;
+        }
+
         Transform found = FindNearestEnemy();
 
         if (found != null)
         {
             _lockedEnemy = found;
+            _lockedEnemyComponent = found.GetComponent<Enemy>();
             _targetLoseTime = Time.time + _targetGraceTime;
         }
         else if (Time.time > _targetLoseTime)
         {
             _lockedEnemy = null;
+            _lockedEnemyComponent = null;
         }
     }
 
-    protected bool HasTarget => _lockedEnemy != null;
+    protected bool HasTarget => IsLockedEnemyValid();
 
     protected Vector2 GetAimDirection(Vector3 fromPosition)
     {
-        if (_lockedEnemy == null)
+        if (!IsLockedEnemyValid())
             return Vector2.zero;
 
         return (_lockedEnemy.position - fromPosition).normalized;
@@ -66,33 +83,34 @@ public abstract class Weapon : MonoBehaviour
 
     protected Transform FindNearestEnemy()
     {
-        Transform found = null;
-        float closestDistance = float.MaxValue;
-
         float range = _playerStats.Get(StatType.AttackRange) * _weaponBaseStats.RangeMultiplier;
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, LayerMask.GetMask("Enemy")
-        );
+        float rangeSqr = range * range;
 
-        foreach (var enemy in enemies)
+        Vector2 origin = transform.position;
+
+        Transform found = null;
+        float closest = float.MaxValue;
+
+        foreach (var enemy in EnemyRegistry.GetAll())
         {
-            if (!enemy.TryGetComponent<Enemy>(out _))
-                continue;
+            if (enemy == null || enemy.IsDead) continue;
 
-            float dist = (enemy.transform.position - transform.position).sqrMagnitude;
-            if (dist < closestDistance)
+            Vector2 dir = (Vector2)enemy.transform.position - origin;
+            float dist = dir.sqrMagnitude;
+
+            if (dist <= rangeSqr && dist < closest)
             {
-                closestDistance = dist;
+                closest = dist;
                 found = enemy.transform;
             }
         }
-
         return found;
     }
     protected void LookAtTargetOrInput()
     {
         Vector2 dir;
 
-        if (_lockedEnemy == null)
+        if (!IsLockedEnemyValid())
         {
             Vector2 input = _playerMovement.GetInput();
             if (input.sqrMagnitude <= 0.01f)
@@ -164,6 +182,7 @@ public abstract class Weapon : MonoBehaviour
         _nextFireTime = Time.time;
 
         _lockedEnemy = null;
+        _lockedEnemyComponent = null;
         _targetLoseTime = 0f;
 
         transform.localPosition = OriginalLocalPosition;

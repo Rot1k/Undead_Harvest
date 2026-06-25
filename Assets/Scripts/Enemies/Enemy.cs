@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     [SerializeField] protected EnemyStatsSO _enemyStats;
     [SerializeField] private GameObject _expPrefab;
 
+    public EnemyStatsSO EnemyStats => _enemyStats;
+
     public HealthSystem HealthSystem { get; private set; }
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
@@ -34,8 +36,8 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private readonly float _healthMultiplierPerWave = 0.10f;
     protected Rigidbody2D Rigidbody => _rigidbody;
     protected Transform Player => _player;
-    protected bool IsDead => _isDead;
     protected WavesManager _wavesManager;
+    public bool IsDead => _isDead;
 
     [Inject]
     public void Construct(WavesManager wavesManager, IObjectResolver objectResolver)
@@ -71,10 +73,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     {
         if(_isDead) return;
 
-        _isDead = true;
-        _collider.enabled = false;
-        _rigidbody.simulated = false;
-        _statusEffectsManager.ClearAllEffects();
+        ResetEnemy();
 
         if (_wavesManager == null || _wavesManager.GetCurrentWave().IsBossWave != true)
         {
@@ -138,6 +137,12 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     public virtual void OnSpawn()
     {
         _isDead = false;
+        EnemyRegistry.Register(this);
+
+        // Reset runtime stats to base values for pooling
+        _runtimeStats[StatType.MoveSpeed] = _enemyStats.BaseMoveSpeed;
+        _runtimeStats[StatType.AttackDamage] = _enemyStats.BaseDamage;
+
         _collider.enabled = true;
         _rigidbody.simulated = true;
         _rigidbody.linearVelocity = Vector2.zero;
@@ -147,6 +152,11 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         transform.rotation = Quaternion.identity;
         transform.localScale = _localScale;
         _statusEffectsManager.ClearAllEffects();
+    }
+    public virtual void OnDespawn()
+    {
+        if(_isDead) return;
+        ResetEnemy();
     }
     public void ApplyModifier(StatType type, ModifierType modifierType, float value)
     {
@@ -176,5 +186,13 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         if(_isDead) return;
 
         _statusEffectsManager.ApplyEffect(statusEffectSO);
+    }
+    private void ResetEnemy()
+    {
+        _isDead = true;
+        EnemyRegistry.Unregister(this);
+        _collider.enabled = false;
+        _rigidbody.simulated = false;
+        _statusEffectsManager.ClearAllEffects();
     }
 }
