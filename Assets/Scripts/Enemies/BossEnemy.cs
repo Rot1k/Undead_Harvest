@@ -26,9 +26,8 @@ public class BossEnemy : Enemy
             Debug.LogError("_enemyStats is not a RangerEnemyStatsSO!");
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         StartCoroutine(AttackLoop());
     }
     public override void OnSpawn()

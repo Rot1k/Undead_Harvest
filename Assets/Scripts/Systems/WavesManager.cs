@@ -133,6 +133,7 @@ public class WavesManager : MonoBehaviour
 
                     if (enemyGO.TryGetComponent<Enemy>(out var enemy))
                     {
+                        enemy.Init(_playerTransform);
                         if (enemy is BossEnemy)
                         {
                             enemy.OnDied += OnBossDied;

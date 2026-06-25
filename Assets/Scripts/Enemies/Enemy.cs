@@ -91,14 +91,6 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     {
     }
 
-    protected virtual void Start()
-    {
-        if (_player == null)
-        {
-            _player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
-    }
-
     protected virtual void FixedUpdate()
     {
         if (_isDead) return;
@@ -186,6 +178,10 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         if(_isDead) return;
 
         _statusEffectsManager.ApplyEffect(statusEffectSO);
+    }
+    public void Init(Transform playerTransform)
+    {
+        _player = playerTransform;
     }
     private void ResetEnemy()
     {

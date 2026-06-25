@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Default Zombie
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 1140011490426597685, guid: 1db4d1f154d726546a193345223fb7ca, type: 3}
-  BaseHealth: 200
+  BaseHealth: 180
   BaseDamage: 2
   BaseMoveSpeed: 4
