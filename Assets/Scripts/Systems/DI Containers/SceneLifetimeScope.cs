@@ -19,6 +19,8 @@ public class SceneLifetimeScope : LifetimeScope
         builder.RegisterComponent(_equipmentManager);
         builder.RegisterComponent(_walletManager);
 
+        builder.Register<ShopService>(Lifetime.Singleton).As<IShopService>();
+
         builder.RegisterBuildCallback(container =>
         {
             Scene scene = gameObject.scene;

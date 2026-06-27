@@ -26,17 +26,17 @@ public class ItemInfoUI : MonoBehaviour
     private InventorySlot _inventorySlot;
     private int _secondWeaponIndex = -1;
 
-    PlayerStatsSO _playerStatsSO;
+    private PlayerStatsSO _playerStatsSO;
     private EquipmentManager _equipmentManager;
-    private WalletManager _walletManager;
+    private IShopService _shopService;
 
     private int _sellCost;
 
     [Inject]
-    public void Construct(EquipmentManager equipmentManager, WalletManager walletManager)
+    public void Construct(EquipmentManager equipmentManager, IShopService shopService)
     {
         _equipmentManager = equipmentManager;
-        _walletManager = walletManager;
+        _shopService = shopService;
     }
 
     private void Awake()
@@ -52,6 +52,7 @@ public class ItemInfoUI : MonoBehaviour
 
         Hide();
     }
+
     public void Initialize(PlayerStatsSO playerStats)
     {
         _playerStatsSO = playerStats;
@@ -88,11 +89,11 @@ public class ItemInfoUI : MonoBehaviour
             _itemRarityText.color = _rarityConfig != null ? _rarityConfig.GetColor(slotData.Rarity) : Color.white;
         }
 
-        if (_backgroundOutline != null) 
+        if (_backgroundOutline != null)
             _backgroundOutline.effectColor = _rarityConfig != null ? _rarityConfig.GetColor(slotData.Rarity) : Color.white;
 
         if (_itemIconImage != null) _itemIconImage.sprite = slotData.UISprite;
-        
+
         if (_itemDescriptionText != null) _itemDescriptionText.text = ItemDescriptionBuilder.Build(slotData, _playerStatsSO);
 
         if (_itemTypeText != null)
@@ -104,8 +105,8 @@ public class ItemInfoUI : MonoBehaviour
         if (!shopMode)
         {
             gameObject.SetActive(true);
-            _sellButton.gameObject.SetActive(false);
-            _unionButton.gameObject.SetActive(false);
+            if (_sellButton != null) _sellButton.gameObject.SetActive(false);
+            if (_unionButton != null) _unionButton.gameObject.SetActive(false);
             return;
         }
 
@@ -115,15 +116,17 @@ public class ItemInfoUI : MonoBehaviour
         if (_inventorySlot is WeaponInventorySlot weaponSlot)
         {
             WeaponSO weapon = _equipmentManager.GetWeapon(weaponSlot.SlotIndex);
-
             _secondWeaponIndex = _equipmentManager.FindSecondWeaponIndex(weapon, weaponSlot.SlotIndex);
 
-            bool canUnion = (_secondWeaponIndex != -1) && weapon.CanUnion;
+            bool canUnion = weapon != null && _secondWeaponIndex != -1 && weapon.CanUnion;
 
-            _unionButton.gameObject.SetActive(true);
-            _unionButton.interactable = canUnion;
+            if (_unionButton != null)
+            {
+                _unionButton.gameObject.SetActive(true);
+                _unionButton.interactable = canUnion;
+            }
         }
-        else
+        else if (_unionButton != null)
         {
             _unionButton.gameObject.SetActive(false);
         }
@@ -158,27 +161,43 @@ public class ItemInfoUI : MonoBehaviour
             return;
         }
 
-        switch (_inventorySlot)
+        if (_shopService == null)
         {
-            case WeaponInventorySlot weaponSlot:
-                _equipmentManager.UnequipWeapon(weaponSlot.SlotIndex);
-                break;
-            case ItemInventorySlot itemSlot:
-                _equipmentManager.RemovePassiveItem(itemSlot.Item);
-                break;
-            default:
-                Debug.LogError("Unsupported inventory slot type.");
-                return;
+            Debug.LogWarning("Shop service is not available.");
+            return;
         }
 
-        _walletManager.AddMoney(_sellCost);
-        Close();
+        if (_shopService.TrySellItem(_inventorySlot, out int soldAmount, out string error))
+        {
+            _sellCost = soldAmount;
+            Close();
+            return;
+        }
+
+        Debug.LogWarning(error);
     }
 
     private void Union()
     {
-        _equipmentManager.Union(_inventorySlot);
-        Close();
+        if (_inventorySlot == null)
+        {
+            Debug.LogWarning("Union called without a selected slot.");
+            return;
+        }
+
+        if (_shopService == null)
+        {
+            Debug.LogWarning("Shop service is not available.");
+            return;
+        }
+
+        if (_shopService.TryUnion(_inventorySlot, out string error))
+        {
+            Close();
+            return;
+        }
+
+        Debug.LogWarning(error);
     }
 
     private void PositionNearSlot(InventorySlot slot)

@@ -6,6 +6,7 @@ public abstract class Bullet : MonoBehaviour, ISpawnable
 {
     protected float _damage;
     private Rigidbody2D _rigidbody;
+    private bool _isDespawning;
 
     protected virtual void Awake()
     {
@@ -14,6 +15,7 @@ public abstract class Bullet : MonoBehaviour, ISpawnable
 
     public virtual void OnSpawn()
     {
+        _isDespawning = false;
         _rigidbody.linearVelocity = Vector2.zero;
         transform.rotation = Quaternion.identity;
     }
@@ -56,6 +58,10 @@ public abstract class Bullet : MonoBehaviour, ISpawnable
 
     protected void Despawn()
     {
+        if (_isDespawning)
+            return;
+
+        _isDespawning = true;
         NightPool.Despawn(gameObject);
     }
 }

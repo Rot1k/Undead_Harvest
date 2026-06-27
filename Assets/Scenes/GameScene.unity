@@ -373,17 +373,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
   m_PrefabInstance: {fileID: 1782296310}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &48729811 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6822961296369168210, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
-  m_PrefabInstance: {fileID: 1782296310}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25553e6f358938d42a777581e8518189, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
 --- !u!1 &52310015
 GameObject:
   m_ObjectHideFlags: 0
@@ -6418,17 +6407,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2729943131390970655, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
   m_PrefabInstance: {fileID: 435991466}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &659396096 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6822961296369168210, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
-  m_PrefabInstance: {fileID: 435991466}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25553e6f358938d42a777581e8518189, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
 --- !u!1 &693007496
 GameObject:
   m_ObjectHideFlags: 0
@@ -19306,6 +19284,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800110699}
   m_CullTransparentMesh: 1
+--- !u!114 &1804960496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5558743582387075577, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+  m_PrefabInstance: {fileID: 435991466}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc8b82d9a765a3499e8beca1438d705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
 --- !u!1001 &1813028752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20685,13 +20674,24 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1941630343 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6822961296369168210, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5558743582387075577, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
   m_PrefabInstance: {fileID: 126852997452442855}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25553e6f358938d42a777581e8518189, type: 3}
+  m_Script: {fileID: 11500000, guid: bdc8b82d9a765a3499e8beca1438d705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
+--- !u!114 &1960706771 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5558743582387075577, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+  m_PrefabInstance: {fileID: 1782296310}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc8b82d9a765a3499e8beca1438d705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
 --- !u!1 &1992030528
@@ -20774,10 +20774,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuyWindowsHolder
   _buyWindows:
-  - {fileID: 48729811}
+  - {fileID: 1960706771}
   - {fileID: 1941630343}
   - {fileID: 2075284870}
-  - {fileID: 659396096}
+  - {fileID: 1804960496}
   _itemsPool: {fileID: 11400000, guid: 02c31cc2aa3ac454eac12382a84c1177, type: 2}
   _rarityConfigSO: {fileID: 11400000, guid: 2a23f7b80d1071247af8169bdda72972, type: 2}
   _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
@@ -21741,13 +21741,13 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2075284870 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6822961296369168210, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5558743582387075577, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
   m_PrefabInstance: {fileID: 30720234}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25553e6f358938d42a777581e8518189, type: 3}
+  m_Script: {fileID: 11500000, guid: bdc8b82d9a765a3499e8beca1438d705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuyWindow
 --- !u!1 &2094057557

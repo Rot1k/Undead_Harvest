@@ -8,6 +8,7 @@ public class StatusEffectsManager : MonoBehaviour
 
     private Dictionary<StatusEffectSO, StatusEffectInstance> _activeEffects = new();
     private List<StatusEffectSO> _effectsToRemove = new();
+    private List<StatusEffectSO> _effectsToUpdate = new();
 
     private void Awake()
     {
@@ -18,12 +19,18 @@ public class StatusEffectsManager : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        foreach (var pair in _activeEffects)
-        {
-            pair.Value.Update(dt);
+        _effectsToUpdate.Clear();
+        _effectsToUpdate.AddRange(_activeEffects.Keys);
 
-            if (pair.Value.IsFinished)
-                _effectsToRemove.Add(pair.Key);
+        foreach (var effect in _effectsToUpdate)
+        {
+            if (!_activeEffects.TryGetValue(effect, out var instance))
+                continue;
+
+            instance.Update(dt);
+
+            if (instance.IsFinished)
+                _effectsToRemove.Add(effect);
         }
 
         if (_effectsToRemove.Count > 0)
