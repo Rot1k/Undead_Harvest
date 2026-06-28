@@ -24,7 +24,7 @@ public class WavesManager : MonoBehaviour
     private Vector2 _mapMax = new Vector2(10f, 6f);
     private float _spawnRadiusFromPlayer = 1.5f;
     public int CurrentWave { get; private set; } = 0;
-    private List<Coroutine> _spawnCoroutines = new List<Coroutine>();
+    private List<Coroutine> _spawnCoroutines = new();
     private Coroutine _waveCoroutine;
     private IObjectResolver _objectResolver;
 
@@ -34,7 +34,7 @@ public class WavesManager : MonoBehaviour
         _objectResolver = objectResolver;
     }
 
-    private void Start()
+    public void Initialize()
     {
         StartCoroutine(StartFirstWave());
     }

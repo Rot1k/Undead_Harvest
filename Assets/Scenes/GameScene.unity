@@ -2026,8 +2026,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 221658965}
   m_HandleRect: {fileID: 221658964}
   m_Direction: 2
-  m_Value: 0.0060975607
-  m_Size: 0
+  m_Value: 0.012121212
+  m_Size: 0.012121122
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2911,6 +2911,17 @@ MonoBehaviour:
   _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
   _playerStats: {fileID: 8471651241788958103}
   _rarityConfigSO: {fileID: 11400000, guid: 2a23f7b80d1071247af8169bdda72972, type: 2}
+--- !u!114 &247919187 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9094935153074944702, guid: 777fc6ed5befa9441846e32ba6276d24, type: 3}
+  m_PrefabInstance: {fileID: 149016535}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5442c63bef6d58d4083ffa7a71e75a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsTableUI
 --- !u!1 &253151702
 GameObject:
   m_ObjectHideFlags: 0
@@ -2964,7 +2975,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HealthBarUI
   _healthFillImage: {fileID: 159121923}
   _healthText: {fileID: 798392085}
-  _playerHealthSystem: {fileID: 5652422156940446472}
 --- !u!1 &259926543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3016,7 +3026,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2529fede89f42ea4386154ee1a9d7dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpBarUI
-  _playerLevelSystem: {fileID: 3247864244184669725}
   _levelText: {fileID: 2146165873}
   _expFillImage: {fileID: 1927976150}
 --- !u!1001 &278894614
@@ -3386,6 +3395,17 @@ MonoBehaviour:
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
+--- !u!114 &307023995 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7704413694667103554, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
+  m_PrefabInstance: {fileID: 5028026808512453537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e42691abd3290146a381c8b6b41cd44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &307828527 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4954408555705243841, guid: 3bca68da05f50ba40b9d60659b43d440, type: 3}
@@ -3571,6 +3591,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d056456ec4e8ba4a90c61fbae55ca4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponInventorySlot
+--- !u!114 &357079449 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9094935153074944702, guid: 777fc6ed5befa9441846e32ba6276d24, type: 3}
+  m_PrefabInstance: {fileID: 2019499408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5442c63bef6d58d4083ffa7a71e75a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsTableUI
 --- !u!1001 &359092527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3880,7 +3911,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 195672332}
   m_HandleRect: {fileID: 195672331}
   m_Direction: 2
-  m_Value: -0.0060975607
+  m_Value: 0
   m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3960,6 +3991,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &399704667 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9094935153074944702, guid: 777fc6ed5befa9441846e32ba6276d24, type: 3}
+  m_PrefabInstance: {fileID: 1019092959}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5442c63bef6d58d4083ffa7a71e75a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsTableUI
 --- !u!1 &413215186
 GameObject:
   m_ObjectHideFlags: 0
@@ -4355,7 +4397,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.000030517578, y: -0.000091552734}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &482422604
@@ -5437,9 +5479,9 @@ RectTransform:
   m_Children:
   - {fileID: 693007497}
   - {fileID: 517305556}
+  - {fileID: 1175461577}
   - {fileID: 556658479}
   - {fileID: 2019499409}
-  - {fileID: 1175461577}
   - {fileID: 165525419}
   m_Father: {fileID: 1915528933}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5535,7 +5577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.0050354004}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049743652}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -5608,6 +5650,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 556658478}
   m_CullTransparentMesh: 1
+--- !u!114 &560715923 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7268069905171779683, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
+  m_PrefabInstance: {fileID: 5028026808512453537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1946333d7f5c274bbbc283a01b71156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &578781291
 GameObject:
   m_ObjectHideFlags: 0
@@ -6375,7 +6428,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049438477}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049743652}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &652934187
@@ -12309,6 +12362,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d056456ec4e8ba4a90c61fbae55ca4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponInventorySlot
+--- !u!114 &1437382093 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9094935153074944702, guid: 777fc6ed5befa9441846e32ba6276d24, type: 3}
+  m_PrefabInstance: {fileID: 6390147710426709802}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5442c63bef6d58d4083ffa7a71e75a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsTableUI
 --- !u!1 &1452577477
 GameObject:
   m_ObjectHideFlags: 0
@@ -12618,8 +12682,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1507408376}
   m_HandleRect: {fileID: 1507408375}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.06833791
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13182,6 +13246,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585337273}
   m_CullTransparentMesh: 1
+--- !u!1 &1641128282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1641128284}
+  - component: {fileID: 1641128283}
+  m_Layer: 0
+  m_Name: UIBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1641128283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641128282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6caa6717461914439138da5fc35b544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneUIBootstrap
+  _healthBarUI: {fileID: 253151704}
+  _expBarUI: {fileID: 259926545}
+  _shopUI: {fileID: 1800110701}
+  _statsTables:
+  - {fileID: 247919187}
+  - {fileID: 1437382093}
+  - {fileID: 357079449}
+  - {fileID: 399704667}
+  _weaponsInventoryUIs:
+  - {fileID: 859073670}
+  - {fileID: 421887391}
+  - {fileID: 1679961036}
+  _weaponsStatisticsUIs:
+  - {fileID: 1679961037}
+  - {fileID: 1167677811}
+  _itemsInventoryUIs:
+  - {fileID: 69925016}
+  - {fileID: 729939912}
+  - {fileID: 1514657437}
+  _menuUI: {fileID: 1685737510}
+  _mainUI: {fileID: 956090211}
+  _waveTimerUI: {fileID: 520581045}
+  _waveCounterUI: {fileID: 1239755031}
+  _walletUIs:
+  - {fileID: 1407552909}
+  - {fileID: 1087616184}
+  _hudUI: {fileID: 2029635594}
+  _bossHealthBarUI: {fileID: 951515091}
+  _levelUpWindowUI: {fileID: 2112298150}
+  _winLoseWindowUI: {fileID: 553387196}
+--- !u!4 &1641128284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641128282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648916937
 GameObject:
   m_ObjectHideFlags: 0
@@ -19244,7 +19382,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopUI
   _closeButton: {fileID: 521456990}
-  _playerLevelSystem: {fileID: 3247864244184669725}
   _weaponsInventoryUI: {fileID: 859073670}
 --- !u!114 &1800110702
 MonoBehaviour:
@@ -19637,7 +19774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b642a610b10ec6a42b5e4986b7e7f809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
-  _playerStats: {fileID: 8471651241788958103}
   _startingItems: []
   _startingWeapons:
   - {fileID: 11400000, guid: 2972c9264b933ee42b2b5c6f3b2d7c4d, type: 2}
@@ -20781,6 +20917,17 @@ MonoBehaviour:
   _itemsPool: {fileID: 11400000, guid: 02c31cc2aa3ac454eac12382a84c1177, type: 2}
   _rarityConfigSO: {fileID: 11400000, guid: 2a23f7b80d1071247af8169bdda72972, type: 2}
   _playerStatsSO: {fileID: 11400000, guid: da30b9557e40a0e458ed19f295b24622, type: 2}
+--- !u!114 &1993299979 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 748603343841078574, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
+  m_PrefabInstance: {fileID: 5028026808512453537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f81e71e3bb6c94cbe0cf7a7597f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageReceiver
 --- !u!224 &1994538695 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1548620949363421229, guid: 92cec96c482b4214db21a807318319da, type: 3}
@@ -24352,6 +24499,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2d42f12b2709d4b9758f2d9e442e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8471651241788958104 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4880560230066534845, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
+  m_PrefabInstance: {fileID: 5028026808512453537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef2964f5d535b049b57065ecf86862a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9001000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -24404,7 +24562,15 @@ MonoBehaviour:
   _waveEndWindow: {fileID: 2121282031}
   _pauseManager: {fileID: 1217309547}
   _equipmentManager: {fileID: 1843153640}
+  _weaponHolder: {fileID: 560715923}
   _walletManager: {fileID: 1930084177}
+  _playerStats: {fileID: 8471651241788958103}
+  _playerHealthSystem: {fileID: 5652422156940446472}
+  _playerDamageReceiver: {fileID: 1993299979}
+  _playerLevelSystem: {fileID: 3247864244184669725}
+  _playerMovement: {fileID: 8471651241788958104}
+  _playerAnimation: {fileID: 307023995}
+  _UIBootstrap: {fileID: 1641128283}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -24425,3 +24591,4 @@ SceneRoots:
   - {fileID: 1915528933}
   - {fileID: 1913781049}
   - {fileID: 9001000000000000002}
+  - {fileID: 1641128284}

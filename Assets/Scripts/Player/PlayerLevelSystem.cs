@@ -1,48 +1,55 @@
+using System;
 using UnityEngine;
 using VContainer;
 
 public class PlayerLevelSystem : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _playerStats;
-
+    private PlayerStats _playerStats;
     private LevelSystem _levelSystem;
     private SoundManager _soundManager;
 
-    public LevelSystem LevelSystem
-    {
-        get
-        {
-            EnsureLevelSystem();
-            return _levelSystem;
-        }
-    }
+    public LevelSystem LevelSystem => _levelSystem ?? 
+        throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call Initialize(PlayerStats) first.");
 
     [Inject]
     public void Construct(SoundManager soundManager)
     {
         _soundManager = soundManager;
-        _levelSystem?.SetSoundManager(_soundManager);
     }
 
-    private void Awake()
+    private void OnDestroy()
     {
-        EnsureLevelSystem();
+        if (_levelSystem != null)
+        {
+            _levelSystem.OnLevelChanged -= HandleLevelChanged;
+        }
     }
 
-    public void AddExp(float baseExp)
-    {
-        float multiplier = _playerStats != null ? _playerStats.Get(StatType.ExperienceMultiplier) : 1f;
-        LevelSystem.AddExp(baseExp * multiplier);
-    }
-
-    private void EnsureLevelSystem()
+    public void Initialize(PlayerStats playerStats)
     {
         if (_levelSystem != null)
         {
             return;
         }
 
+        _playerStats = playerStats;
         _levelSystem = new LevelSystem();
-        _levelSystem.SetSoundManager(_soundManager);
+        _levelSystem.OnLevelChanged += HandleLevelChanged;
+    }
+
+    public void AddExp(float baseExp)
+    {
+        if (_levelSystem == null || _playerStats == null)
+        {
+            throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call Initialize(PlayerStats) first.");
+        }
+
+        float multiplier = _playerStats.Get(StatType.ExperienceMultiplier);
+        _levelSystem.AddExp(baseExp * multiplier);
+    }
+
+    private void HandleLevelChanged(object sender, EventArgs e)
+    {
+        _soundManager?.PlaySound(SoundType.LEVELUP);
     }
 }

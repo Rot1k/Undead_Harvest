@@ -6,8 +6,8 @@ using VContainer.Unity;
 
 public class WeaponsHolder : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] private PlayerMovement _playerMovement;
+
+
     [SerializeField] private float _radius = 0.8f;
     [SerializeField] private float _radiusStep = 0.8f;
 
@@ -15,35 +15,51 @@ public class WeaponsHolder : MonoBehaviour
 
     private WavesManager _wavesManager;
     private EquipmentManager _equipmentManager;
+    private PlayerStats _playerStats;
+    private PlayerMovement _playerMovement;
+
     private IObjectResolver _objectResolver;
 
     [Inject]
-    public void Construct(WavesManager wavesManager, EquipmentManager equipmentManager, IObjectResolver objectResolver)
+    public void Construct(IObjectResolver objectResolver)
     {
-        _wavesManager = wavesManager;
-        _equipmentManager = equipmentManager;
         _objectResolver = objectResolver;
     }
-    private void Start()
+    public void Initialize(
+        EquipmentManager equipmentManager,
+        PlayerStats playerStats,
+        WavesManager wavesManager,
+        PlayerMovement playerMovement)
     {
+        _equipmentManager = equipmentManager;
+        _playerStats = playerStats;
+        _wavesManager = wavesManager;
+        _playerMovement = playerMovement;
+
         _equipmentManager.OnWeaponEquipped += SpawnWeapon;
         _equipmentManager.OnWeaponUnequipped += DespawnWeapon;
-        _equipmentManager.OnInit();
+
         _wavesManager.OnWaveCompleted += ResetWeapons;
-        Arrange();
-    }
-    private void OnDestroy()
-    {
-        if (_equipmentManager != null)
+
+        // Spawn any weapons that were equipped before this holder initialized
+        for (int i = 0; i < _equipmentManager.MaxWeapons; i++)
         {
-            _equipmentManager.OnWeaponEquipped -= SpawnWeapon;
-            _equipmentManager.OnWeaponUnequipped -= DespawnWeapon;
+            var w = _equipmentManager.GetWeapon(i);
+            if (w != null)
+            {
+                SpawnWeapon(i, w);
+            }
         }
 
-        if (_wavesManager != null)
-        {
-            _wavesManager.OnWaveCompleted -= ResetWeapons;
-        }
+        // Final arrange to position spawned weapons
+        Arrange();
+    }
+    public void Dispose()
+    {
+        _equipmentManager.OnWeaponEquipped -= SpawnWeapon;
+        _equipmentManager.OnWeaponUnequipped -= DespawnWeapon;
+
+        _wavesManager.OnWaveCompleted -= ResetWeapons;
     }
 
     private void SpawnWeapon(int slot, WeaponSO weapon)

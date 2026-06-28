@@ -15,7 +15,7 @@ MonoBehaviour:
   Enemies:
   - EnemyStats: {fileID: 11400000, guid: c1af3a5282985d642b92fcf953f63bbe, type: 2}
     SpawnInterval: 5
-    EnemiesPerSpawn: 2
+    EnemiesPerSpawn: 1
     maxEnemiesInScene: 30
   - EnemyStats: {fileID: 11400000, guid: 233cd0d53b43a5c4a8aa80ce2d6ec2f0, type: 2}
     SpawnInterval: 2

@@ -4,30 +4,35 @@ using UnityEngine.UI;
 
 public class ExpBarUI : MonoBehaviour
 {
-    [SerializeField] private PlayerLevelSystem _playerLevelSystem;
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private Image _expFillImage;
 
+    private PlayerLevelSystem _playerLevelSystem;
     private LevelSystem _levelSystem;
-    private void Awake()
+    public void Initialize(PlayerLevelSystem playerLevelSystem)
     {
+        _playerLevelSystem = playerLevelSystem;
         _levelSystem = _playerLevelSystem.LevelSystem;
-    }
-    private void OnEnable()
-    {
+
         _levelSystem.OnExpChanged += UpdateExpUI;
         _levelSystem.OnLevelChanged += UpdateLevelUI;
-    }
-    private void OnDisable()
-    {
-        _levelSystem.OnExpChanged -= UpdateExpUI;
-        _levelSystem.OnLevelChanged -= UpdateLevelUI;
-    }
-    private void Start()
-    {
+
         UpdateLevelUI(this, System.EventArgs.Empty);
         UpdateExpUI(this, System.EventArgs.Empty);
     }
+    public void Dispose()
+    {
+        if (_levelSystem != null)
+        {
+            _levelSystem.OnExpChanged -= UpdateExpUI;
+            _levelSystem.OnLevelChanged -= UpdateLevelUI;
+        }
+    }
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     private void UpdateLevelUI(object sender, System.EventArgs e)
     {
         _levelText.text = $"LV. {_levelSystem.Level}";

@@ -14,24 +14,22 @@ public class ItemsInventoryUI : MonoBehaviour
 
     private EquipmentManager _equipmentManager;
 
-    [Inject]
-    public void Construct(EquipmentManager equipmentManager)
+    public void Initialize(EquipmentManager equipmentManager)
     {
         _equipmentManager = equipmentManager;
-    }
-
-    private void Start()
-    {
         _equipmentManager.OnItemEquipped += SpawnItemUI;
         _equipmentManager.OnItemUnequipped += DespawnItemUI;
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
-        if (_equipmentManager == null) return;
-
         _equipmentManager.OnItemEquipped -= SpawnItemUI;
         _equipmentManager.OnItemUnequipped -= DespawnItemUI;
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     public void SpawnItemUI(PassiveItemInstance item)

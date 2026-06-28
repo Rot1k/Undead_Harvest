@@ -11,16 +11,31 @@ public class WaveCounterUI : MonoBehaviour
     {
         _wavesManager = wavesManager;
     }
+
+    public void Initialize()
+    {
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted += UpdateUI;
+
+        if (_wavesManager != null)
+            UpdateUI();
+    }
     private void Start()
     {
-        _wavesManager.OnWaveStarted += UpdateUI;
-        UpdateUI();
+        // Initialization handled in Initialize called by UIBootstrap.
     }
-    private void OnDestroy()
+
+    public void Dispose()
     {
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted -= UpdateUI;
     }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     private void OnEnable()
     {
         if(_wavesManager != null)

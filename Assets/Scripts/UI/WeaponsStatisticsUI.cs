@@ -5,16 +5,27 @@ public class WeaponsStatisticsUI : MonoBehaviour
 {
     [SerializeField] private WeaponsInventoryUI _weaponsInventoryUI;
 
-    private EquipmentManager _equipmentManager ;
+    private EquipmentManager _equipmentManager;
 
     [Inject]
     public void Construct(EquipmentManager equipmentManager)
     {
         _equipmentManager = equipmentManager;
     }
+
+    // Called explicitly from UIBootstrap.Initialize to ensure systems are ready
+    public void Initialize(EquipmentManager equipmentManager)
+    {
+        _equipmentManager = equipmentManager;
+        ShowStats();
+    }
+
     private void OnEnable()
     {
-        ShowStats();
+        if (_equipmentManager != null)
+        {
+            ShowStats();
+        }
     }
     private void ShowStats()
     {
@@ -22,5 +33,14 @@ public class WeaponsStatisticsUI : MonoBehaviour
         {
             _weaponsInventoryUI.UpdateUI(i, _equipmentManager.GetWeapon(i));
         }
+    }
+
+    public void Dispose()
+    {
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 }

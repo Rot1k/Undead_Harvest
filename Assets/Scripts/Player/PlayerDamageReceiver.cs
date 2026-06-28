@@ -1,35 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerDamageReceiver : MonoBehaviour
 {
     [SerializeField] private float _damageInterval = 1f; 
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
 
+    private PlayerHealthSystem _playerHealthSystem;
     private HealthSystem _healthSystem;
     private Collider2D _damageReceiveCollider;
     private readonly Dictionary<Collider2D, Coroutine> _activeDamageCoroutines = new();
 
     private void Awake()
     {
-        _playerHealthSystem = GetComponentInParent<PlayerHealthSystem>();
         _damageReceiveCollider = GetComponent<Collider2D>();
-
-        _healthSystem = _playerHealthSystem.HealthSystem;
     }
-
-    private void OnEnable()
+    public void Initialize(PlayerHealthSystem playerHealthSystem)
     {
+        _playerHealthSystem = playerHealthSystem;
+        _healthSystem = _playerHealthSystem.HealthSystem;
         _healthSystem.OnDead += OnDead;
     }
-
-    private void OnDisable()
+    public void Dispose()
     {
         _healthSystem.OnDead -= OnDead;
+    }
+    private void OnDisable()
+    {
 
-        // Stop all active coroutines cleanly
         foreach (var coroutine in _activeDamageCoroutines.Values)
         {
             StopCoroutine(coroutine);
@@ -39,8 +39,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     private void OnDead(object sender, System.EventArgs e)
     {
-        // You could disable collider here if you want
-        // damageReceiveCollider.enabled = false;
+        _damageReceiveCollider.enabled = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

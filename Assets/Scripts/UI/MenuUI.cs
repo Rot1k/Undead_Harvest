@@ -8,15 +8,14 @@ public class MenuUI : MonoBehaviour
     private GameInput _gameInput;
 
     [Inject]
-    private void Construct(GameInput gameInput)
+    public void Construct(GameInput gameInput)
     {
         _gameInput = gameInput;
     }
 
-    private void Start()
+    public void Initialize()
     {
         _onPauseAction = ToggleMenu;
-
         if (_gameInput != null)
         {
             _gameInput.OnPause += _onPauseAction;
@@ -25,12 +24,22 @@ public class MenuUI : MonoBehaviour
         Hide();
     }
 
-    private void OnDestroy()
+    private void Start()
+    {
+        // Initialization handled in Initialize called by UIBootstrap
+    }
+
+    public void Dispose()
     {
         if (_gameInput != null)
         {
             _gameInput.OnPause -= _onPauseAction;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     private void ToggleMenu()

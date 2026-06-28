@@ -16,20 +16,32 @@ public class BossHealthBarUI : MonoBehaviour
     {
         _wavesManager = wavesManager;
     }
-    private void Start()
+
+    public void Initialize()
     {
-        _wavesManager.OnWaveStarted += OnWaveStarted;
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted += OnWaveStarted;
         BossEnemy.OnBossSpawned += BindToBoss;
         gameObject.SetActive(false);
     }
 
-    private void OnDestroy()
+    private void Start()
+    {
+        // Initialization handled in Initialize called by UIBootstrap
+    }
+
+    public void Dispose()
     {
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted -= OnWaveStarted;
 
         BossEnemy.OnBossSpawned -= BindToBoss;
         Unbind();
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     private void OnWaveStarted()

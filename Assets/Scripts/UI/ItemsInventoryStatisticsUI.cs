@@ -11,13 +11,19 @@ public class ItemsInventoryStatisticsUI : MonoBehaviour
     public void Construct(EquipmentManager equipmentManager)
     {
         _equipmentManager = equipmentManager;
+        if (_equipmentManager != null)
+            ShowStats();
     }
     private void OnEnable()
     {
-        ShowStats();
+        if (_equipmentManager != null)
+            ShowStats();
     }
     private void ShowStats()
     {
+        if (_equipmentManager == null || _itemsInventory == null)
+            return;
+
         foreach (PassiveItemInstance passiveItem in _equipmentManager.Items)
         {
             _itemsInventory.SpawnItemUI(passiveItem);

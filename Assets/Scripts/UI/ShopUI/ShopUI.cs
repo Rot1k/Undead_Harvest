@@ -6,10 +6,11 @@ using VContainer;
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] private Button _closeButton;
-    [SerializeField] private PlayerLevelSystem _playerLevelSystem;
+    
     [SerializeField] private WeaponsInventoryUI _weaponsInventoryUI;
 
-    private LevelSystem LevelSystem => _playerLevelSystem.LevelSystem;
+    private PlayerLevelSystem _playerLevelSystem;
+    private LevelSystem LevelSystem;
     private bool _waveEnded = false;
 
     private WavesManager _wavesManager;
@@ -29,20 +30,41 @@ public class ShopUI : MonoBehaviour
         _closeButton.onClick.AddListener(OnCloseButtonClicked);
     }
 
-    private void Start()
+    public void Initialize(PlayerLevelSystem playerLevelSystem)
     {
-        _waveEndWindow.OnWindowHidden += OnWaveEnded;
-        LevelSystem.OnSkillPointUsed += OnSkillPointsChanged;
+        _playerLevelSystem = playerLevelSystem;
+        LevelSystem = _playerLevelSystem.LevelSystem;
+
+        if (_waveEndWindow != null)
+        {
+            _waveEndWindow.OnWindowHidden += OnWaveEnded;
+        }
+        else
+        {
+            Debug.LogWarning("ShopUI.Initialize: WaveEndWindow not available when initializing ShopUI.");
+        }
+
+        if (LevelSystem != null)
+        {
+            LevelSystem.OnSkillPointUsed += OnSkillPointsChanged;
+        }
+
         gameObject.SetActive(false);
+    }
+
+    public void Dispose()
+    {
+        if (_waveEndWindow != null)
+            _waveEndWindow.OnWindowHidden -= OnWaveEnded;
+        if (LevelSystem != null)
+            LevelSystem.OnSkillPointUsed -= OnSkillPointsChanged;
+        if (_closeButton != null)
+            _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
     }
 
     private void OnDestroy()
     {
-        if (_waveEndWindow != null)
-            _waveEndWindow.OnWindowHidden -= OnWaveEnded;
-
-        if (LevelSystem != null)
-            LevelSystem.OnSkillPointUsed -= OnSkillPointsChanged;
+        Dispose();
     }
 
     private void OnWaveEnded()

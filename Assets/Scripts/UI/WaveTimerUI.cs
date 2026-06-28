@@ -11,20 +11,33 @@ public class WaveTimerUI : MonoBehaviour
     private WavesManager _wavesManager;
 
     [Inject]
-    public void Constuct(WavesManager wavesManager)
+    public void Construct(WavesManager wavesManager)
     {
         _wavesManager = wavesManager;
     }
 
+    public void Initialize()
+    {
+        if (_wavesManager != null)
+            _wavesManager.OnWaveStarted += UpdateUI;
+    }
+
     private void Start()
     {
-        _wavesManager.OnWaveStarted += UpdateUI;
+        // Initialization handled in Initialize called by UIBootstrap
     }
-    private void OnDestroy()
+
+    public void Dispose()
     {
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted -= UpdateUI;
     }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     private void UpdateUI()
     {
         var wave = _wavesManager.GetCurrentWave();

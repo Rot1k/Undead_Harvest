@@ -10,12 +10,22 @@ public class HUDUI : MonoBehaviour
     {
         _wavesManager = wavesManager;
     }
+
+    public void Initialize()
+    {
+        if (_wavesManager != null)
+        {
+            _wavesManager.OnAllWavesCompleted += Hide;
+            _wavesManager.OnWaveStarted += Show;
+        }
+    }
+
     private void Start()
     {
-        _wavesManager.OnAllWavesCompleted += Hide;
-        _wavesManager.OnWaveStarted += Show;
+        // Initialization handled in Initialize called by UIBootstrap
     }
-    private void OnDestroy()
+
+    public void Dispose()
     {
         if (_wavesManager == null)
             return;
@@ -23,6 +33,12 @@ public class HUDUI : MonoBehaviour
         _wavesManager.OnAllWavesCompleted -= Hide;
         _wavesManager.OnWaveStarted -= Show;
     }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     private void Show()
     {
         gameObject.SetActive(true);

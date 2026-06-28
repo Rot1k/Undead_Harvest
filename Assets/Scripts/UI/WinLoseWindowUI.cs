@@ -20,26 +20,23 @@ public class WinLoseWindowUI : MonoBehaviour
         _soundManager = soundManager;
     }
 
+    public void Initialize()
+    {
+        if (_waveEndWindow != null)
+        {
+            _waveEndWindow.OnWindowHiddenAllWavesCompleted += OnAllWavesCompleted;
+            _waveEndWindow.OnWindowHiddenPlayerDead += OnPlayerDead;
+            gameObject.SetActive(false);
+        }
+    }
+
     private void Awake()
     {
-        _mainMenuButton.onClick.AddListener(() =>
-        {
-            Loader.Load(Loader.Scene.MainMenuScene);
-        });
-        _restartButton.onClick.AddListener(() =>
-        {
-            Loader.Load(Loader.Scene.GameScene);
-        });
+        _mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+        _restartButton.onClick.AddListener(OnRestartButtonClicked);
     }
 
-    private void Start()
-    {
-        _waveEndWindow.OnWindowHiddenAllWavesCompleted += OnAllWavesCompleted;
-        _waveEndWindow.OnWindowHiddenPlayerDead += OnPlayerDead;
-        gameObject.SetActive(false);
-    }
-
-    private void OnDestroy()
+    public void Dispose()
     {
         if (_waveEndWindow != null)
         {
@@ -47,6 +44,26 @@ public class WinLoseWindowUI : MonoBehaviour
             _waveEndWindow.OnWindowHiddenPlayerDead -= OnPlayerDead;
         }
 
+        if (_mainMenuButton != null)
+            _mainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
+
+        if (_restartButton != null)
+            _restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
+    private void OnMainMenuButtonClicked()
+    {
+        Loader.Load(Loader.Scene.MainMenuScene);
+    }
+
+    private void OnRestartButtonClicked()
+    {
+        Loader.Load(Loader.Scene.GameScene);
     }
 
     private void OnAllWavesCompleted()

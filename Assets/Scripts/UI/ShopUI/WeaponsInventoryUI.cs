@@ -8,24 +8,27 @@ public class WeaponsInventoryUI : MonoBehaviour
 
     private EquipmentManager _equipmentManager;
 
-    [Inject]
-    public void Construct(EquipmentManager equipmentManager)
+
+    public void Initialize(EquipmentManager equipmentManager)
     {
         _equipmentManager = equipmentManager;
-    }
 
-    private void Start()
-    {
         _equipmentManager.OnWeaponEquipped += UpdateUI;
         _equipmentManager.OnWeaponUnequipped += UpdateUI;
     }
 
-    private void OnDestroy()
+
+    public void Dispose()
     {
         if (_equipmentManager == null) return;
 
         _equipmentManager.OnWeaponEquipped -= UpdateUI;
         _equipmentManager.OnWeaponUnequipped -= UpdateUI;
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     public void UpdateUI(int slot, WeaponSO weapon)

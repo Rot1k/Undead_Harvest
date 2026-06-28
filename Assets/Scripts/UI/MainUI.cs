@@ -29,58 +29,83 @@ public class MainUI : MonoBehaviour
         _backgroundMusicManager = backgroundMusicManager;
     }
 
-    private void Start()
+    public void Initialize()
     {
         if (_resumeButton != null)
         {
-            _resumeButton.onClick.AddListener(() => 
-            {
-                _menuUI.Hide();
-                _pauseManager.SetPlayerPaused(false);
-            });
+            _resumeButton.onClick.AddListener(OnResumeButtonClicked);
         }
 
         if (_mainMenuButton != null)
         {
-            _mainMenuButton.onClick.AddListener(() => 
-            {
-                Loader.Load(Loader.Scene.MainMenuScene);
-            });
+            _mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
         }
 
-        // MASTER
         if (_masterVolumeSlider != null && _masterVolumeManager != null)
         {
             _masterVolumeSlider.SetValueWithoutNotify(_masterVolumeManager.Volume);
-
-            _masterVolumeSlider.onValueChanged.AddListener(value =>
-            {
-                _masterVolumeManager.SetVolume(value);
-            });
+            _masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
         }
 
-        // MUSIC
         if (_musicVolumeSlider != null && _backgroundMusicManager != null)
         {
-
             _musicVolumeSlider.SetValueWithoutNotify(_backgroundMusicManager.Volume);
-
-            _musicVolumeSlider.onValueChanged.AddListener(value =>
-            {
-                _backgroundMusicManager.SetVolume(value);
-            });
+            _musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
         }
 
-        // SFX
         if (_soundVolumeSlider != null && _soundManager != null)
         {
-
             _soundVolumeSlider.SetValueWithoutNotify(_soundManager.Volume);
-
-            _soundVolumeSlider.onValueChanged.AddListener(value =>
-            {
-                _soundManager.SetVolume(value);
-            });
+            _soundVolumeSlider.onValueChanged.AddListener(OnSoundVolumeChanged);
         }
+    }
+
+    public void Dispose()
+    {
+        if (_resumeButton != null)
+            _resumeButton.onClick.RemoveListener(OnResumeButtonClicked);
+
+        if (_mainMenuButton != null)
+            _mainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
+
+        if (_masterVolumeSlider != null)
+            _masterVolumeSlider.onValueChanged.RemoveListener(OnMasterVolumeChanged);
+
+        if (_musicVolumeSlider != null)
+            _musicVolumeSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+
+        if (_soundVolumeSlider != null)
+            _soundVolumeSlider.onValueChanged.RemoveListener(OnSoundVolumeChanged);
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
+    private void OnResumeButtonClicked()
+    {
+        _menuUI.Hide();
+        _pauseManager.SetPlayerPaused(false);
+    }
+
+    private void OnMainMenuButtonClicked()
+    {
+        Loader.Load(Loader.Scene.MainMenuScene);
+    }
+
+    private void OnMasterVolumeChanged(float value)
+    {
+        _masterVolumeManager.SetVolume(value);
+    }
+
+    private void OnMusicVolumeChanged(float value)
+    {
+        _backgroundMusicManager.SetVolume(value);
+    }
+
+    private void OnSoundVolumeChanged(float value)
+    {
+        _soundManager.SetVolume(value);
     }
 }

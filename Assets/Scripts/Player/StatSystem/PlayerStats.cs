@@ -12,7 +12,9 @@ public class PlayerStats : MonoBehaviour
     private readonly Dictionary<StatType, Stat> _stats = new();
     private readonly Dictionary<StatType, Action<float>> _statHandlers = new();
 
-    private void Awake()
+    public PlayerStatsSO StatsSO { get { return _baseStats; } }
+
+    public void Initialize()
     {
         if (_baseStats == null)
         {

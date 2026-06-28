@@ -18,11 +18,13 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
             _playerStats.OnStatChanged += OnStatChanged;
         }
     }
-    private void Awake()
+    public void Initialize(PlayerStats playerStats)
     {
-        _playerStats = GetComponent<PlayerStats>();
+        _playerStats = playerStats;
         HealthSystem = new HealthSystem(MaxHealth);
         _healthRegen = _playerStats.Get(StatType.HealthRegen);
+
+        StartCoroutine(RegenerateHealth());
     }
     private void OnStatChanged(StatType type, float newValue)
     {
@@ -35,12 +37,6 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
             _healthRegen = newValue;
         }
     }
-
-    private void Start()
-    {
-        StartCoroutine(RegenerateHealth());
-    }
-
     private IEnumerator RegenerateHealth()
     {
         while (true)

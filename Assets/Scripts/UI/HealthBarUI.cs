@@ -7,26 +7,31 @@ public class HealthBarUI : MonoBehaviour
 {
     [SerializeField] private Image _healthFillImage;
     [SerializeField] private TextMeshProUGUI _healthText;
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
 
+    private PlayerHealthSystem _playerHealthSystem;
     private HealthSystem _healthSystem;
 
-    private void Awake()
+    public void Initialize(PlayerHealthSystem playerHealthSystem)
     {
+        _playerHealthSystem = playerHealthSystem;
         _healthSystem = _playerHealthSystem.HealthSystem;
-    }
-    private void OnEnable()
-    {
+
         _healthSystem.OnHealthChanged += UpdateHealthUI;
-    }
-    private void OnDisable()
-    {
-        _healthSystem.OnHealthChanged -= UpdateHealthUI;
-    }
-    private void Start()
-    {
         UpdateHealthUI(this, EventArgs.Empty);
     }
+    public void Dispose()
+    {
+        if (_healthSystem != null)
+        {
+            _healthSystem.OnHealthChanged -= UpdateHealthUI;
+
+        }
+    }
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     private void UpdateHealthUI(object sender, EventArgs e)
     {
         _healthFillImage.fillAmount = _healthSystem.GetHealthPercent();

@@ -13,10 +13,29 @@ public class WalletUI : MonoBehaviour
     {
         _walletManager = walletManager;
     }
+
+    public void Initialize()
+    {
+        if (_walletManager != null)
+            _walletManager.OnBalanceChanged += UpdateUI;
+        if (_walletManager != null)
+            UpdateUI(_walletManager.Balance);
+    }
+
     private void Start()
     {
-        _walletManager.OnBalanceChanged += UpdateUI;
-        UpdateUI(_walletManager.Balance);
+        // Initialization handled in Initialize called by UIBootstrap
+    }
+
+    public void Dispose()
+    {
+        if (_walletManager != null)
+            _walletManager.OnBalanceChanged -= UpdateUI;
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     private void UpdateUI(float newBalance)

@@ -8,12 +8,14 @@ public class PlayerAnimation : MonoBehaviour
     private const string ANIMATOR_IS_WALKING = "IsWalking";
     private const string ANIMATOR_DEAD = "Dead";
 
-    [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
+
     [SerializeField] private Transform _shadow;
 
     private Animator _animator;
     private SoundManager _soundManager;
+
+    private PlayerMovement _playerMovement;
+    private PlayerHealthSystem _playerHealthSystem;
 
     [Inject]
     public void Construct(SoundManager soundManager)
@@ -29,11 +31,13 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.SetBool(ANIMATOR_IS_WALKING, _playerMovement.IsWalking);
     }
-    private void OnEnable()
+    public void Initialize(PlayerMovement playerMovement, PlayerHealthSystem playerHealthSystem)
     {
+        _playerMovement = playerMovement;
+        _playerHealthSystem = playerHealthSystem;
         _playerHealthSystem.HealthSystem.OnDead += OnDead;
     }
-    private void OnDisable()
+    public void Dispose()
     {
         _playerHealthSystem.HealthSystem.OnDead -= OnDead;
     }

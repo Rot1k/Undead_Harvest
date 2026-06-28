@@ -27,28 +27,29 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Awake()
     {
-        _playerHealthSystem = GetComponent<PlayerHealthSystem>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
     }
-    private void Start()
+    public void Initialize(PlayerHealthSystem playerHealthSystem)
     {
+        _playerHealthSystem = playerHealthSystem;
+
+        _isDead = false;
+        _rigidbody.simulated = true;
+
+        _playerHealthSystem.HealthSystem.OnDead += OnDead;
         _wavesManager.OnWaveStarted += OnWaveStarted;
+
     }
     private void OnDestroy()
     {
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted -= OnWaveStarted;
     }
-    private void OnEnable()
-    {
-        _playerHealthSystem.HealthSystem.OnDead += OnDead;
-    }
     private void OnDead(object sender, System.EventArgs e)
     {
-        //_isDead = true;
-        //_rigidbody.simulated = false;
-        //_gameInput.DisableAllControls();
+        _isDead = true;
+        _rigidbody.simulated = false;
     }
 
     private void FixedUpdate()
@@ -60,9 +61,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         _rigidbody.linearVelocity = Vector2.zero;
-        _playerHealthSystem.HealthSystem.OnDead -= OnDead;
     }
-
     private void Move()
     {
         _input = _gameInput.MovementVector;

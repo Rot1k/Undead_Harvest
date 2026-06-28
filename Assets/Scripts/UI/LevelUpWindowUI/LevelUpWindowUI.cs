@@ -16,16 +16,31 @@ public class LevelUpWindowUI : MonoBehaviour
         _wavesManager = wavesManager;
     }
 
+    public void Initialize()
+    {
+        if (_waveEndWindow != null)
+        {
+            _waveEndWindow.OnWindowHidden += OnWaveCompleted;
+            Hide();
+        }
+    }
+
     private void Start()
     {
-        _waveEndWindow.OnWindowHidden += OnWaveCompleted;
-        Hide();
+        // Initialization handled in Initialize called by UIBootstrap
     }
-    private void OnDestroy()
+
+    public void Dispose()
     {
         if (_waveEndWindow != null)
             _waveEndWindow.OnWindowHidden -= OnWaveCompleted;
     }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
     public void Hide()
     {
         gameObject.SetActive(false);

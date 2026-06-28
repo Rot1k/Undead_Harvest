@@ -1,0 +1,89 @@
+using UnityEngine;
+
+public class UIBootstrap : MonoBehaviour
+{
+    [SerializeField] private HealthBarUI _healthBarUI;
+    [SerializeField] private ExpBarUI _expBarUI;
+    [SerializeField] private ShopUI _shopUI;
+    [SerializeField] private StatsTableUI[] _statsTables;
+    [SerializeField] private WeaponsInventoryUI[] _weaponsInventoryUIs;
+    [SerializeField] private WeaponsStatisticsUI[] _weaponsStatisticsUIs;
+    [SerializeField] private ItemsInventoryUI[] _itemsInventoryUIs;
+
+    // Additional UI elements to be Initialize explicitly
+    [SerializeField] private MenuUI _menuUI;
+    [SerializeField] private MainUI _mainUI;
+    [SerializeField] private WaveTimerUI _waveTimerUI;
+    [SerializeField] private WaveCounterUI _waveCounterUI;
+    [SerializeField] private WalletUI[] _walletUIs;
+    [SerializeField] private HUDUI _hudUI;
+    [SerializeField] private BossHealthBarUI _bossHealthBarUI;
+    [SerializeField] private LevelUpWindowUI _levelUpWindowUI;
+    [SerializeField] private WinLoseWindowUI _winLoseWindowUI;
+
+    public void Initialize(
+        PlayerStats playerStats, 
+        PlayerLevelSystem playerLevelSystem, 
+        PlayerHealthSystem playerHealthSystem, 
+        EquipmentManager equipmentManager)
+    {
+        _healthBarUI.Initialize(playerHealthSystem);
+        _expBarUI.Initialize(playerLevelSystem);
+        _shopUI.Initialize(playerLevelSystem);
+
+        foreach (var table in _statsTables) table.Initialize(playerStats);
+        foreach (var ui in _weaponsInventoryUIs) ui.Initialize(equipmentManager);
+        foreach (var ui in _weaponsStatisticsUIs) ui.Initialize(equipmentManager);
+        foreach (var ui in _itemsInventoryUIs) ui.Initialize(equipmentManager);
+        _menuUI.Initialize();
+        _mainUI.Initialize();
+        _waveTimerUI.Initialize();
+        _waveCounterUI.Initialize();
+        foreach (var ui in _walletUIs) ui.Initialize();
+        _hudUI.Initialize();
+        _bossHealthBarUI.Initialize();
+        _levelUpWindowUI.Initialize();
+        _winLoseWindowUI.Initialize();
+    }
+    public void Dispose()
+    {
+        _healthBarUI.Dispose();
+        _expBarUI.Dispose();
+        _shopUI.Dispose();
+
+        foreach (var table in _statsTables)
+        {
+            table.Dispose();
+        }
+
+        foreach (var ui in _weaponsInventoryUIs)
+        {
+            ui.Dispose();
+        }
+
+        foreach (var ui in _weaponsStatisticsUIs)
+        {
+            ui.Dispose();
+        }
+
+        foreach (var ui in _itemsInventoryUIs)
+        {
+            ui.Dispose();
+        }
+
+        _menuUI.Dispose();
+        _mainUI.Dispose();
+        _waveTimerUI.Dispose();
+        _waveCounterUI.Dispose();
+
+        foreach (var ui in _walletUIs)
+        {
+            ui.Dispose();
+        }
+
+        _hudUI.Dispose();
+        _bossHealthBarUI.Dispose();
+        _levelUpWindowUI.Dispose();
+        _winLoseWindowUI.Dispose();
+    }
+}

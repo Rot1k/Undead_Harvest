@@ -10,7 +10,7 @@ public class EquipmentManager : MonoBehaviour
     public event Action<int, WeaponSO> OnWeaponEquipped;
     public event Action<int, WeaponSO> OnWeaponUnequipped;
 
-    [SerializeField] private PlayerStats _playerStats;
+
     [SerializeField] private PassiveItemSO[] _startingItems;
     [SerializeField] private WeaponSO[] _startingWeapons;
 
@@ -18,23 +18,41 @@ public class EquipmentManager : MonoBehaviour
 
     [SerializeField] private int _maxWeapons = 6;
     public int MaxWeapons => _maxWeapons;
-    public PlayerStats PlayerStats => _playerStats;
 
     private WeaponSO[] _weapons;
+    private PlayerStats _playerStats;
 
     private void Awake()
     {
         _weapons = new WeaponSO[_maxWeapons];
     }
-    public void OnInit()
+
+    private void EnsureWeaponsInitialized()
     {
-        foreach (var item in _startingItems)
+        if (_weapons == null)
+            _weapons = new WeaponSO[_maxWeapons];
+    }
+
+    public void Initialize()
+    {
+        // Ensure internal arrays are initialized in case Initialize is called
+        // before Awake (can happen with DI injection ordering).
+        EnsureWeaponsInitialized();
+
+        if (_startingItems != null)
         {
-            AddItem(item);
+            foreach (var item in _startingItems)
+            {
+                AddItem(item);
+            }
         }
-        for (int i = 0; i < _startingWeapons.Length && i < _maxWeapons; i++)
+
+        if (_startingWeapons != null)
         {
-            EquipWeapon(_startingWeapons[i], i);
+            for (int i = 0; i < _startingWeapons.Length && i < _maxWeapons; i++)
+            {
+                EquipWeapon(_startingWeapons[i], i);
+            }
         }
     }
     public void AddItem(PassiveItemSO itemSO)
@@ -42,28 +60,34 @@ public class EquipmentManager : MonoBehaviour
         var instance = new PassiveItemInstance(itemSO);
         Items.Add(instance);
 
-        foreach (var mod in itemSO.Modifiers)
+        if (itemSO?.Modifiers != null && _playerStats != null)
         {
-            var modifier = new StatModifier(
-                instance.InstanceId,
-                mod.modifierType,
-                mod.value,
-                mod.priority
-            );
+            foreach (var mod in itemSO.Modifiers)
+            {
+                var modifier = new StatModifier(
+                    instance.InstanceId,
+                    mod.modifierType,
+                    mod.value,
+                    mod.priority
+                );
 
-            _playerStats.ApplyModifier(mod.statType, modifier);
+                _playerStats.ApplyModifier(mod.statType, modifier);
+            }
         }
 
         OnItemEquipped?.Invoke(instance);
     }
     public void RemovePassiveItem(PassiveItemInstance instance)
     {
-        foreach (var mod in (instance.PassiveItemSO).Modifiers)
+        if (instance?.PassiveItemSO?.Modifiers != null && _playerStats != null)
         {
-            _playerStats.RemoveModifiersFromSource(
-                mod.statType,
-                instance.InstanceId
-            );
+            foreach (var mod in (instance.PassiveItemSO).Modifiers)
+            {
+                _playerStats.RemoveModifiersFromSource(
+                    mod.statType,
+                    instance.InstanceId
+                );
+            }
         }
 
         Items.Remove(instance);
@@ -71,6 +95,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public void EquipWeapon(WeaponSO weapon, int slot)
     {
+        EnsureWeaponsInitialized();
+
         if (slot < 0 || slot >= _maxWeapons)
         {
             Debug.LogError("Invalid weapon slot");
@@ -82,6 +108,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public void UnequipWeapon(int slot)
     {
+        EnsureWeaponsInitialized();
+
         if (slot < 0 || slot >= _maxWeapons)
         {
             Debug.LogError("Invalid weapon slot");
@@ -92,6 +120,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public void ReplaceWeapon(int slot, WeaponSO newWeapon)
     {
+        EnsureWeaponsInitialized();
+
         var oldWeapon = _weapons[slot];
 
         if (oldWeapon != null)
@@ -101,6 +131,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public void Union(InventorySlot inventorySlot)
     {
+        EnsureWeaponsInitialized();
+
         if (inventorySlot is not WeaponInventorySlot weaponSlot)
             return;
 
@@ -117,6 +149,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public WeaponSO GetWeapon(int slot)
     {
+        EnsureWeaponsInitialized();
+
         if (slot < 0 || slot >= _maxWeapons)
         {
             Debug.LogError("Invalid weapon slot");
@@ -126,6 +160,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public int GetFirstEmptyWeaponSlot()
     {
+        EnsureWeaponsInitialized();
+
         for (int i = 0; i < _maxWeapons; i++)
         {
             if (_weapons[i] == null)
@@ -137,6 +173,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public int FindWeaponIndex(WeaponSO weapon)
     {
+        EnsureWeaponsInitialized();
+
         for (int i = 0; i < _weapons.Length; i++)
         {
             if (_weapons[i] == weapon)
@@ -146,6 +184,8 @@ public class EquipmentManager : MonoBehaviour
     }
     public int FindSecondWeaponIndex(WeaponSO weapon, int excludeIndex)
     {
+        EnsureWeaponsInitialized();
+
         for (int i = 0; i < _weapons.Length; i++)
         {
             if (i == excludeIndex)

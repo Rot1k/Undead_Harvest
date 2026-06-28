@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Enemies:
   - EnemyStats: {fileID: 11400000, guid: c1af3a5282985d642b92fcf953f63bbe, type: 2}
-    SpawnInterval: 3
+    SpawnInterval: 4
     EnemiesPerSpawn: 2
     maxEnemiesInScene: 30
   - EnemyStats: {fileID: 11400000, guid: a453af43130ce4c429fd5690a3a8b661, type: 2}
@@ -26,3 +26,4 @@ MonoBehaviour:
     EnemiesPerSpawn: 1
     maxEnemiesInScene: 30
   WaveDuration: 20
+  IsBossWave: 0
