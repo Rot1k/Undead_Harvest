@@ -5577,7 +5577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.005004883}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.0049743652}
   m_SizeDelta: {x: 0, y: 265.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &554390368
@@ -19805,10 +19805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b642a610b10ec6a42b5e4986b7e7f809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
-  _startingItems:
-  - {fileID: 11400000, guid: 3f23ce0a8d83ec94c9508e548a97336c, type: 2}
-  - {fileID: 11400000, guid: 3f23ce0a8d83ec94c9508e548a97336c, type: 2}
-  - {fileID: 11400000, guid: 3f23ce0a8d83ec94c9508e548a97336c, type: 2}
+  _startingItems: []
   _startingWeapons:
   - {fileID: 11400000, guid: 2972c9264b933ee42b2b5c6f3b2d7c4d, type: 2}
   - {fileID: 11400000, guid: 7c9895fd6614c6844b1c46df774601f0, type: 2}
