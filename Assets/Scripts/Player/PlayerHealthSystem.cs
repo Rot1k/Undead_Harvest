@@ -11,16 +11,10 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
     private float _healthRegen;
     private float _regenAccumulator = 0f;
 
-    private void OnEnable()
-    {
-        if (_playerStats != null)
-        {
-            _playerStats.OnStatChanged += OnStatChanged;
-        }
-    }
     public void Initialize(PlayerStats playerStats)
     {
         _playerStats = playerStats;
+        _playerStats.OnStatChanged += OnStatChanged;
         HealthSystem = new HealthSystem(MaxHealth);
         _healthRegen = _playerStats.Get(StatType.HealthRegen);
 

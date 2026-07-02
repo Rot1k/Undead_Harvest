@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class HealthBarUI : MonoBehaviour
 {
@@ -11,9 +12,14 @@ public class HealthBarUI : MonoBehaviour
     private PlayerHealthSystem _playerHealthSystem;
     private HealthSystem _healthSystem;
 
-    public void Initialize(PlayerHealthSystem playerHealthSystem)
+    [Inject]
+    public void Construct(PlayerHealthSystem playerHealthSystem)
     {
         _playerHealthSystem = playerHealthSystem;
+    }
+
+    public void Initialize()
+    {
         _healthSystem = _playerHealthSystem.HealthSystem;
 
         _healthSystem.OnHealthChanged += UpdateHealthUI;

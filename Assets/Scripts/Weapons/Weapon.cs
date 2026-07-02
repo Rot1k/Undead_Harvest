@@ -93,7 +93,7 @@ public abstract class Weapon : MonoBehaviour
 
         foreach (var enemy in EnemyRegistry.GetAll())
         {
-            if (enemy == null || enemy.IsDead) continue;
+            if (enemy == null || enemy.IsDead || !enemy.gameObject.activeInHierarchy) continue;
 
             Vector2 dir = (Vector2)enemy.transform.position - origin;
             float dist = dir.sqrMagnitude;

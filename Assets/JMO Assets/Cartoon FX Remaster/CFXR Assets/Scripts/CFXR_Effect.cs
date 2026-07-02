@@ -17,9 +17,11 @@
 
 using UnityEngine;
 using UnityEngine.Rendering;
+using NTC.Pool;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 
 namespace CartoonFX
 {
@@ -586,8 +588,8 @@ namespace CartoonFX
 						}
 						else
 						{
-							this.gameObject.SetActive(false);
-						}
+                            NightPool.Despawn(gameObject);
+                        }
 					}
 				}
 			}

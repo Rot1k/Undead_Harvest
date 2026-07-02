@@ -11,39 +11,40 @@ public class WaveEndWindow : MonoBehaviour
     public event Action OnWindowHiddenAllWavesCompleted;
     public event Action OnWindowHiddenPlayerDead;
 
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
+    
     [SerializeField] private TextMeshProUGUI _windowText;
     [SerializeField] private float _textDuration = 2f;
 
     private Sequence _sequence;
 
     private WavesManager _wavesManager;
+    private PlayerHealthSystem _playerHealthSystem;
 
     [Inject]
-    public void Constuct(WavesManager wavesManager)
+    public void Construct(WavesManager wavesManager, PlayerHealthSystem playerHealthSystem)
     {
         _wavesManager = wavesManager;
+        _playerHealthSystem = playerHealthSystem;
     }
 
-    private void Start()
+    public void Initialize()
     {
-        if(_wavesManager == null)
-        {
-            Debug.LogError("WavesManager instance is null!");
-            return;
-        }
         _wavesManager.OnWaveCompleted += OnWaveCompleted;
         _playerHealthSystem.HealthSystem.OnDead += OnPlayerDead;
         Hide();
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         if (_wavesManager != null)
             _wavesManager.OnWaveCompleted -= OnWaveCompleted;
-
         if (_playerHealthSystem != null && _playerHealthSystem.HealthSystem != null)
             _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDead;
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
     }
 
     private void OnWaveCompleted()

@@ -22,7 +22,7 @@ public class HUDUI : MonoBehaviour
 
     private void Start()
     {
-        // Initialization handled in Initialize called by UIBootstrap
+        // Initialization handled in StartGame called by UIBootstrap
     }
 
     public void Dispose()

@@ -44,13 +44,12 @@ public class Bootstrap : IStartable, IDisposable
         _playerHealthSystem.Initialize(_playerStats);
         _playerDamageReceiver.Initialize(_playerHealthSystem);
         _playerLevelSystem.Initialize(_playerStats);
-        _wavesManager.Initialize();
         _playerMovement.Initialize(_playerHealthSystem);
         _playerAnimation.Initialize(_playerMovement, _playerHealthSystem);
-        _equipmentManager.Initialize();
+        _equipmentManager.Initialize(_playerStats);
         _weaponsHolder.Initialize(_equipmentManager, _playerStats, _wavesManager, _playerMovement);
-
-        _UIBootstrap.Initialize(_playerStats, _playerLevelSystem, _playerHealthSystem, _equipmentManager);
+        _UIBootstrap.Initialize();
+        _wavesManager.StartGame();
     }
     public void Dispose()
     {

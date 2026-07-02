@@ -8,10 +8,14 @@ public class WeaponsInventoryUI : MonoBehaviour
 
     private EquipmentManager _equipmentManager;
 
-
-    public void Initialize(EquipmentManager equipmentManager)
+    [Inject]
+    public void Construct(EquipmentManager equipmentManager)
     {
         _equipmentManager = equipmentManager;
+    }
+
+    public void Initialize()
+    {
 
         _equipmentManager.OnWeaponEquipped += UpdateUI;
         _equipmentManager.OnWeaponUnequipped += UpdateUI;

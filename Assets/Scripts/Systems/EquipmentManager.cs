@@ -33,10 +33,9 @@ public class EquipmentManager : MonoBehaviour
             _weapons = new WeaponSO[_maxWeapons];
     }
 
-    public void Initialize()
+    public void Initialize(PlayerStats playerStats)
     {
-        // Ensure internal arrays are initialized in case Initialize is called
-        // before Awake (can happen with DI injection ordering).
+        _playerStats = playerStats;
         EnsureWeaponsInitialized();
 
         if (_startingItems != null)
@@ -74,7 +73,7 @@ public class EquipmentManager : MonoBehaviour
                 _playerStats.ApplyModifier(mod.statType, modifier);
             }
         }
-
+        Debug.Log($"Added item: {itemSO.name} with ID: {instance.InstanceId}");
         OnItemEquipped?.Invoke(instance);
     }
     public void RemovePassiveItem(PassiveItemInstance instance)

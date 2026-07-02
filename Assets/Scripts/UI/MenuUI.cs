@@ -24,11 +24,6 @@ public class MenuUI : MonoBehaviour
         Hide();
     }
 
-    private void Start()
-    {
-        // Initialization handled in Initialize called by UIBootstrap
-    }
-
     public void Dispose()
     {
         if (_gameInput != null)

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class ExpBarUI : MonoBehaviour
 {
@@ -9,9 +10,15 @@ public class ExpBarUI : MonoBehaviour
 
     private PlayerLevelSystem _playerLevelSystem;
     private LevelSystem _levelSystem;
-    public void Initialize(PlayerLevelSystem playerLevelSystem)
+
+    [Inject]
+    public void Construct(PlayerLevelSystem playerLevelSystem)
     {
         _playerLevelSystem = playerLevelSystem;
+    }
+
+    public void Initialize()
+    {
         _levelSystem = _playerLevelSystem.LevelSystem;
 
         _levelSystem.OnExpChanged += UpdateExpUI;

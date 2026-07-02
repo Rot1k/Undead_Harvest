@@ -10,7 +10,7 @@ public class UIBootstrap : MonoBehaviour
     [SerializeField] private WeaponsStatisticsUI[] _weaponsStatisticsUIs;
     [SerializeField] private ItemsInventoryUI[] _itemsInventoryUIs;
 
-    // Additional UI elements to be Initialize explicitly
+    // Additional UI elements to be StartGame explicitly
     [SerializeField] private MenuUI _menuUI;
     [SerializeField] private MainUI _mainUI;
     [SerializeField] private WaveTimerUI _waveTimerUI;
@@ -19,22 +19,19 @@ public class UIBootstrap : MonoBehaviour
     [SerializeField] private HUDUI _hudUI;
     [SerializeField] private BossHealthBarUI _bossHealthBarUI;
     [SerializeField] private LevelUpWindowUI _levelUpWindowUI;
+    [SerializeField] private WaveEndWindow _waveEndWindow;
     [SerializeField] private WinLoseWindowUI _winLoseWindowUI;
 
-    public void Initialize(
-        PlayerStats playerStats, 
-        PlayerLevelSystem playerLevelSystem, 
-        PlayerHealthSystem playerHealthSystem, 
-        EquipmentManager equipmentManager)
+    public void Initialize()
     {
-        _healthBarUI.Initialize(playerHealthSystem);
-        _expBarUI.Initialize(playerLevelSystem);
-        _shopUI.Initialize(playerLevelSystem);
+        _healthBarUI.Initialize();
+        _expBarUI.Initialize();
 
-        foreach (var table in _statsTables) table.Initialize(playerStats);
-        foreach (var ui in _weaponsInventoryUIs) ui.Initialize(equipmentManager);
-        foreach (var ui in _weaponsStatisticsUIs) ui.Initialize(equipmentManager);
-        foreach (var ui in _itemsInventoryUIs) ui.Initialize(equipmentManager);
+        foreach (var table in _statsTables) table.Initialize();
+        foreach (var ui in _weaponsInventoryUIs) ui.Initialize();
+        foreach (var ui in _weaponsStatisticsUIs) ui.Initialize();
+        foreach (var ui in _itemsInventoryUIs) ui.Initialize();
+        _shopUI.Initialize();
         _menuUI.Initialize();
         _mainUI.Initialize();
         _waveTimerUI.Initialize();
@@ -43,6 +40,7 @@ public class UIBootstrap : MonoBehaviour
         _hudUI.Initialize();
         _bossHealthBarUI.Initialize();
         _levelUpWindowUI.Initialize();
+        _waveEndWindow.Initialize();
         _winLoseWindowUI.Initialize();
     }
     public void Dispose()
@@ -84,6 +82,7 @@ public class UIBootstrap : MonoBehaviour
         _hudUI.Dispose();
         _bossHealthBarUI.Dispose();
         _levelUpWindowUI.Dispose();
+        _waveEndWindow.Dispose();
         _winLoseWindowUI.Dispose();
     }
 }

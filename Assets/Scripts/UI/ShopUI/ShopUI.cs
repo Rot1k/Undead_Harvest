@@ -18,11 +18,16 @@ public class ShopUI : MonoBehaviour
     private EquipmentManager _equipmentManager;
 
     [Inject]
-    public void Construct(WavesManager wavesManager, WaveEndWindow waveEndWindow, EquipmentManager equipmentManager)
+    public void Construct(
+        WavesManager wavesManager, 
+        WaveEndWindow waveEndWindow, 
+        EquipmentManager equipmentManager, 
+        PlayerLevelSystem playerLevelSystem)
     {
         _wavesManager = wavesManager;
         _waveEndWindow = waveEndWindow;
         _equipmentManager = equipmentManager;
+        _playerLevelSystem = playerLevelSystem;
     }
 
     private void Awake()
@@ -30,9 +35,8 @@ public class ShopUI : MonoBehaviour
         _closeButton.onClick.AddListener(OnCloseButtonClicked);
     }
 
-    public void Initialize(PlayerLevelSystem playerLevelSystem)
+    public void Initialize()
     {
-        _playerLevelSystem = playerLevelSystem;
         LevelSystem = _playerLevelSystem.LevelSystem;
 
         if (_waveEndWindow != null)
@@ -41,7 +45,7 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ShopUI.Initialize: WaveEndWindow not available when initializing ShopUI.");
+            Debug.LogWarning("ShopUI.StartGame: WaveEndWindow not available when initializing ShopUI.");
         }
 
         if (LevelSystem != null)

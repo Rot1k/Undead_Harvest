@@ -1,3 +1,16 @@
-﻿{
-	"name": "CFXRRuntime"
+{
+    "name": "CFXRRuntime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6bcea32367219a249ba791651bd8f7fe"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

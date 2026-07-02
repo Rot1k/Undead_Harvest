@@ -1,7 +1,7 @@
-using VContainer;
-using VContainer.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
+using VContainer.Unity;
 
 public class SceneLifetimeScope : LifetimeScope
 {
@@ -24,10 +24,10 @@ public class SceneLifetimeScope : LifetimeScope
         //Systems
         builder.RegisterComponent(_wavesManager);
         builder.RegisterComponent(_waveEndWindow);
-        builder.RegisterComponent(_pauseManager);
-        builder.RegisterComponent(_equipmentManager);
-        builder.RegisterComponent(_walletManager);
         builder.RegisterComponent(_playerStats);
+        builder.RegisterComponent(_equipmentManager);
+        builder.RegisterComponent(_pauseManager);
+        builder.RegisterComponent(_walletManager);
         builder.RegisterComponent(_playerHealthSystem);
         builder.RegisterComponent(_playerDamageReceiver);
         builder.RegisterComponent(_playerLevelSystem);
@@ -42,17 +42,13 @@ public class SceneLifetimeScope : LifetimeScope
         builder.Register<ShopService>(Lifetime.Singleton).As<IShopService>();
 
 
-        builder.RegisterEntryPoint<Bootstrap>();
-
         builder.RegisterBuildCallback(container =>
         {
-            Scene scene = gameObject.scene;
-
-            foreach (GameObject rootGameObject in scene.GetRootGameObjects())
-            {
-                container.InjectGameObject(rootGameObject);
-            }
+            foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
+                container.InjectGameObject(root);
         });
+
+        builder.RegisterEntryPoint<Bootstrap>();
     }
 
 }

@@ -34,7 +34,7 @@ public class WavesManager : MonoBehaviour
         _objectResolver = objectResolver;
     }
 
-    public void Initialize()
+    public void StartGame()
     {
         StartCoroutine(StartFirstWave());
     }
@@ -70,7 +70,6 @@ public class WavesManager : MonoBehaviour
         OnWaveStarted?.Invoke();
         var wave = _waves[CurrentWave];
         Debug.Log($"Starting wave {CurrentWave + 1}/{_waves.Length}");
-
         foreach (var entry in wave.Enemies)
         {
 
@@ -82,7 +81,7 @@ public class WavesManager : MonoBehaviour
         if(wave.WaveDuration <= 0)
             yield break;
 
-        yield return new WaitForSeconds(wave.WaveDuration);
+        yield return new WaitForSeconds(wave.WaveDuration - (0.5f * (wave.Enemies.Count-1)));
         EndCurrentWave();
     }
 
@@ -94,7 +93,7 @@ public class WavesManager : MonoBehaviour
         float elapsedTime = 0f;
         
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         while (waveDuration <= 0f || elapsedTime < waveDuration)
         {
@@ -166,10 +165,13 @@ public class WavesManager : MonoBehaviour
     {
         NightPool.ForEachPool(pool =>
         {
+            if (pool == null || pool.AttachedPrefab == null)
+                return;
+
             // Skip the pool that uses Weapon prefab
             if (pool.AttachedPrefab.TryGetComponent<Weapon>(out _))
                 return;
-            if(pool.AttachedPrefab.TryGetComponent<ItemInventorySlot>(out _))
+            if (pool.AttachedPrefab.TryGetComponent<ItemInventorySlot>(out _))
                 return;
 
             try
@@ -196,6 +198,7 @@ public class WavesManager : MonoBehaviour
 
         _spawnCoroutines.Clear();
         OnWaveCompleted?.Invoke();
+        DespawnAllEntities();
         CurrentWave++;
         if (CurrentWave >= _waves.Length)
         {
@@ -204,7 +207,7 @@ public class WavesManager : MonoBehaviour
             OnAllWavesCompleted?.Invoke();
         }
         _waveCoroutine = null;
-        DespawnAllEntities();
+
     }
     public WaveConfigSO GetCurrentWave()
     {

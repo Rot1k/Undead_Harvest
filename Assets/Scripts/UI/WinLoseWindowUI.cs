@@ -8,16 +8,18 @@ public class WinLoseWindowUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _resultText;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _mainMenuButton;
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
 
     private WaveEndWindow _waveEndWindow;
     private SoundManager _soundManager;
+
 
     [Inject]
     public void Construct(WaveEndWindow waveEndWindow, SoundManager soundManager)
     {
         _waveEndWindow = waveEndWindow;
         _soundManager = soundManager;
+        Debug.Log(_waveEndWindow);
+        Debug.Log(_soundManager);
     }
 
     public void Initialize()

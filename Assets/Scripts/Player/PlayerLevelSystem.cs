@@ -9,7 +9,7 @@ public class PlayerLevelSystem : MonoBehaviour
     private SoundManager _soundManager;
 
     public LevelSystem LevelSystem => _levelSystem ?? 
-        throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call Initialize(PlayerStats) first.");
+        throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call StartGame(PlayerStats) first.");
 
     [Inject]
     public void Construct(SoundManager soundManager)
@@ -41,7 +41,7 @@ public class PlayerLevelSystem : MonoBehaviour
     {
         if (_levelSystem == null || _playerStats == null)
         {
-            throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call Initialize(PlayerStats) first.");
+            throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call StartGame(PlayerStats) first.");
         }
 
         float multiplier = _playerStats.Get(StatType.ExperienceMultiplier);

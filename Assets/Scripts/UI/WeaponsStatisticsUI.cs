@@ -12,11 +12,8 @@ public class WeaponsStatisticsUI : MonoBehaviour
     {
         _equipmentManager = equipmentManager;
     }
-
-    // Called explicitly from UIBootstrap.Initialize to ensure systems are ready
-    public void Initialize(EquipmentManager equipmentManager)
+    public void Initialize()
     {
-        _equipmentManager = equipmentManager;
         ShowStats();
     }
 
