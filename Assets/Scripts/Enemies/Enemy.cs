@@ -62,12 +62,10 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private void OnEnable()
     {
         HealthSystem.OnDead += OnDead;
-        HealthSystem.OnHealthChanged += OnHealthChanged;
     }
     private void OnDisable()
     {
         HealthSystem.OnDead -= OnDead;
-        HealthSystem.OnHealthChanged -= OnHealthChanged;
     }
     protected virtual void OnDead(object sender, System.EventArgs e)
     {
@@ -75,20 +73,18 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
 
         ResetEnemy();
 
-        if (_wavesManager == null || _wavesManager.GetCurrentWave().IsBossWave != true)
+        var currentWave = _wavesManager != null ? _wavesManager.GetCurrentWave() : null;
+        if (currentWave == null || currentWave.IsBossWave != true)
         {
             Vector2 deathPos = transform.position;
             GameObject expInstance = NightPool.Spawn(_expPrefab, UnityEngine.Random.insideUnitCircle.normalized * 0.5f + deathPos, Quaternion.identity);
-            _objectResolver.InjectGameObject(expInstance);
+            _objectResolver?.InjectGameObject(expInstance);
 
         }
  
         OnDied?.Invoke(this);
 
         NightPool.Despawn(gameObject, 1f);
-    }
-    private void OnHealthChanged(object sender, System.EventArgs e)
-    {
     }
 
     protected virtual void FixedUpdate()
@@ -99,6 +95,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
 
     protected void MoveToPlayer()
     {
+        if (_player == null) return;
         Vector2 direction = (_player.position - transform.position);
         if (direction.magnitude > _stopDistance)
         {
@@ -139,8 +136,9 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
         _rigidbody.simulated = true;
         _rigidbody.linearVelocity = Vector2.zero;
         int currentWave = _wavesManager != null ? _wavesManager.CurrentWave : 0;
-        HealthSystem.SetMaxHealth(Mathf.RoundToInt(_enemyStats.BaseHealth + (_enemyStats.BaseHealth * (currentWave * _healthMultiplierPerWave))));
-        HealthSystem.Heal(HealthSystem.HealthMax);
+        int calculatedHealth = Mathf.RoundToInt(_enemyStats.BaseHealth + (_enemyStats.BaseHealth * (currentWave * _healthMultiplierPerWave)));
+        HealthSystem.SetMaxHealth(calculatedHealth);
+        HealthSystem.Reset(calculatedHealth);
         transform.rotation = Quaternion.identity;
         transform.localScale = _localScale;
         _statusEffectsManager.ClearAllEffects();

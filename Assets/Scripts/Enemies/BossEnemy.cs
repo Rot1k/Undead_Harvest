@@ -45,6 +45,12 @@ public class BossEnemy : Enemy
     {
         while (!IsDead)
         {
+            if (Player == null)
+            {
+                yield return new WaitForSeconds(1f);
+                continue;
+            }
+
             _isAttacking = true;
             yield return new WaitForSeconds(1f);
 
@@ -66,6 +72,7 @@ public class BossEnemy : Enemy
     protected override void FixedUpdate()
     {
         if (IsDead) return;
+        if (Player == null) return;
 
 
         if (!_isAttacking)

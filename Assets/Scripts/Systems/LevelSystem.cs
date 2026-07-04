@@ -1,42 +1,47 @@
 using System;
 using UnityEngine;
-
+using R3;
 public class LevelSystem
 {
     public event EventHandler OnLevelChanged;
     public event EventHandler OnExpChanged;
     public event EventHandler OnSkillPointUsed;
 
-    public int Level { get; private set; }
+    private ReactiveProperty<int> _level;
+    private ReactiveProperty<float> _currentExp;
+    private ReactiveProperty<float> _expToNextLevel;
+
+    public ReadOnlyReactiveProperty<int> Level => _level;
+    public ReadOnlyReactiveProperty<float> CurrentExp => _currentExp;
+    public ReadOnlyReactiveProperty<float> ExpToNextLevel => _expToNextLevel;
+
     public int SkillPoints { get; private set; }
-    private float _currentExp;
-    private float _expToNextLevel;
 
     private readonly float _baseExp = 100f;
     private readonly float _growthFactor = 1.15f;
 
     public LevelSystem()
     {
-        Level = 0;
-        _currentExp = 0f;
-        RecalculateExpToNextLevel();
+        _level = new ReactiveProperty<int>(0);
+        _currentExp = new ReactiveProperty<float>(0f);
+        _expToNextLevel = new ReactiveProperty<float>(_baseExp);
     }
 
     public void AddExp(float exp)
     {
-        _currentExp += exp;
+        _currentExp.Value += exp;
 
-        while (_currentExp >= _expToNextLevel)
+        while (_currentExp.Value >= _expToNextLevel.Value)
         {
-            _currentExp -= _expToNextLevel;
-            Level++;
+            _currentExp.Value -= _expToNextLevel.Value;
+            _level.Value++;
             SkillPoints++;
             RecalculateExpToNextLevel();
             OnLevelChanged?.Invoke(this, EventArgs.Empty);
         }
 
         OnExpChanged?.Invoke(this, EventArgs.Empty);
-        Debug.Log($"Level: {Level}, Exp: {_currentExp}/{_expToNextLevel}");
+        Debug.Log($"Level: {_level.Value}, Exp: {_currentExp.Value}/{_expToNextLevel.Value}");
     }
 
     public void UseSkillPoint(int amount)
@@ -47,14 +52,8 @@ public class LevelSystem
             OnSkillPointUsed?.Invoke(this, EventArgs.Empty);
         }
     }
-
-    public float GetExpPercent()
-    {
-        return _currentExp / _expToNextLevel;
-    }
-
     private void RecalculateExpToNextLevel()
     {
-        _expToNextLevel = _baseExp * Mathf.Pow(_growthFactor, Level);
+        _expToNextLevel.Value = _baseExp * Mathf.Pow(_growthFactor, _level.Value);
     }
 }

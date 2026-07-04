@@ -10,7 +10,7 @@ The project is actively in development. Some systems are incomplete, partly migr
 
 ## Technology Stack
 
-- Unity `6000.3.8f1`.
+- Unity `6000.5.1f1`.
 - Universal Render Pipeline `17.3.0`, 2D-focused project setup.
 - C# with MonoBehaviours, plain C# runtime classes, ScriptableObjects, events, and coroutines.
 - VContainer `1.17.0` for scene dependency injection.

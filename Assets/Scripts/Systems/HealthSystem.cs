@@ -1,53 +1,51 @@
-﻿using System;
+﻿using R3;
+using System;
 using UnityEngine;
 public class HealthSystem
 {
-
-    public event EventHandler OnHealthChanged;
-    public event EventHandler OnDamaged;
-    public event EventHandler OnHealed;
     public event EventHandler OnDead;
 
-    public int HealthMax { get; private set; }
-    public int Health { get; private set; }
+    private readonly ReactiveProperty<int> _healthMax;
+    private readonly ReactiveProperty<int> _health;
+
+    public ReadOnlyReactiveProperty<int> HealthMax => _healthMax;
+    public ReadOnlyReactiveProperty<int> Health => _health;
 
     public HealthSystem(int healthMax)
     {
-        HealthMax = healthMax;
-        Health = healthMax;
+        _healthMax = new ReactiveProperty<int>(healthMax);
+        _health = new ReactiveProperty<int>(healthMax);
     }
     public void SetMaxHealth(int newMax, bool keepCurrentPercent = true)
     {
         newMax = Math.Max(1, newMax);
-        if (newMax == HealthMax) return;
+        if (newMax == _healthMax.Value) return;
 
         if (keepCurrentPercent)
         {
-            float percent = (float)Health / HealthMax;
-            HealthMax = newMax;
-            Health = Math.Clamp(Mathf.RoundToInt(percent * HealthMax), 0, HealthMax);
+            float percent = (float)_health.Value / _healthMax.Value;
+            _healthMax.Value = newMax;
+            _health.Value = Math.Clamp(Mathf.RoundToInt(percent * _healthMax.Value), 0, _healthMax.Value);
         }
         else
         {
-            HealthMax = newMax;
-            Health = Math.Clamp(Health, 0, HealthMax);
+            _healthMax.Value = newMax;
+            _health.Value = Math.Clamp(_health.Value, 0, _healthMax.Value);
         }
 
-        OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
 
     public void Damage(int amount)
     {
-        Health -= amount;
-        if (Health < 0)
+        _health.Value -= amount;
+        if (_health.Value < 0)
         {
-            Health = 0;
+            _health.Value = 0;
         }
-        OnHealthChanged?.Invoke(this, EventArgs.Empty);
-        OnDamaged?.Invoke(this, EventArgs.Empty);
 
-        if (Health <= 0)
+
+        if (_health.Value <= 0)
         {
             Die();
         }
@@ -59,16 +57,15 @@ public class HealthSystem
     }
     public void Heal(int amount)
     {
-        Health += amount;
-        if (Health > HealthMax)
+        _health.Value += amount;
+        if (_health.Value > _healthMax.Value)
         {
-            Health = HealthMax;
+            _health.Value = _healthMax.Value;
         }
-        OnHealthChanged?.Invoke(this, EventArgs.Empty);
-        OnHealed?.Invoke(this, EventArgs.Empty);
     }
-    public float GetHealthPercent()
+    public void Reset(int maxHealth)
     {
-        return (float)Health / HealthMax;
+        _healthMax.Value = maxHealth;
+        _health.Value = maxHealth;
     }
 }

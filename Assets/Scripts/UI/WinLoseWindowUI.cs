@@ -18,8 +18,6 @@ public class WinLoseWindowUI : MonoBehaviour
     {
         _waveEndWindow = waveEndWindow;
         _soundManager = soundManager;
-        Debug.Log(_waveEndWindow);
-        Debug.Log(_soundManager);
     }
 
     public void Initialize()

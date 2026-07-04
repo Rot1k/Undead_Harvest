@@ -1,5 +1,7 @@
+using R3;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using VContainer;
 
@@ -20,32 +22,27 @@ public class ExpBarUI : MonoBehaviour
     public void Initialize()
     {
         _levelSystem = _playerLevelSystem.LevelSystem;
+        var currentExp = _levelSystem.CurrentExp;
+        var expToNextLevel = _levelSystem.ExpToNextLevel;
 
-        _levelSystem.OnExpChanged += UpdateExpUI;
-        _levelSystem.OnLevelChanged += UpdateLevelUI;
 
-        UpdateLevelUI(this, System.EventArgs.Empty);
-        UpdateExpUI(this, System.EventArgs.Empty);
-    }
-    public void Dispose()
-    {
-        if (_levelSystem != null)
-        {
-            _levelSystem.OnExpChanged -= UpdateExpUI;
-            _levelSystem.OnLevelChanged -= UpdateLevelUI;
-        }
-    }
-    private void OnDestroy()
-    {
-        Dispose();
+        Observable.CombineLatest(
+            currentExp,
+            expToNextLevel,
+            (exp, nextLevelExp) => (exp, nextLevelExp))
+            .Subscribe(UpdateExpUI)
+            .AddTo(this);
+
+        _levelSystem.Level.Subscribe(level => UpdateLevelUI(level))
+            .AddTo(this);
     }
 
-    private void UpdateLevelUI(object sender, System.EventArgs e)
+    private void UpdateLevelUI(int level)
     {
-        _levelText.text = $"LV. {_levelSystem.Level}";
+        _levelText.text = $"LV. {level}";
     }
-    private void UpdateExpUI(object sender, System.EventArgs e)
+    private void UpdateExpUI((float exp, float nextLevelExp) values)
     {
-        _expFillImage.fillAmount = _levelSystem.GetExpPercent();
+        _expFillImage.fillAmount = values.exp / values.nextLevelExp;
     }
 }

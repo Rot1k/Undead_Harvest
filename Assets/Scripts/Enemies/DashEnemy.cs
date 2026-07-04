@@ -46,6 +46,7 @@ public class DashEnemy : Enemy
     protected override void FixedUpdate()
     {
         if (IsDead) return;
+        if (Player == null) return;
 
         if (_isPreparing)
         {

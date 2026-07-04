@@ -25,6 +25,7 @@ public class RangerEnemy : Enemy
     protected override void FixedUpdate()
     {
         if (IsDead) return;
+        if (Player == null) return;
 
         if (_wantToMove)
         {
@@ -38,6 +39,7 @@ public class RangerEnemy : Enemy
     private void Update()
     {
         if (IsDead) return;
+        if (Player == null) return;
 
         float distance = Vector2.Distance(transform.position, Player.position);
 

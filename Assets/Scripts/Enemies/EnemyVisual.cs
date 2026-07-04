@@ -1,6 +1,8 @@
 using UnityEngine;
 using NTC.Pool;
 using System.Collections;
+using R3;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Animator), typeof(Enemy))]
 public class EnemyVisual : MonoBehaviour, ISpawnable
@@ -26,8 +28,12 @@ public class EnemyVisual : MonoBehaviour, ISpawnable
         _originalColor = _spriteRenderer.color;
         _shadowSpriteRenderer = _shadow.GetComponent<SpriteRenderer>();
         _shadowOriginalColor = _shadowSpriteRenderer.color;
+
         _enemy = GetComponent<Enemy>();
         _healthSystem = _enemy.HealthSystem;
+        _healthSystem.Health.Pairwise().Where(hp => hp.Current < hp.Previous).Subscribe(_ => OnDamaged()).AddTo(this);
+        _healthSystem.OnDead += OnDead;
+
         _animator = GetComponent<Animator>();
         _originalSortingOrder = _spriteRenderer.sortingOrder;
     }
@@ -35,29 +41,16 @@ public class EnemyVisual : MonoBehaviour, ISpawnable
     {
         _spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
     }
-
-    private void OnEnable()
+    private void OnDestroy()
     {
         if (_enemy != null)
         {
-            _healthSystem.OnDamaged += OnDamaged;
-            _healthSystem.OnDead += OnDead;
-        }
-        else
-        {
-            Debug.LogWarning("Enemy is not assigned in EnemyVisual.");
-        }
-    }
-    private void OnDisable()
-    {
-        if (_enemy != null)
-        {
-            _healthSystem.OnDamaged -= OnDamaged;
             _healthSystem.OnDead -= OnDead;
         }
     }
-    private void OnDamaged(object sender, System.EventArgs e)
+    private void OnDamaged()
     {
+        if (_enemy != null) return;
         if (_hitEffect != null)
             NightPool.Spawn(_hitEffect, transform.position, Quaternion.identity);
     }
@@ -107,5 +100,11 @@ public class EnemyVisual : MonoBehaviour, ISpawnable
         _animator.SetBool(ANIMATOR_DEAD, false);
         _spriteRenderer.color = _originalColor;
         _shadowSpriteRenderer.color = _shadowOriginalColor;
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+            _fadeCoroutine = null;
+        }
     }
 }

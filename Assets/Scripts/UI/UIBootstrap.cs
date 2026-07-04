@@ -46,7 +46,6 @@ public class UIBootstrap : MonoBehaviour
     public void Dispose()
     {
         _healthBarUI.Dispose();
-        _expBarUI.Dispose();
         _shopUI.Dispose();
 
         foreach (var table in _statsTables)
@@ -80,7 +79,6 @@ public class UIBootstrap : MonoBehaviour
         }
 
         _hudUI.Dispose();
-        _bossHealthBarUI.Dispose();
         _levelUpWindowUI.Dispose();
         _waveEndWindow.Dispose();
         _winLoseWindowUI.Dispose();

@@ -73,7 +73,6 @@ public class EquipmentManager : MonoBehaviour
                 _playerStats.ApplyModifier(mod.statType, modifier);
             }
         }
-        Debug.Log($"Added item: {itemSO.name} with ID: {instance.InstanceId}");
         OnItemEquipped?.Invoke(instance);
     }
     public void RemovePassiveItem(PassiveItemInstance instance)

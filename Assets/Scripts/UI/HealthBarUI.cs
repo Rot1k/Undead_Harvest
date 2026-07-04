@@ -1,3 +1,4 @@
+using R3;
 using System;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,6 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _healthText;
 
     private PlayerHealthSystem _playerHealthSystem;
-    private HealthSystem _healthSystem;
 
     [Inject]
     public void Construct(PlayerHealthSystem playerHealthSystem)
@@ -20,28 +20,28 @@ public class HealthBarUI : MonoBehaviour
 
     public void Initialize()
     {
-        _healthSystem = _playerHealthSystem.HealthSystem;
+        var health = _playerHealthSystem.HealthSystem.Health;
+        var max = _playerHealthSystem.HealthSystem.HealthMax;
 
-        _healthSystem.OnHealthChanged += UpdateHealthUI;
-        UpdateHealthUI(this, EventArgs.Empty);
+        Observable.CombineLatest(health, max, (h, m) => (h, m))
+            .Subscribe(UpdateHealthUI)
+            .AddTo(this);
+
+        UpdateHealthUI((health.CurrentValue, max.CurrentValue));
     }
     public void Dispose()
     {
-        if (_healthSystem != null)
-        {
-            _healthSystem.OnHealthChanged -= UpdateHealthUI;
 
-        }
     }
     private void OnDestroy()
     {
         Dispose();
     }
 
-    private void UpdateHealthUI(object sender, EventArgs e)
+    private void UpdateHealthUI((int health, int max) values)
     {
-        _healthFillImage.fillAmount = _healthSystem.GetHealthPercent();
-        _healthText.text = $"{_healthSystem.Health} / {_healthSystem.HealthMax}";
+        _healthFillImage.fillAmount = (float)values.health / values.max;
+        _healthText.text = $"{values.health} / {values.max}";
     }
 
 }
