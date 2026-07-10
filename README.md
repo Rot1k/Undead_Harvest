@@ -13,9 +13,7 @@ encounters.
 
 > **Gameplay Video**
 
-```{=html}
-<!-- https://github.com/user-attachments/assets/3176bdfe-f71b-43af-86fa-c495a9c31ff9 -->
-```
+https://github.com/user-attachments/assets/3176bdfe-f71b-43af-86fa-c495a9c31ff9
 
 ## 📸 Screenshots
 
