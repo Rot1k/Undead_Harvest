@@ -1,37 +1,63 @@
-# Undead Harvest
+# 🌾 Undead Harvest
 
-**Genre:** Roguelike / Survival
-**Tone:** Fun, humorous
-**Main Character:** A farmer who fights off waves of zombies using firearms and gardening tools
+> **2D Roguelike / Survivor** built with **Unity 6**
 
----
-
-## Game Description
-
-Undead Harvest is a fun survival project inspired by Brotato.
-The player controls a farmer defending their farm from waves of undead. They use both firearms and ordinary gardening tools to survive.
-
-Features:
-
-* Wave-based enemy system with increasing difficulty
-* Shop for purchasing items and upgrades
-* Various mechanics for interacting with items and enemies
-* Humorous take on the zombie apocalypse
+Fight through relentless waves of undead as a fearless farmer armed with
+firearms and gardening tools. Purchase upgrades between waves,
+experiment with different builds, and survive increasingly difficult
+encounters.
 
 ---
 
-## Gameplay
+# 🎥 Gameplay
 
-* Use weapons and gardening tools to survive as long as possible
-* Purchase upgrades and items between waves to strengthen your character
-* Each wave brings more and stronger enemies
+> **Gameplay Video**
+
+```{=html}
+<!-- https://github.com/user-attachments/assets/3176bdfe-f71b-43af-86fa-c495a9c31ff9 -->
+```
+
+## 📸 Screenshots
 
 ---
 
-## Technology & Stack
+![](Media/Gameplay1.png) ![](Media/Gameplay2.png)
+![](Media/Gameplay3.png)
 
-* **Unity** – game engine
-* **C#** – main programming language
-* OOP, SOLID, programming patterns (Singleton, Observer, Object Pool) – for code structure and scalability
-* ScriptableObject – for configuring enemy waves and items
-* Git/GitHub – version control and repository
+---
+
+---
+
+# ✨ Features
+
+- Wave-based progression system
+- Inventory System
+- Status Effects System
+- Object Pooling
+- Dependency Injection (VContainer)
+- ScriptableObject-driven architecture
+- Single Entry Point (Bootstrap)
+- Shop between waves
+- Multiple enemy types and boss encounter
+
+---
+
+# 🛠 Technologies
+
+- Unity 6
+- C#
+- VContainer
+- R3 (Reactive Extensions) (BETA)
+- NTC Pool
+- DOTween
+- Cinemachine
+
+---
+
+## 🚀 Getting Started
+
+```bash
+git clone <repository-url>
+```
+
+Open the project using **Unity 6**.
