@@ -52,10 +52,4 @@ https://github.com/user-attachments/assets/3176bdfe-f71b-43af-86fa-c495a9c31ff9
 
 ---
 
-## 🚀 Getting Started
-
-```bash
-git clone <repository-url>
-```
-
 Open the project using **Unity 6**.
