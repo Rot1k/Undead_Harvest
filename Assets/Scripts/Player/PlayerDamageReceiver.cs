@@ -8,7 +8,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 {
     [SerializeField] private float _damageInterval = 1f; 
 
-    private PlayerHealthSystem _playerHealthSystem;
+    private Player _player;
     private HealthSystem _healthSystem;
     private Collider2D _damageReceiveCollider;
     private readonly Dictionary<Collider2D, Coroutine> _activeDamageCoroutines = new();
@@ -17,10 +17,10 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         _damageReceiveCollider = GetComponent<Collider2D>();
     }
-    public void Initialize(PlayerHealthSystem playerHealthSystem)
+    public void Initialize(Player player)
     {
-        _playerHealthSystem = playerHealthSystem;
-        _healthSystem = _playerHealthSystem.HealthSystem;
+        _player = player;
+        _healthSystem = _player.HealthSystem;
         _healthSystem.OnDead += OnDead;
     }
     public void Dispose()
@@ -29,7 +29,11 @@ public class PlayerDamageReceiver : MonoBehaviour
     }
     private void OnDisable()
     {
+        StopActiveDamageCoroutines();
+    }
 
+    private void StopActiveDamageCoroutines()
+    {
         foreach (var coroutine in _activeDamageCoroutines.Values)
         {
             StopCoroutine(coroutine);
@@ -40,6 +44,7 @@ public class PlayerDamageReceiver : MonoBehaviour
     private void OnDead(object sender, System.EventArgs e)
     {
         _damageReceiveCollider.enabled = false;
+        StopActiveDamageCoroutines();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -72,7 +77,7 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         while (true)
         {
-            _playerHealthSystem.HealthSystem.Damage(damageAmount);
+            _player.HealthSystem.Damage(damageAmount);
             Debug.Log($"Player Health: {_healthSystem.Health} / {_healthSystem.HealthMax}");
             yield return new WaitForSeconds(_damageInterval);
         }

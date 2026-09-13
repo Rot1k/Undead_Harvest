@@ -10,18 +10,18 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image _healthFillImage;
     [SerializeField] private TextMeshProUGUI _healthText;
 
-    private PlayerHealthSystem _playerHealthSystem;
+    private Player _player;
 
     [Inject]
-    public void Construct(PlayerHealthSystem playerHealthSystem)
+    public void Construct(Player player)
     {
-        _playerHealthSystem = playerHealthSystem;
+        _player = player;
     }
 
     public void Initialize()
     {
-        var health = _playerHealthSystem.HealthSystem.Health;
-        var max = _playerHealthSystem.HealthSystem.HealthMax;
+        var health = _player.HealthSystem.Health;
+        var max = _player.HealthSystem.HealthMax;
 
         Observable.CombineLatest(health, max, (h, m) => (h, m))
             .Subscribe(UpdateHealthUI)

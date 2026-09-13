@@ -63,6 +63,11 @@ public class WavesManager : MonoBehaviour
             Debug.LogWarning("A wave is already running!");
             return;
         }
+        if (CurrentWave >= _waves.Length)
+        {
+            Debug.LogWarning("All waves have already been completed!");
+            return;
+        }
         _waveCoroutine = StartCoroutine(RunWave());
     }
     private IEnumerator RunWave()
@@ -78,8 +83,11 @@ public class WavesManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        if(wave.WaveDuration <= 0)
+        if (wave.WaveDuration <= 0)
+        {
+            EndCurrentWave();
             yield break;
+        }
 
         yield return new WaitForSeconds(wave.WaveDuration - (0.5f * (wave.Enemies.Count-1)));
         EndCurrentWave();
@@ -184,7 +192,7 @@ public class WavesManager : MonoBehaviour
             }
         });
     }
-    private void EndCurrentWave()
+    public void StopCurrentWave()
     {
         if (_waveCoroutine == null)
         {
@@ -197,17 +205,30 @@ public class WavesManager : MonoBehaviour
         }
 
         _spawnCoroutines.Clear();
-        OnWaveCompleted?.Invoke();
+        _waveCoroutine = null;
+    }
+
+    private void EndCurrentWave()
+    {
+        if (_waveCoroutine == null)
+        {
+            return;
+        }
+
+        StopCurrentWave();
         DespawnAllEntities();
         CurrentWave++;
+
         if (CurrentWave >= _waves.Length)
         {
             Debug.Log("All waves completed!");
             IsAllWavesCompleted = true;
             OnAllWavesCompleted?.Invoke();
         }
-        _waveCoroutine = null;
-
+        else
+        {
+            OnWaveCompleted?.Invoke();
+        }
     }
     public WaveConfigSO GetCurrentWave()
     {

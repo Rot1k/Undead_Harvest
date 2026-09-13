@@ -10,18 +10,16 @@ public class ExpBarUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private Image _expFillImage;
 
-    private PlayerLevelSystem _playerLevelSystem;
     private LevelSystem _levelSystem;
 
     [Inject]
-    public void Construct(PlayerLevelSystem playerLevelSystem)
+    public void Construct(Player player)
     {
-        _playerLevelSystem = playerLevelSystem;
+        _levelSystem = player.Level.LevelSystem;
     }
 
     public void Initialize()
     {
-        _levelSystem = _playerLevelSystem.LevelSystem;
         var currentExp = _levelSystem.CurrentExp;
         var expToNextLevel = _levelSystem.ExpToNextLevel;
 

@@ -38,6 +38,11 @@ public class HealthSystem
 
     public void Damage(int amount)
     {
+        if (_health.Value <= 0)
+        {
+            return;
+        }
+
         _health.Value -= amount;
         if (_health.Value < 0)
         {

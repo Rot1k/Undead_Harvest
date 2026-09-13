@@ -18,6 +18,7 @@ public class EquipmentManager : MonoBehaviour
 
     [SerializeField] private int _maxWeapons = 6;
     public int MaxWeapons => _maxWeapons;
+    public bool IsInitialized { get; private set; }
 
     private WeaponSO[] _weapons;
     private PlayerStats _playerStats;
@@ -29,7 +30,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void EnsureWeaponsInitialized()
     {
-        if (_weapons == null)
+        if (_weapons == null || _weapons.Length != _maxWeapons)
             _weapons = new WeaponSO[_maxWeapons];
     }
 
@@ -53,6 +54,8 @@ public class EquipmentManager : MonoBehaviour
                 EquipWeapon(_startingWeapons[i], i);
             }
         }
+
+        IsInitialized = true;
     }
     public void AddItem(PassiveItemSO itemSO)
     {
@@ -95,7 +98,7 @@ public class EquipmentManager : MonoBehaviour
     {
         EnsureWeaponsInitialized();
 
-        if (slot < 0 || slot >= _maxWeapons)
+        if (slot < 0 || slot >= _maxWeapons || slot >= _weapons.Length)
         {
             Debug.LogError("Invalid weapon slot");
             return;
@@ -108,7 +111,7 @@ public class EquipmentManager : MonoBehaviour
     {
         EnsureWeaponsInitialized();
 
-        if (slot < 0 || slot >= _maxWeapons)
+        if (slot < 0 || slot >= _maxWeapons || slot >= _weapons.Length)
         {
             Debug.LogError("Invalid weapon slot");
             return;
@@ -149,7 +152,7 @@ public class EquipmentManager : MonoBehaviour
     {
         EnsureWeaponsInitialized();
 
-        if (slot < 0 || slot >= _maxWeapons)
+        if (slot < 0 || slot >= _maxWeapons || slot >= _weapons.Length)
         {
             Debug.LogError("Invalid weapon slot");
             return null;

@@ -19,13 +19,16 @@ public class WeaponsStatisticsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_equipmentManager != null)
+        if (_equipmentManager != null && _equipmentManager.IsInitialized)
         {
             ShowStats();
         }
     }
     private void ShowStats()
     {
+        if (!_equipmentManager.IsInitialized)
+            return;
+
         for (int i = 0; i < _equipmentManager.MaxWeapons; i++)
         {
             _weaponsInventoryUI.UpdateUI(i, _equipmentManager.GetWeapon(i));

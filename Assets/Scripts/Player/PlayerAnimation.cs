@@ -14,8 +14,7 @@ public class PlayerAnimation : MonoBehaviour
     private Animator _animator;
     private SoundManager _soundManager;
 
-    private PlayerMovement _playerMovement;
-    private PlayerHealthSystem _playerHealthSystem;
+    private Player _player;
 
     [Inject]
     public void Construct(SoundManager soundManager)
@@ -29,17 +28,19 @@ public class PlayerAnimation : MonoBehaviour
     }
     private void Update()
     {
-        _animator.SetBool(ANIMATOR_IS_WALKING, _playerMovement.IsWalking);
+        if (_animator == null || _player?.Movement == null)
+            return;
+
+        _animator.SetBool(ANIMATOR_IS_WALKING, _player.Movement.IsWalking);
     }
-    public void Initialize(PlayerMovement playerMovement, PlayerHealthSystem playerHealthSystem)
+    public void Initialize(Player player)
     {
-        _playerMovement = playerMovement;
-        _playerHealthSystem = playerHealthSystem;
-        _playerHealthSystem.HealthSystem.OnDead += OnDead;
+        _player = player;
+        _player.HealthSystem.OnDead += OnDead;
     }
     public void Dispose()
     {
-        _playerHealthSystem.HealthSystem.OnDead -= OnDead;
+        _player.HealthSystem.OnDead -= OnDead;
     }
 
     private void OnDead(object sender, EventArgs e)

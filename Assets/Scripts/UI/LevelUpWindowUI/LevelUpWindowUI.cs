@@ -1,28 +1,26 @@
+using System;
 using UnityEngine;
 using VContainer;
 
 public class LevelUpWindowUI : MonoBehaviour
 {
-    [field: SerializeField] public PlayerLevelSystem PlayerLevelSystem { get; private set; }
+    public event Action OnCompleted;
+
+    private Player _player;
+    public Player Player => _player;
     [SerializeField] private LevelUpPanelsController _levelUpPanelsController;
 
-    private WaveEndWindow _waveEndWindow;
-    private WavesManager _wavesManager;
-
     [Inject]
-    public void Construct(WaveEndWindow waveEndWindow, WavesManager wavesManager)
+    public void Construct(Player player)
     {
-        _waveEndWindow = waveEndWindow;
-        _wavesManager = wavesManager;
+        _player = player;
     }
 
     public void Initialize()
     {
-        if (_waveEndWindow != null)
-        {
-            _waveEndWindow.OnWindowHidden += OnWaveCompleted;
-            Hide();
-        }
+        _levelUpPanelsController.Initialize(_player);
+        _player.Level.LevelSystem.OnSkillPointUsed += OnSkillPointsChanged;
+        Hide();
     }
 
     private void Start()
@@ -32,8 +30,7 @@ public class LevelUpWindowUI : MonoBehaviour
 
     public void Dispose()
     {
-        if (_waveEndWindow != null)
-            _waveEndWindow.OnWindowHidden -= OnWaveCompleted;
+        _player.Level.LevelSystem.OnSkillPointUsed -= OnSkillPointsChanged;
     }
 
     private void OnDestroy()
@@ -47,25 +44,27 @@ public class LevelUpWindowUI : MonoBehaviour
     }
     public void Show()
     {
+        if (_player.Level.LevelSystem.SkillPoints <= 0)
+            return;
+
         gameObject.SetActive(true);
-    }
-    private void OnWaveCompleted()
-    {
         TryRerollPanels();
     }
+
     public void TryRerollPanels()
     {
-        if(_wavesManager.IsAllWavesCompleted)
-        {
-            Hide();
+        if (!gameObject.activeSelf || _player.Level.LevelSystem.SkillPoints <= 0)
             return;
-        }
-        if (PlayerLevelSystem.LevelSystem.SkillPoints <= 0)
-        {
-            Hide();
-            return;
-        }
-        Show();
+
         _levelUpPanelsController.RerollPanels();
+    }
+
+    private void OnSkillPointsChanged(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf && _player.Level.LevelSystem.SkillPoints <= 0)
+        {
+            Hide();
+            OnCompleted?.Invoke();
+        }
     }
 }

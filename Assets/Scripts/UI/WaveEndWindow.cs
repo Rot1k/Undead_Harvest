@@ -2,14 +2,13 @@ using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 public class WaveEndWindow : MonoBehaviour
 {
 
-    public event Action OnWindowHidden;
-    public event Action OnWindowHiddenAllWavesCompleted;
-    public event Action OnWindowHiddenPlayerDead;
+    public event Action OnWaveMessageHidden;
+    public event Action OnFinalWaveMessageHidden;
+    public event Action OnPlayerDeathMessageHidden;
 
     
     [SerializeField] private TextMeshProUGUI _windowText;
@@ -17,29 +16,13 @@ public class WaveEndWindow : MonoBehaviour
 
     private Sequence _sequence;
 
-    private WavesManager _wavesManager;
-    private PlayerHealthSystem _playerHealthSystem;
-
-    [Inject]
-    public void Construct(WavesManager wavesManager, PlayerHealthSystem playerHealthSystem)
-    {
-        _wavesManager = wavesManager;
-        _playerHealthSystem = playerHealthSystem;
-    }
-
     public void Initialize()
     {
-        _wavesManager.OnWaveCompleted += OnWaveCompleted;
-        _playerHealthSystem.HealthSystem.OnDead += OnPlayerDead;
         Hide();
     }
 
     public void Dispose()
     {
-        if (_wavesManager != null)
-            _wavesManager.OnWaveCompleted -= OnWaveCompleted;
-        if (_playerHealthSystem != null && _playerHealthSystem.HealthSystem != null)
-            _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDead;
     }
 
     private void OnDestroy()
@@ -47,26 +30,25 @@ public class WaveEndWindow : MonoBehaviour
         Dispose();
     }
 
-    private void OnWaveCompleted()
+    public void ShowWaveCompleted(int waveNumber, bool isFinalWave)
     {
         ShowMessage(
-            $"Wave {_wavesManager.CurrentWave + 1} Completed!",
+            $"Wave {waveNumber} Completed!",
             () =>
             {
-                if (_wavesManager.IsAllWavesCompleted)
-                    OnWindowHiddenAllWavesCompleted?.Invoke();
+                if (isFinalWave)
+                    OnFinalWaveMessageHidden?.Invoke();
                 else
-                    OnWindowHidden?.Invoke();
+                    OnWaveMessageHidden?.Invoke();
             }
         );
     }
 
-    private void OnPlayerDead(object sender, 
-        EventArgs e)
+    public void ShowPlayerDied()
     {
         ShowMessage(
             "You Died!",
-            () => OnWindowHiddenPlayerDead?.Invoke()
+            () => OnPlayerDeathMessageHidden?.Invoke()
         );
     }
 

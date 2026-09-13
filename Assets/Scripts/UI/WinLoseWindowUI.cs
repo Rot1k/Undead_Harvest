@@ -9,25 +9,18 @@ public class WinLoseWindowUI : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _mainMenuButton;
 
-    private WaveEndWindow _waveEndWindow;
     private SoundManager _soundManager;
 
 
     [Inject]
-    public void Construct(WaveEndWindow waveEndWindow, SoundManager soundManager)
+    public void Construct(SoundManager soundManager)
     {
-        _waveEndWindow = waveEndWindow;
         _soundManager = soundManager;
     }
 
     public void Initialize()
     {
-        if (_waveEndWindow != null)
-        {
-            _waveEndWindow.OnWindowHiddenAllWavesCompleted += OnAllWavesCompleted;
-            _waveEndWindow.OnWindowHiddenPlayerDead += OnPlayerDead;
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 
     private void Awake()
@@ -38,12 +31,6 @@ public class WinLoseWindowUI : MonoBehaviour
 
     public void Dispose()
     {
-        if (_waveEndWindow != null)
-        {
-            _waveEndWindow.OnWindowHiddenAllWavesCompleted -= OnAllWavesCompleted;
-            _waveEndWindow.OnWindowHiddenPlayerDead -= OnPlayerDead;
-        }
-
         if (_mainMenuButton != null)
             _mainMenuButton.onClick.RemoveListener(OnMainMenuButtonClicked);
 
@@ -66,14 +53,14 @@ public class WinLoseWindowUI : MonoBehaviour
         Loader.Load(Loader.Scene.GameScene);
     }
 
-    private void OnAllWavesCompleted()
+    public void ShowWin()
     {
         _resultText.text = "CONGRATULATION!";
         _soundManager.PlaySound(SoundType.ONWIN);
         gameObject.SetActive(true);
     }
 
-    private void OnPlayerDead()
+    public void ShowLose()
     {
         _resultText.text = "YOU LOSE!";
         _soundManager.PlaySound(SoundType.ONLOSE);

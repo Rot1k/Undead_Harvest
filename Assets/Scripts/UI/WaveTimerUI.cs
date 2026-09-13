@@ -9,6 +9,7 @@ public class WaveTimerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _waveTimerText;
 
     private WavesManager _wavesManager;
+    private Coroutine _timerCoroutine;
 
     [Inject]
     public void Construct(WavesManager wavesManager)
@@ -29,6 +30,12 @@ public class WaveTimerUI : MonoBehaviour
 
     public void Dispose()
     {
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+            _timerCoroutine = null;
+        }
+
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted -= UpdateUI;
     }
@@ -46,11 +53,22 @@ public class WaveTimerUI : MonoBehaviour
         int waveDuration = wave.WaveDuration;
         if (waveDuration <= 0f)
         {
+            if (_timerCoroutine != null)
+            {
+                StopCoroutine(_timerCoroutine);
+                _timerCoroutine = null;
+            }
+
             Hide();
             return;
         }
         gameObject.SetActive(true);
-        StartCoroutine(Timer(waveDuration));
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+        }
+
+        _timerCoroutine = StartCoroutine(Timer(waveDuration));
     }
 
     private void Hide()
@@ -66,5 +84,6 @@ public class WaveTimerUI : MonoBehaviour
             seconds--;
         }
         Hide();
+        _timerCoroutine = null;
     }
 }

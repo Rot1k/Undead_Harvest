@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
-using VContainer;
 
-public class PlayerLevelSystem : MonoBehaviour
+public class PlayerLevelSystem
 {
     private PlayerStats _playerStats;
     private LevelSystem _levelSystem;
@@ -11,30 +10,25 @@ public class PlayerLevelSystem : MonoBehaviour
     public LevelSystem LevelSystem => _levelSystem ?? 
         throw new InvalidOperationException("PlayerLevelSystem is not initialized. Call StartGame(PlayerStats) first.");
 
-    [Inject]
-    public void Construct(SoundManager soundManager)
+    public PlayerLevelSystem(PlayerStats playerStats, SoundManager soundManager)
+    {
+        _playerStats = playerStats;
+        _soundManager = soundManager;
+        _levelSystem = new LevelSystem();
+        _levelSystem.OnLevelChanged += HandleLevelChanged;
+    }
+
+    public void SetSoundManager(SoundManager soundManager)
     {
         _soundManager = soundManager;
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         if (_levelSystem != null)
         {
             _levelSystem.OnLevelChanged -= HandleLevelChanged;
         }
-    }
-
-    public void Initialize(PlayerStats playerStats)
-    {
-        if (_levelSystem != null)
-        {
-            return;
-        }
-
-        _playerStats = playerStats;
-        _levelSystem = new LevelSystem();
-        _levelSystem.OnLevelChanged += HandleLevelChanged;
     }
 
     public void AddExp(float baseExp)

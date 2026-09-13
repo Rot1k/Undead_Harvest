@@ -11,11 +11,8 @@ public class SceneLifetimeScope : LifetimeScope
     [SerializeField] private EquipmentManager _equipmentManager;
     [SerializeField] private WeaponsHolder _weaponHolder;
     [SerializeField] private WalletManager _walletManager;
-    [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
+    [SerializeField] private Player _player;
     [SerializeField] private PlayerDamageReceiver _playerDamageReceiver;
-    [SerializeField] private PlayerLevelSystem _playerLevelSystem;
-    [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private UIBootstrap _UIBootstrap;
     protected override void Configure(IContainerBuilder builder)
@@ -24,28 +21,42 @@ public class SceneLifetimeScope : LifetimeScope
         //Systems
         builder.RegisterComponent(_wavesManager);
         builder.RegisterComponent(_waveEndWindow);
-        builder.RegisterComponent(_playerStats);
+        builder.RegisterComponent(_player);
         builder.RegisterComponent(_equipmentManager);
         builder.RegisterComponent(_pauseManager);
         builder.RegisterComponent(_walletManager);
-        builder.RegisterComponent(_playerHealthSystem);
         builder.RegisterComponent(_playerDamageReceiver);
-        builder.RegisterComponent(_playerLevelSystem);
-        builder.RegisterComponent(_playerMovement);
         builder.RegisterComponent(_playerAnimation);
         builder.RegisterComponent(_weaponHolder);
 
         //UI
         builder.RegisterComponent(_UIBootstrap);
+        builder.RegisterComponentInHierarchy<ShopUI>();
+        builder.RegisterComponentInHierarchy<LevelUpWindowUI>();
+        builder.RegisterComponentInHierarchy<WinLoseWindowUI>();
+        builder.RegisterComponentInHierarchy<HUDUI>();
 
         //Services
         builder.Register<ShopService>(Lifetime.Singleton).As<IShopService>();
+        builder.Register<StateMachine>(Lifetime.Singleton);
+        builder.Register<StartingState>(Lifetime.Singleton);
+        builder.Register<WaveState>(Lifetime.Singleton);
+        builder.Register<WaveEndState>(Lifetime.Singleton);
+        builder.Register<LevelUpState>(Lifetime.Singleton);
+        builder.Register<ShopState>(Lifetime.Singleton);
+        builder.Register<GameOverState>(Lifetime.Singleton);
+        builder.Register<VictoryState>(Lifetime.Singleton);
 
 
         builder.RegisterBuildCallback(container =>
         {
+            container.InjectGameObject(_player.gameObject);
+
             foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
-                container.InjectGameObject(root);
+            {
+                if (root != _player.gameObject)
+                    container.InjectGameObject(root);
+            }
         });
 
         builder.RegisterEntryPoint<Bootstrap>();

@@ -11116,7 +11116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1187fdf8307e5f449bc482533aa8800b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
-  _playerHealthSystem: {fileID: 5652422156940446472}
 --- !u!1 &1238137814
 GameObject:
   m_ObjectHideFlags: 0
@@ -22159,7 +22158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816156054038dfa4dbe42712e4911965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpWindowUI
-  <PlayerLevelSystem>k__BackingField: {fileID: 3247864244184669725}
   _levelUpPanelsController: {fileID: 238827130}
 --- !u!1 &2116440122
 GameObject:
@@ -24107,17 +24105,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58cf0bab29e37034b94f0b6371803624, type: 3}
---- !u!114 &3247864244184669725 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 599635862033692033, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
-  m_PrefabInstance: {fileID: 5028026808512453537}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e7e46ebd1435a143a8dbf2996b70bdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelSystem
 --- !u!1001 &5028026808512453537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24175,17 +24162,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
---- !u!114 &5652422156940446472 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8251047743309923558, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
-  m_PrefabInstance: {fileID: 5028026808512453537}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e2fc449ff927ae40893cfe7bd09e5f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthSystem
 --- !u!4 &5811823005828498509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1040044254029886274, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
@@ -24534,26 +24510,15 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 777fc6ed5befa9441846e32ba6276d24, type: 3}
 --- !u!114 &8471651241788958103 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7048614078415120126, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1234567890123456789, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
   m_PrefabInstance: {fileID: 5028026808512453537}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d2d42f12b2709d4b9758f2d9e442e6f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f4411785a7ad694aa243c84c2ffa9d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8471651241788958104 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4880560230066534845, guid: c85a5b4aed3ce2743883015e361a7807, type: 3}
-  m_PrefabInstance: {fileID: 5028026808512453537}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ef2964f5d535b049b57065ecf86862a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
 --- !u!1 &9001000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -24608,11 +24573,8 @@ MonoBehaviour:
   _equipmentManager: {fileID: 1843153640}
   _weaponHolder: {fileID: 560715923}
   _walletManager: {fileID: 1930084177}
-  _playerStats: {fileID: 8471651241788958103}
-  _playerHealthSystem: {fileID: 5652422156940446472}
+  _player: {fileID: 8471651241788958103}
   _playerDamageReceiver: {fileID: 1993299979}
-  _playerLevelSystem: {fileID: 3247864244184669725}
-  _playerMovement: {fileID: 8471651241788958104}
   _playerAnimation: {fileID: 307023995}
   _UIBootstrap: {fileID: 1641128283}
 --- !u!1660057539 &9223372036854775807

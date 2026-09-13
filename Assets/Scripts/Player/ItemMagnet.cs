@@ -1,11 +1,19 @@
 using UnityEngine;
+using VContainer;
 
 public class ItemMagnet : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _playerStats;
+    private Player _player;
+    private PlayerStats _playerStats => _player.Stats;
 
     [SerializeField] private CircleCollider2D _coinPickupCollider;
     [SerializeField] private CircleCollider2D _itemPickupCollider;
+
+    [Inject]
+    public void Construct(Player player)
+    {
+        _player = player;
+    }
 
     private float _currentPickupRange => _playerStats.Get(StatType.ItemPickupRange);
     private float _currentMoveSpeed => _playerStats.Get(StatType.MoveSpeed);
@@ -14,6 +22,14 @@ public class ItemMagnet : MonoBehaviour
     {
         _playerStats.OnStatChanged += OnStatChanged;
         OnStatChanged(StatType.ItemPickupRange, _currentPickupRange);
+    }
+
+    private void OnDestroy()
+    {
+        if (_player != null)
+        {
+            _playerStats.OnStatChanged -= OnStatChanged;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

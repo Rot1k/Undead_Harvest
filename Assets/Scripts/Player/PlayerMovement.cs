@@ -1,37 +1,33 @@
 using UnityEngine;
-using VContainer;
 
-[RequireComponent(typeof(PlayerStats), typeof(Rigidbody2D), typeof(PlayerHealthSystem))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement
 {
-    private PlayerStats _playerStats;
+    private readonly PlayerStats _playerStats;
+    private readonly Rigidbody2D _rigidbody;
+    private readonly SpriteRenderer _sprite;
+    private readonly WavesManager _wavesManager;
+    private readonly GameInput _gameInput;
+    private readonly PlayerHealthSystem _playerHealthSystem;
+
     private float _moveSpeed => _playerStats.Get(StatType.MoveSpeed);
-
-    [SerializeField] private SpriteRenderer _sprite;
-
-    private PlayerHealthSystem _playerHealthSystem;
-    private Rigidbody2D _rigidbody;
     private Vector2 _input;
     private bool _isDead = false;
 
     public bool IsWalking => _input != Vector2.zero;
 
-    private WavesManager _wavesManager;
-    private GameInput _gameInput;
-
-    [Inject]
-    public void Construct(WavesManager wavesManager, GameInput gameInput)
+    public PlayerMovement(
+        Rigidbody2D rigidbody,
+        SpriteRenderer sprite,
+        PlayerStats playerStats,
+        WavesManager wavesManager,
+        GameInput gameInput,
+        PlayerHealthSystem playerHealthSystem)
     {
+        _rigidbody = rigidbody;
+        _sprite = sprite;
+        _playerStats = playerStats;
         _wavesManager = wavesManager;
         _gameInput = gameInput;
-    }
-    private void Awake()
-    {
-        _playerStats = GetComponent<PlayerStats>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-    }
-    public void Initialize(PlayerHealthSystem playerHealthSystem)
-    {
         _playerHealthSystem = playerHealthSystem;
 
         _isDead = false;
@@ -41,10 +37,10 @@ public class PlayerMovement : MonoBehaviour
         _wavesManager.OnWaveStarted += OnWaveStarted;
 
     }
-    private void OnDestroy()
+    public void Dispose()
     {
-        if (_wavesManager != null)
-            _wavesManager.OnWaveStarted -= OnWaveStarted;
+        _playerHealthSystem.HealthSystem.OnDead -= OnDead;
+        _wavesManager.OnWaveStarted -= OnWaveStarted;
     }
     private void OnDead(object sender, System.EventArgs e)
     {
@@ -52,31 +48,28 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.simulated = false;
     }
 
-    private void FixedUpdate()
+    public void Tick()
     {
         if (_isDead) return;
         Move();
     }
 
-    private void OnDisable()
-    {
-        _rigidbody.linearVelocity = Vector2.zero;
-    }
     private void Move()
     {
         _input = _gameInput.MovementVector;
 
         if (_input.x != 0)
         {
-            _sprite.flipX = _input.x < 0;
+            if (_sprite != null)
+                _sprite.flipX = _input.x < 0;
         }
 
         _rigidbody.linearVelocity = _input.normalized * _moveSpeed;
     }
     private void OnWaveStarted()
     {
-        gameObject.SetActive(true);
-        gameObject.transform.position = Vector3.zero;
+        _rigidbody.gameObject.SetActive(true);
+        _rigidbody.transform.position = Vector3.zero;
     }
 
     public Vector2 GetInput()

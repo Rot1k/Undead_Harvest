@@ -3,56 +3,78 @@ using VContainer.Unity;
 
 public class Bootstrap : IStartable, IDisposable
 {
-    private readonly PlayerStats _playerStats;
-    private readonly PlayerHealthSystem _playerHealthSystem;
-    private readonly PlayerLevelSystem _playerLevelSystem;
+    private readonly Player _player;
     private readonly WavesManager _wavesManager;
     private readonly EquipmentManager _equipmentManager;
     private readonly WeaponsHolder _weaponsHolder;
-    private readonly PlayerMovement _playerMovement;
     private readonly PlayerDamageReceiver _playerDamageReceiver;
     private readonly PlayerAnimation _playerAnimation;
     private readonly UIBootstrap _UIBootstrap;
+    private readonly StateMachine _stateMachine;
+    private readonly StartingState _startingState;
+    private readonly WaveState _waveState;
+    private readonly WaveEndState _waveEndState;
+    private readonly LevelUpState _levelUpState;
+    private readonly ShopState _shopState;
+    private readonly GameOverState _gameOverState;
+    private readonly VictoryState _victoryState;
 
     public Bootstrap(
-        PlayerStats playerStats,
-        PlayerHealthSystem playerHealthSystem,
-        PlayerLevelSystem playerLevelSystem,
+        Player player,
         WavesManager wavesManager,
         EquipmentManager equipmentManager,
         WeaponsHolder weaponsHolder,
-        PlayerMovement playerMovement,
         PlayerDamageReceiver playerDamageReceiver,
         PlayerAnimation playerAnimation,
-        UIBootstrap UIBootstrap)
+        UIBootstrap UIBootstrap,
+        StateMachine stateMachine,
+        StartingState startingState,
+        WaveState waveState,
+        WaveEndState waveEndState,
+        LevelUpState levelUpState,
+        ShopState shopState,
+        GameOverState gameOverState,
+        VictoryState victoryState)
     {
-        _playerStats = playerStats;
-        _playerHealthSystem = playerHealthSystem;
-        _playerLevelSystem = playerLevelSystem;
+        _player = player;
         _wavesManager = wavesManager;
         _equipmentManager = equipmentManager;
         _weaponsHolder = weaponsHolder;
-        _playerMovement = playerMovement;
         _playerDamageReceiver = playerDamageReceiver;
         _playerAnimation = playerAnimation;
         _UIBootstrap = UIBootstrap;
+        _stateMachine = stateMachine;
+        _startingState = startingState;
+        _waveState = waveState;
+        _waveEndState = waveEndState;
+        _levelUpState = levelUpState;
+        _shopState = shopState;
+        _gameOverState = gameOverState;
+        _victoryState = victoryState;
     }
 
     public void Start()
     {
-        _playerStats.Initialize();
-        _playerHealthSystem.Initialize(_playerStats);
-        _playerDamageReceiver.Initialize(_playerHealthSystem);
-        _playerLevelSystem.Initialize(_playerStats);
-        _playerMovement.Initialize(_playerHealthSystem);
-        _playerAnimation.Initialize(_playerMovement, _playerHealthSystem);
-        _equipmentManager.Initialize(_playerStats);
-        _weaponsHolder.Initialize(_equipmentManager, _playerStats, _wavesManager, _playerMovement);
+        _player.Initialize();
+        _playerDamageReceiver.Initialize(_player);
+        _playerAnimation.Initialize(_player);
+        _equipmentManager.Initialize(_player.Stats);
+        _weaponsHolder.Initialize(_equipmentManager, _player, _wavesManager);
         _UIBootstrap.Initialize();
-        _wavesManager.StartGame();
+
+        _stateMachine.Register(_startingState);
+        _stateMachine.Register(_waveState);
+        _stateMachine.Register(_waveEndState);
+        _stateMachine.Register(_levelUpState);
+        _stateMachine.Register(_shopState);
+        _stateMachine.Register(_gameOverState);
+        _stateMachine.Register(_victoryState);
+        _stateMachine.ChangeState<StartingState>();
     }
     public void Dispose()
     {
+        _stateMachine.Dispose();
+        _weaponsHolder.Dispose();
         _playerDamageReceiver.Dispose();
         _playerAnimation.Dispose();
         _UIBootstrap.Dispose();

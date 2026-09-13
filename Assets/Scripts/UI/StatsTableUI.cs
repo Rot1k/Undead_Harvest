@@ -10,9 +10,9 @@ public class StatsTableUI : MonoBehaviour
     private PlayerStats _playerStats;
 
     [Inject]
-    public void Construct(PlayerStats playerStats)
+    public void Construct(Player player)
     {
-        _playerStats = playerStats;
+        _playerStats = player.Stats;
     }
 
     private void Awake()

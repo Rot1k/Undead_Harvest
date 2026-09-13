@@ -32,10 +32,10 @@ public abstract class Weapon : MonoBehaviour
         _soundManager = soundManager;
     }
 
-    public void Initialize(PlayerStats playerStats, PlayerMovement playerMovement, WeaponSO weaponSO)
+    public void Initialize(Player player, WeaponSO weaponSO)
     {
-        _playerStats = playerStats;
-        _playerMovement = playerMovement;
+        _playerStats = player.Stats;
+        _playerMovement = player.Movement;
         SetStats(weaponSO);
     }
 

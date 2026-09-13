@@ -5,29 +5,18 @@ using VContainer;
 
 public class ShopUI : MonoBehaviour
 {
+    public event Action OnClosed;
+
     [SerializeField] private Button _closeButton;
     
     [SerializeField] private WeaponsInventoryUI _weaponsInventoryUI;
 
-    private PlayerLevelSystem _playerLevelSystem;
-    private LevelSystem LevelSystem;
-    private bool _waveEnded = false;
-
-    private WavesManager _wavesManager;
-    private WaveEndWindow _waveEndWindow;
     private EquipmentManager _equipmentManager;
 
     [Inject]
-    public void Construct(
-        WavesManager wavesManager, 
-        WaveEndWindow waveEndWindow, 
-        EquipmentManager equipmentManager, 
-        PlayerLevelSystem playerLevelSystem)
+    public void Construct(EquipmentManager equipmentManager)
     {
-        _wavesManager = wavesManager;
-        _waveEndWindow = waveEndWindow;
         _equipmentManager = equipmentManager;
-        _playerLevelSystem = playerLevelSystem;
     }
 
     private void Awake()
@@ -37,31 +26,11 @@ public class ShopUI : MonoBehaviour
 
     public void Initialize()
     {
-        LevelSystem = _playerLevelSystem.LevelSystem;
-
-        if (_waveEndWindow != null)
-        {
-            _waveEndWindow.OnWindowHidden += OnWaveEnded;
-        }
-        else
-        {
-            Debug.LogWarning("ShopUI.StartGame: WaveEndWindow not available when initializing ShopUI.");
-        }
-
-        if (LevelSystem != null)
-        {
-            LevelSystem.OnSkillPointUsed += OnSkillPointsChanged;
-        }
-
         gameObject.SetActive(false);
     }
 
     public void Dispose()
     {
-        if (_waveEndWindow != null)
-            _waveEndWindow.OnWindowHidden -= OnWaveEnded;
-        if (LevelSystem != null)
-            LevelSystem.OnSkillPointUsed -= OnSkillPointsChanged;
         if (_closeButton != null)
             _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
     }
@@ -71,31 +40,8 @@ public class ShopUI : MonoBehaviour
         Dispose();
     }
 
-    private void OnWaveEnded()
-    {
-        _waveEnded = true;
-        TryShow();
-    }
-
-    private void OnSkillPointsChanged(object sender, EventArgs e)
-    {
-        TryShow();
-    }
-
-    private void TryShow()
-    {
-        if (_waveEnded && LevelSystem.SkillPoints == 0)
-        {
-            if (_wavesManager.IsAllWavesCompleted == false)
-            {
-                Show();
-            }
-        }
-    }
-
     public void Show()
     {
-        _waveEnded = false;
         gameObject.SetActive(true);
         for (int i = 0; i < _equipmentManager.MaxWeapons; i++)
         {
@@ -106,6 +52,6 @@ public class ShopUI : MonoBehaviour
     private void OnCloseButtonClicked()
     {
         gameObject.SetActive(false);
-        _wavesManager.StartNextWave();
+        OnClosed?.Invoke();
     }
 }

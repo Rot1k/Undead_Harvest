@@ -4,7 +4,7 @@ using VContainer;
 public class PauseManager : MonoBehaviour
 {
 
-    [SerializeField] private PlayerHealthSystem _playerHealthSystem;
+    private Player _player;
 
     public bool IsWaveEnded { get; private set; } = false;
     public bool IsPlayerPaused { get; private set; } = false;
@@ -15,10 +15,11 @@ public class PauseManager : MonoBehaviour
     private GameInput _gameInput;
    
     [Inject]
-    public void Construct(WavesManager wavesManager, GameInput gameInput)
+    public void Construct(WavesManager wavesManager, GameInput gameInput, Player player)
     {
         _wavesManager = wavesManager;
         _gameInput = gameInput;
+        _player = player;
     }
 
     private void Awake()
@@ -28,7 +29,7 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        if (_wavesManager == null || _gameInput == null || _playerHealthSystem == null)
+        if (_wavesManager == null || _gameInput == null || _player == null)
         {
             Debug.LogError("PauseManager dependencies are not assigned.");
             return;
@@ -37,7 +38,7 @@ public class PauseManager : MonoBehaviour
         _wavesManager.OnWaveStarted += OnWaveStarted;
         _wavesManager.OnWaveCompleted += OnWaveEnded;
         _wavesManager.OnAllWavesCompleted += OnWaveEnded;
-        _playerHealthSystem.HealthSystem.OnDead += OnPlayerDied;
+        _player.HealthSystem.OnDead += OnPlayerDied;
         _gameInput.OnPause += OnPausePressed;
     }
 
@@ -50,9 +51,9 @@ public class PauseManager : MonoBehaviour
             _wavesManager.OnAllWavesCompleted -= OnWaveEnded;
         }
 
-        if (_playerHealthSystem != null)
+        if (_player != null)
         {
-            _playerHealthSystem.HealthSystem.OnDead -= OnPlayerDied;
+            _player.HealthSystem.OnDead -= OnPlayerDied;
         }
 
         if (_gameInput != null)

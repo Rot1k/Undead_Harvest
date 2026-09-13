@@ -29,7 +29,7 @@ public class LevelUpStatPanel : MonoBehaviour, IHaveRarity
         {
             if (_playerStats != null)
             {
-                _levelUpWindowUI.PlayerLevelSystem.LevelSystem.UseSkillPoint(1);
+                _levelUpWindowUI.Player.Level.LevelSystem.UseSkillPoint(1);
                 _playerStats.SetBaseStat(StatType, _playerStats.Get(StatType) + _totalStatIncreaseAmount);
                 Debug.Log($"Increased {StatType} by {_totalStatIncreaseAmount}");
                 Debug.Log($"New {StatType} value: {_playerStats.Get(StatType)}");

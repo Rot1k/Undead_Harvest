@@ -13,6 +13,11 @@ public class ItemInfoController : MonoBehaviour
         _itemInfoUI.OnClose += Hide;
         _itemInfoUI.Initialize(_playerStatsSO);
     }
+
+    private void OnDestroy()
+    {
+        _itemInfoUI.OnClose -= Hide;
+    }
     public void Toggle(InventorySlot slot)
     {
         if (_currentSlot == slot)

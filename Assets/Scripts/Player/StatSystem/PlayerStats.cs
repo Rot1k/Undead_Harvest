@@ -2,23 +2,30 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public sealed class PlayerStats : IDisposable
 {
     public event Action<StatType, float> OnStatChanged;
-    
-    [SerializeField] private PlayerStatsSO _baseStats;
-    [SerializeField] private StatusEffectsListSO _effects;
+
+    private readonly PlayerStatsSO _baseStats;
+    private readonly StatusEffectsListSO _effects;
 
     private readonly Dictionary<StatType, Stat> _stats = new();
     private readonly Dictionary<StatType, Action<float>> _statHandlers = new();
 
-    public PlayerStatsSO StatsSO { get { return _baseStats; } }
+    public PlayerStatsSO StatsSO => _baseStats;
+
+    public PlayerStats(PlayerStatsSO baseStats, StatusEffectsListSO effects)
+    {
+        _baseStats = baseStats;
+        _effects = effects;
+        Initialize();
+    }
 
     public void Initialize()
     {
         if (_baseStats == null)
         {
-            Debug.LogWarning($"[{name}] baseStatsSet is null on PlayerStats.");
+            Debug.LogWarning("Player base stats are not configured.");
             return;
         }
 
@@ -33,7 +40,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         foreach (var kv in _statHandlers)
         {
@@ -86,7 +93,7 @@ public class PlayerStats : MonoBehaviour
         if (_stats.TryGetValue(type, out var stat))
             return stat.CurrentValue;
 
-        throw new KeyNotFoundException($"Stat {type} not found on {name}.");
+        throw new KeyNotFoundException($"Stat {type} not found on Player.");
     }
     public void TryApplyEffects(Enemy enemy)
     {

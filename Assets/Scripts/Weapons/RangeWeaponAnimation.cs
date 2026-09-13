@@ -19,6 +19,7 @@ public class RangeWeaponAnimation : MonoBehaviour
     private void OnDisable()
     {
         _rangeWeapon.OnShoot -= HandleRecoil;
+        CancelInvoke(nameof(ResetRecoil));
     }
 
     private void Update()

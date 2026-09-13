@@ -4,7 +4,7 @@ public class EnemyBullet : Bullet
 {
     protected override bool TryGetTarget(Collider2D collision, out IDamageable target)
     {
-        if (collision.TryGetComponent<PlayerHealthSystem>(out var player))
+        if (collision.TryGetComponent<Player>(out var player))
         {
             target = player;
             return true;

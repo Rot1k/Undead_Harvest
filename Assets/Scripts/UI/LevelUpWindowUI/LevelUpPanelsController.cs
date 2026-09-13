@@ -5,23 +5,25 @@ using UnityEngine;
 public class LevelUpPanelsController : MonoBehaviour
 {
     [SerializeField] private LevelUpWindowUI _levelUpWindowUI;
-    [SerializeField] private PlayerStatsSO _playerStatsSO;
-    [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private RarityConfigSO _rarityConfigSO;
 
+    private PlayerStatsSO _playerStatsSO;
+    private PlayerStats _playerStats;
 
     private LevelUpStatPanel[] _levelUpWindows;
 
-    private void Awake()
+    public void Initialize(Player player)
     {
+        PlayerStats playerStats = player.Stats;
+        PlayerStatsSO playerStatsSO = playerStats.StatsSO;
+        _playerStats = playerStats;
+        _playerStatsSO = playerStatsSO;
         _levelUpWindows = GetComponentsInChildren<LevelUpStatPanel>();
         foreach (var window in _levelUpWindows)
         {
-            window.Initialize(_playerStatsSO, _playerStats, _levelUpWindowUI, _rarityConfigSO);
+            window.Initialize(playerStatsSO, playerStats, _levelUpWindowUI, _rarityConfigSO);
         }
-    }
-    private void Start()
-    {
+
         RerollPanels();
     }
     public void RerollPanels()

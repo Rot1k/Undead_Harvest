@@ -15,6 +15,7 @@ public class WeaponsHolder : MonoBehaviour
 
     private WavesManager _wavesManager;
     private EquipmentManager _equipmentManager;
+    private Player _player;
     private PlayerStats _playerStats;
     private PlayerMovement _playerMovement;
 
@@ -27,14 +28,14 @@ public class WeaponsHolder : MonoBehaviour
     }
     public void Initialize(
         EquipmentManager equipmentManager,
-        PlayerStats playerStats,
-        WavesManager wavesManager,
-        PlayerMovement playerMovement)
+        Player player,
+        WavesManager wavesManager)
     {
         _equipmentManager = equipmentManager;
-        _playerStats = playerStats;
+        _player = player;
+        _playerStats = player.Stats;
         _wavesManager = wavesManager;
-        _playerMovement = playerMovement;
+        _playerMovement = player.Movement;
 
         _equipmentManager.OnWeaponEquipped += SpawnWeapon;
         _equipmentManager.OnWeaponUnequipped += DespawnWeapon;
@@ -79,7 +80,7 @@ public class WeaponsHolder : MonoBehaviour
 
         if (weaponGO.TryGetComponent<Weapon>(out var weaponComponent))
         {
-            weaponComponent.Initialize(_playerStats, _playerMovement, weapon);
+            weaponComponent.Initialize(_player, weapon);
             weaponComponent.UpdateStartPosition(weaponComponent.transform.localPosition);
         }
         Arrange();
