@@ -22,12 +22,6 @@ public class WaveTimerUI : MonoBehaviour
         if (_wavesManager != null)
             _wavesManager.OnWaveStarted += UpdateUI;
     }
-
-    private void Start()
-    {
-        // Initialization handled in StartGame called by UIBootstrap
-    }
-
     public void Dispose()
     {
         if (_timerCoroutine != null)

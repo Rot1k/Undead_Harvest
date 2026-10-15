@@ -23,11 +23,6 @@ public class LevelUpWindowUI : MonoBehaviour
         Hide();
     }
 
-    private void Start()
-    {
-        // Initialization handled in StartGame called by UIBootstrap
-    }
-
     public void Dispose()
     {
         _player.Level.LevelSystem.OnSkillPointUsed -= OnSkillPointsChanged;

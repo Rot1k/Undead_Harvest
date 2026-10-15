@@ -11,19 +11,16 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Slider _musicVolumeSlider;
     [SerializeField] private Slider _soundVolumeSlider;
 
-    private PauseManager _pauseManager;
     private MasterVolumeManager _masterVolumeManager;
     private SoundManager _soundManager;
     private BackgroundMusicManager _backgroundMusicManager;
 
     [Inject]
-    public void Construct(PauseManager pauseManager,
-                          MasterVolumeManager masterVolumeManager,
+    public void Construct(MasterVolumeManager masterVolumeManager,
                           SoundManager soundManager,
                           BackgroundMusicManager backgroundMusicManager
                          )
     {
-        _pauseManager = pauseManager;
         _masterVolumeManager = masterVolumeManager;
         _soundManager = soundManager;
         _backgroundMusicManager = backgroundMusicManager;
@@ -86,7 +83,6 @@ public class MainUI : MonoBehaviour
     private void OnResumeButtonClicked()
     {
         _menuUI.Hide();
-        _pauseManager.SetPlayerPaused(false);
     }
 
     private void OnMainMenuButtonClicked()

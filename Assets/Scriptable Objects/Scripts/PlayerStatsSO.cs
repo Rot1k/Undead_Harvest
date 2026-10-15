@@ -10,8 +10,10 @@ public class PlayerStatsSO : ScriptableObject
     {
         public string Name;
         public StatType Type;
+        [Min(0)]
         public float BaseValue;
         public Sprite Icon;
+        [Min(0)]
         public float BaseIncreaseAmount;
         public StatTag Tags;
     }
@@ -21,6 +23,10 @@ public class PlayerStatsSO : ScriptableObject
 
     private void OnValidate()
     {
+        if (_stats == null)
+            _stats = new List<StatEntry>();
+
+        _stats.RemoveAll(entry => entry == null);
         _statLookup = null;
         EnsureLookup();
     }
@@ -63,7 +69,7 @@ public class PlayerStatsSO : ScriptableObject
         return _statLookup.TryGetValue(type, out var entry) ? entry.Icon : null;
     }
 
-    public List<StatEntry> Stats => _stats;
+    public IReadOnlyList<StatEntry> Stats => _stats;
     public List<StatType> GetStatsByTag(StatTag tag)
     {
         List<StatType> result = new();

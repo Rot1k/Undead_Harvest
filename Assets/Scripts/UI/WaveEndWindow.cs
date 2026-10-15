@@ -21,15 +21,6 @@ public class WaveEndWindow : MonoBehaviour
         Hide();
     }
 
-    public void Dispose()
-    {
-    }
-
-    private void OnDestroy()
-    {
-        Dispose();
-    }
-
     public void ShowWaveCompleted(int waveNumber, bool isFinalWave)
     {
         ShowMessage(

@@ -1,107 +1,34 @@
 using UnityEngine;
-using VContainer;
 
-public class PauseManager : MonoBehaviour
+public sealed class PauseManager
 {
+    private int _pauseCount;
 
-    private Player _player;
+    public int PauseCount => _pauseCount;
+    public bool IsPaused => _pauseCount > 0;
 
-    public bool IsWaveEnded { get; private set; } = false;
-    public bool IsPlayerPaused { get; private set; } = false;
-
-    public bool IsPaused => (IsWaveEnded || IsPlayerPaused);
-
-    private WavesManager _wavesManager;
-    private GameInput _gameInput;
-   
-    [Inject]
-    public void Construct(WavesManager wavesManager, GameInput gameInput, Player player)
-    {
-        _wavesManager = wavesManager;
-        _gameInput = gameInput;
-        _player = player;
-    }
-
-    private void Awake()
+    public PauseManager()
     {
         Time.timeScale = 1f;
     }
 
-    private void Start()
+    public void Pause()
     {
-        if (_wavesManager == null || _gameInput == null || _player == null)
-        {
-            Debug.LogError("PauseManager dependencies are not assigned.");
+        _pauseCount++;
+        UpdatePauseState();
+    }
+
+    public void Unpause()
+    {
+        if (_pauseCount == 0)
             return;
-        }
 
-        _wavesManager.OnWaveStarted += OnWaveStarted;
-        _wavesManager.OnWaveCompleted += OnWaveEnded;
-        _wavesManager.OnAllWavesCompleted += OnWaveEnded;
-        _player.HealthSystem.OnDead += OnPlayerDied;
-        _gameInput.OnPause += OnPausePressed;
-    }
-
-    private void OnDestroy()
-    {
-        if (_wavesManager != null)
-        {
-            _wavesManager.OnWaveStarted -= OnWaveStarted;
-            _wavesManager.OnWaveCompleted -= OnWaveEnded;
-            _wavesManager.OnAllWavesCompleted -= OnWaveEnded;
-        }
-
-        if (_player != null)
-        {
-            _player.HealthSystem.OnDead -= OnPlayerDied;
-        }
-
-        if (_gameInput != null)
-        {
-            _gameInput.OnPause -= OnPausePressed;
-        }
-    }
-
-    private void OnWaveStarted()
-    {
-        IsWaveEnded = false;
-        UpdatePauseState();
-    }
-
-    private void OnWaveEnded()
-    {
-        IsWaveEnded = true;
-        UpdatePauseState();
-    }
-
-    private void OnPlayerDied(object sender, System.EventArgs e)
-    {
-        IsPlayerPaused = true;
-        UpdatePauseState();
-    }
-
-    private void OnPausePressed()
-    {
-        IsPlayerPaused = !IsPlayerPaused;
+        _pauseCount--;
         UpdatePauseState();
     }
 
     private void UpdatePauseState()
     {
-        if (IsPaused)
-            Time.timeScale = 0f;
-        else
-            Time.timeScale = 1f;
+        Time.timeScale = IsPaused ? 0f : 1f;
     }
-    public void SetPlayerPaused(bool value)
-    {
-        IsPlayerPaused = value;
-        UpdatePauseState();
-    }
-    public void SetWaveEnded(bool value)
-    {
-        IsWaveEnded = value;
-        UpdatePauseState();
-    }
-
 }

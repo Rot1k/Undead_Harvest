@@ -34,6 +34,12 @@ public abstract class Weapon : MonoBehaviour
 
     public void Initialize(Player player, WeaponSO weaponSO)
     {
+        if (player == null || weaponSO == null)
+        {
+            Debug.LogError($"[{name}] Weapon initialization requires a player and weapon configuration.", this);
+            return;
+        }
+
         _playerStats = player.Stats;
         _playerMovement = player.Movement;
         SetStats(weaponSO);
@@ -147,6 +153,9 @@ public abstract class Weapon : MonoBehaviour
 
     public void HandleOnHit(Enemy enemy)
     {
+        if (enemy == null || _weaponBaseStats == null || _playerStats == null)
+            return;
+
         ApplyWeaponEffects(enemy);
         ApplyPlayerEffects(enemy);
     }
@@ -174,8 +183,11 @@ public abstract class Weapon : MonoBehaviour
     }
     public virtual void SetStats(WeaponSO weaponStats)
     {
+        if (weaponStats == null)
+            return;
+
         _weaponBaseStats = weaponStats;
-        _weaponVisual.Apply(_weaponBaseStats);
+        _weaponVisual?.Apply(_weaponBaseStats);
     }
     public void ResetState()
     {

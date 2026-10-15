@@ -26,12 +26,12 @@ public class WavesManager : MonoBehaviour
     public int CurrentWave { get; private set; } = 0;
     private List<Coroutine> _spawnCoroutines = new();
     private Coroutine _waveCoroutine;
-    private IObjectResolver _objectResolver;
+    private EnemySpawner _enemySpawner;
 
     [Inject]
-    public void Construct(IObjectResolver objectResolver)
+    public void Construct(EnemySpawner enemySpawner)
     {
-        _objectResolver = objectResolver;
+        _enemySpawner = enemySpawner;
     }
 
     public void StartGame()
@@ -63,6 +63,11 @@ public class WavesManager : MonoBehaviour
             Debug.LogWarning("A wave is already running!");
             return;
         }
+        if (_enemySpawner == null)
+        {
+            Debug.LogError("Enemy spawner is not configured.", this);
+            return;
+        }
         if (CurrentWave >= _waves.Length)
         {
             Debug.LogWarning("All waves have already been completed!");
@@ -74,11 +79,31 @@ public class WavesManager : MonoBehaviour
     {
         OnWaveStarted?.Invoke();
         var wave = _waves[CurrentWave];
+        if (wave == null)
+        {
+            Debug.LogError($"Wave {CurrentWave} is not configured.", this);
+            EndCurrentWave();
+            yield break;
+        }
+
         Debug.Log($"Starting wave {CurrentWave + 1}/{_waves.Length}");
+        if (wave.Enemies == null)
+        {
+            Debug.LogError($"Wave {CurrentWave} has no enemy entries.", this);
+            EndCurrentWave();
+            yield break;
+        }
+
         foreach (var entry in wave.Enemies)
         {
-
-            var routine = StartCoroutine(SpawnEnemyRoutine(entry, wave.WaveDuration));
+            var routine = StartCoroutine(_enemySpawner.SpawnRoutine(
+                entry,
+                wave.WaveDuration,
+                _playerTransform,
+                _mapMin,
+                _mapMax,
+                _spawnRadiusFromPlayer,
+                EndCurrentWave));
             _spawnCoroutines.Add(routine);
             yield return new WaitForSeconds(0.5f);
         }
@@ -89,85 +114,9 @@ public class WavesManager : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(wave.WaveDuration - (0.5f * (wave.Enemies.Count-1)));
+        float remainingDuration = Mathf.Max(0f, wave.WaveDuration - (0.5f * (wave.Enemies.Count - 1)));
+        yield return new WaitForSeconds(remainingDuration);
         EndCurrentWave();
-    }
-
-    private IEnumerator SpawnEnemyRoutine(WaveEntry entry, float waveDuration)
-    {
-        if (entry == null || entry.EnemyStats == null || entry.EnemyStats.EnemyPrefab == null)
-            yield break;
-
-        float elapsedTime = 0f;
-        
-
-        yield return new WaitForSeconds(2f);
-
-        while (waveDuration <= 0f || elapsedTime < waveDuration)
-        {
-            for (int i = 0; i < entry.EnemiesPerSpawn; i++)
-            {
-                Vector2 spawnPosition = Vector2.zero;
-                bool foundPosition = false;
-
-                for (int attempt = 0; attempt < 10; attempt++)
-                {
-                    spawnPosition = new Vector2(
-                        UnityEngine.Random.Range(_mapMin.x, _mapMax.x),
-                        UnityEngine.Random.Range(_mapMin.y, _mapMax.y)
-                    );
-
-                    if (Vector2.Distance(_playerTransform.position, spawnPosition) >= _spawnRadiusFromPlayer)
-                    {
-                        foundPosition = true;
-                        break;
-                    }
-                }
-
-
-                if (EnemyRegistry.CountByType(entry.EnemyStats) >= entry.maxEnemiesInScene)
-                    continue;
-
-                if (foundPosition)
-                {
-                    var enemyGO = NightPool.Spawn(
-                        entry.EnemyStats.EnemyPrefab,
-                        spawnPosition,
-                        Quaternion.identity
-                    );
-                    _objectResolver?.InjectGameObject(enemyGO);
-
-
-                    if (enemyGO.TryGetComponent<Enemy>(out var enemy))
-                    {
-                        enemy.Init(_playerTransform);
-                        if (enemy is BossEnemy)
-                        {
-                            enemy.OnDied += OnBossDied;
-
-                            void OnBossDied(Enemy boss)
-                            {
-                                boss.OnDied -= OnBossDied;
-                                EndCurrentWave();
-                            }
-                        }
-                        else
-                        {
-                            enemy.OnDied += OnEnemyDied;
-
-                            void OnEnemyDied(Enemy e)
-                            {
-                                e.OnDied -= OnEnemyDied;
-                            }
-                        }
-                    }
-                }
-            }
-            if (entry.SpawnInterval <= 0f)
-                yield break;
-            yield return new WaitForSeconds(entry.SpawnInterval);
-            elapsedTime += entry.SpawnInterval;
-        }
     }
     private void DespawnAllEntities()
     {

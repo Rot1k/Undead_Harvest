@@ -9,7 +9,7 @@ public class HealthSystemTests
 
         healthSystem.Damage(30);
 
-        Assert.That(healthSystem.Health.Value, Is.EqualTo(70));
+        Assert.That(healthSystem.Health.CurrentValue, Is.EqualTo(70));
     }
 
     [Test]
@@ -20,7 +20,7 @@ public class HealthSystemTests
 
         healthSystem.Heal(50);
 
-        Assert.That(healthSystem.Health.Value, Is.EqualTo(100));
+        Assert.That(healthSystem.Health.CurrentValue, Is.EqualTo(100));
     }
 
     [Test]

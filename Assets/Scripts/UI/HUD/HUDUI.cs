@@ -20,11 +20,6 @@ public class HUDUI : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        // Initialization handled in StartGame called by UIBootstrap
-    }
-
     public void Dispose()
     {
         if (_wavesManager == null)

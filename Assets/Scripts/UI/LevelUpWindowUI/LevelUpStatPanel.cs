@@ -50,7 +50,20 @@ public class LevelUpStatPanel : MonoBehaviour, IHaveRarity
         Rarity = rarity;
         StatType = statType;
 
-        if (_statsSO != null && _statsSO.Stats.Find(s => s.Type == StatType) is var entry && entry != null)
+        PlayerStatsSO.StatEntry entry = null;
+        if (_statsSO != null)
+        {
+            foreach (var stat in _statsSO.Stats)
+            {
+                if (stat.Type == StatType)
+                {
+                    entry = stat;
+                    break;
+                }
+            }
+        }
+
+        if (entry != null)
         {
             if (_icon != null)
                 _icon.sprite = entry.Icon;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IShopService
 {
-    void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfig, PlayerStatsSO playerStats);
+    void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfig);
     InventoryItemSO RollRandomItem();
     int CalculateItemPrice(InventoryItemSO item);
     bool TryBuyItem(InventoryItemSO item, out string error);

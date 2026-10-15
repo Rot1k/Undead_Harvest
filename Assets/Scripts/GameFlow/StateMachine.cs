@@ -50,12 +50,10 @@ public class StateMachine
         _currentState = nextState;
         _currentState.Enter();
     }
-
     // public void Update()
     // {
     //     _currentState?.Update();
     // }
-
     public void Dispose()
     {
         _currentState?.Exit();

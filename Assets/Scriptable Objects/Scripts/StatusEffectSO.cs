@@ -7,15 +7,20 @@ public class StatusEffectSO : ScriptableObject
     public string Id;
     public string Name;
     public StatType LinkedChanceStat;
-    public float Duration;
-    public float TickInterval;
+    [Min(0.01f)] public float Duration;
+    [Min(0.01f)] public float TickInterval;
 
     public bool IsStackable;
-    public int MaxStacks;
+    [Min(1)] public int MaxStacks;
 
     public List<EffectModifierSO> Modifiers;
-
-    public GameObject VFX;
-    public AudioClip ApplySound;
     public Color Color;
+
+    private void OnValidate()
+    {
+        if (Modifiers == null)
+            Modifiers = new List<EffectModifierSO>();
+        else
+            Modifiers.RemoveAll(modifier => modifier == null);
+    }
 }

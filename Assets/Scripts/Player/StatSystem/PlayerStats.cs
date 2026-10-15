@@ -23,14 +23,25 @@ public sealed class PlayerStats : IDisposable
 
     public void Initialize()
     {
+        Dispose();
+
         if (_baseStats == null)
         {
             Debug.LogWarning("Player base stats are not configured.");
             return;
         }
 
+        if (_baseStats.Stats == null)
+        {
+            Debug.LogWarning("Player base stats list is not configured.");
+            return;
+        }
+
         foreach (var entry in _baseStats.Stats)
         {
+            if (entry == null)
+                continue;
+
             var stat = new Stat(entry.Type, entry.BaseValue); // Stat now knows its own type
             Action<float> handler = (newValue) => OnStatChanged?.Invoke(entry.Type, newValue);
             stat.OnValueChanged += handler;
@@ -50,6 +61,7 @@ public sealed class PlayerStats : IDisposable
             }
         }
         _statHandlers.Clear();
+        _stats.Clear();
     }
 
     public void SetBaseStat(StatType type, float value)
@@ -97,9 +109,19 @@ public sealed class PlayerStats : IDisposable
     }
     public void TryApplyEffects(Enemy enemy)
     {
+        if (enemy == null || _effects == null || _effects.StatusEffects == null)
+            return;
+
         foreach (var effect in _effects.StatusEffects)
         {
-            float finalChance = Get(effect.LinkedChanceStat) / 100f * Get(StatType.GlobalEffectChanceMultiplier);
+            if (effect == null ||
+                !_stats.TryGetValue(effect.LinkedChanceStat, out var chanceStat) ||
+                !_stats.TryGetValue(StatType.GlobalEffectChanceMultiplier, out var chanceMultiplierStat))
+            {
+                continue;
+            }
+
+            float finalChance = chanceStat.CurrentValue / 100f * chanceMultiplierStat.CurrentValue;
             if (UnityEngine.Random.value <= finalChance)
             {
                 enemy.ApplyEffect(effect);

@@ -6,6 +6,8 @@ public class StatusEffectsManager : MonoBehaviour
 {
     private Enemy _enemy;
 
+    public int ActiveEffectCount => _activeEffects.Count;
+
     private Dictionary<StatusEffectSO, StatusEffectInstance> _activeEffects = new();
     private List<StatusEffectSO> _effectsToRemove = new();
     private List<StatusEffectSO> _effectsToUpdate = new();

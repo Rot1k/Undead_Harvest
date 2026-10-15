@@ -8,13 +8,13 @@ public class MeeleWeapon : Weapon
     public event Action OnHit;
 
     private State _state;
-    private MeeleWeaponSO _meeleWeaponSO;
+    private MeeleWeaponSO _meleeWeaponSO;
     private void Start()
     {
 
-        _meeleWeaponSO = _weaponBaseStats as MeeleWeaponSO;
-        if (_meeleWeaponSO == null)
-            Debug.LogError($"[{name}] Invalid MeeleWeaponSO");
+        _meleeWeaponSO = _weaponBaseStats as MeeleWeaponSO;
+        if (_meleeWeaponSO == null)
+            Debug.LogError($"[{name}] Invalid MeleeWeaponSO");
 
         _state = State.Idle;
         OriginalLocalPosition = transform.localPosition;
@@ -56,7 +56,7 @@ public class MeeleWeapon : Weapon
         transform.position = Vector2.MoveTowards(
             transform.position,
             _lockedEnemy.position,
-            _meeleWeaponSO.WeaponSpeed * Time.deltaTime
+            _meleeWeaponSO.WeaponSpeed * Time.deltaTime
         );
 
         if (Vector2.Distance(transform.position, _lockedEnemy.position) < 0.1f)
@@ -88,7 +88,7 @@ public class MeeleWeapon : Weapon
         transform.localPosition = Vector2.MoveTowards(
             transform.localPosition,
             OriginalLocalPosition,
-            _meeleWeaponSO.WeaponSpeed * Time.deltaTime
+            _meleeWeaponSO.WeaponSpeed * Time.deltaTime
         );
 
         if (Vector2.Distance(transform.localPosition, OriginalLocalPosition) < 0.1f)

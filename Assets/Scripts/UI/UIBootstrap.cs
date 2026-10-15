@@ -17,6 +17,7 @@ public class UIBootstrap : MonoBehaviour
     [SerializeField] private WaveCounterUI _waveCounterUI;
     [SerializeField] private WalletUI[] _walletUIs;
     [SerializeField] private HUDUI _hudUI;
+    [SerializeField] private TutorialUI _tutorialUI;
     [SerializeField] private BossHealthBarUI _bossHealthBarUI;
     [SerializeField] private LevelUpWindowUI _levelUpWindowUI;
     [SerializeField] private WaveEndWindow _waveEndWindow;
@@ -38,6 +39,7 @@ public class UIBootstrap : MonoBehaviour
         _waveCounterUI.Initialize();
         foreach (var ui in _walletUIs) ui.Initialize();
         _hudUI.Initialize();
+        _tutorialUI.Initialize();
         _bossHealthBarUI.Initialize();
         _levelUpWindowUI.Initialize();
         _waveEndWindow.Initialize();
@@ -80,7 +82,6 @@ public class UIBootstrap : MonoBehaviour
 
         _hudUI.Dispose();
         _levelUpWindowUI.Dispose();
-        _waveEndWindow.Dispose();
         _winLoseWindowUI.Dispose();
     }
 }

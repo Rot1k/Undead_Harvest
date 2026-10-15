@@ -10,6 +10,12 @@ public class InventoryItemsPoolSO: ScriptableObject
 
     private void OnValidate()
     {
+        if (_items == null)
+        {
+            _items = System.Array.Empty<InventoryItemSO>();
+            return;
+        }
+
         _items = _items
             .Where(i => i != null)
             .Distinct()

@@ -48,6 +48,9 @@ public class Stat
 
     public void AddModifier(StatModifier mod)
     {
+        if (mod == null)
+            return;
+
         _modifiers.Add(mod);
         Recalculate();
     }
@@ -80,7 +83,10 @@ public class Stat
             }
         }
 
-        float newValue = value + (value * addPercent) * multiplier;
+        value *= 1f + addPercent;
+        value *= multiplier;
+
+        float newValue = value;
 
         if (Math.Abs(newValue - _cachedValue) > 0.0001f)
         {

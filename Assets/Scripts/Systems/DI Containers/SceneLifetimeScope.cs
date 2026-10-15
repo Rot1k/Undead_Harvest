@@ -7,7 +7,6 @@ public class SceneLifetimeScope : LifetimeScope
 {
     [SerializeField] private WavesManager _wavesManager;
     [SerializeField] private WaveEndWindow _waveEndWindow;
-    [SerializeField] private PauseManager _pauseManager;
     [SerializeField] private EquipmentManager _equipmentManager;
     [SerializeField] private WeaponsHolder _weaponHolder;
     [SerializeField] private WalletManager _walletManager;
@@ -23,7 +22,6 @@ public class SceneLifetimeScope : LifetimeScope
         builder.RegisterComponent(_waveEndWindow);
         builder.RegisterComponent(_player);
         builder.RegisterComponent(_equipmentManager);
-        builder.RegisterComponent(_pauseManager);
         builder.RegisterComponent(_walletManager);
         builder.RegisterComponent(_playerDamageReceiver);
         builder.RegisterComponent(_playerAnimation);
@@ -37,6 +35,8 @@ public class SceneLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<HUDUI>();
 
         //Services
+        builder.Register<EnemySpawner>(Lifetime.Singleton);
+        builder.Register<PauseManager>(Lifetime.Singleton);
         builder.Register<ShopService>(Lifetime.Singleton).As<IShopService>();
         builder.Register<StateMachine>(Lifetime.Singleton);
         builder.Register<StartingState>(Lifetime.Singleton);

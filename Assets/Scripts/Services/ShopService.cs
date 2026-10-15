@@ -26,11 +26,10 @@ public class ShopService : IShopService
         _soundManager = soundManager;
     }
 
-    public void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfig, PlayerStatsSO playerStats)
+    public void Initialize(InventoryItemsPoolSO itemsPool, RarityConfigSO rarityConfig)
     {
         _itemsPool = itemsPool;
         _rarityConfig = rarityConfig;
-        _ = playerStats;
     }
 
     public InventoryItemSO RollRandomItem()
@@ -77,9 +76,9 @@ public class ShopService : IShopService
             return false;
         }
 
-        if (_walletManager == null)
+        if (_walletManager == null || _equipmentManager == null)
         {
-            error = "Wallet is not available";
+            error = "Shop dependencies are not available";
             return false;
         }
 
@@ -90,35 +89,50 @@ public class ShopService : IShopService
             return false;
         }
 
-        switch (item)
+        bool purchased = item switch
         {
-            case PassiveItemSO passive:
-                _equipmentManager.AddItem(passive);
-                break;
-            case WeaponSO weapon:
-                int emptySlot = _equipmentManager.GetFirstEmptyWeaponSlot();
-                if (emptySlot != -1)
-                {
-                    _equipmentManager.EquipWeapon(weapon, emptySlot);
-                    break;
-                }
+            PassiveItemSO passive => TryBuyPassiveItem(passive, out error),
+            WeaponSO weapon => TryBuyWeapon(weapon, out error),
+            _ => false
+        };
 
-                int sameWeaponIndex = _equipmentManager.FindWeaponIndex(weapon);
-                if (sameWeaponIndex == -1 || !weapon.CanUnion)
-                {
-                    error = "No empty slots and cannot union";
-                    return false;
-                }
-
-                _equipmentManager.ReplaceWeapon(sameWeaponIndex, weapon.UnionResult);
-                break;
-            default:
+        if (!purchased)
+        {
+            if (error == null)
                 error = "Unsupported item type";
-                return false;
+            return false;
         }
 
         _walletManager.TrySpendMoney(price);
         _soundManager?.PlaySound(SoundType.BUY);
+        return true;
+    }
+
+    private bool TryBuyPassiveItem(PassiveItemSO item, out string error)
+    {
+        error = null;
+        _equipmentManager.AddItem(item);
+        return true;
+    }
+
+    private bool TryBuyWeapon(WeaponSO weapon, out string error)
+    {
+        error = null;
+        int emptySlot = _equipmentManager.GetFirstEmptyWeaponSlot();
+        if (emptySlot != -1)
+        {
+            _equipmentManager.EquipWeapon(weapon, emptySlot);
+            return true;
+        }
+
+        int sameWeaponIndex = _equipmentManager.FindWeaponIndex(weapon);
+        if (sameWeaponIndex == -1 || !weapon.CanUnion)
+        {
+            error = "No empty slots and cannot union";
+            return false;
+        }
+
+        _equipmentManager.ReplaceWeapon(sameWeaponIndex, weapon.UnionResult);
         return true;
     }
 
@@ -133,12 +147,13 @@ public class ShopService : IShopService
             return false;
         }
 
-        InventoryItemSO data = slot switch
+        if (_equipmentManager == null || _walletManager == null)
         {
-            WeaponInventorySlot w => _equipmentManager.GetWeapon(w.SlotIndex),
-            ItemInventorySlot i => i.Item.PassiveItemSO,
-            _ => null
-        };
+            error = "Shop dependencies are not available";
+            return false;
+        }
+
+        InventoryItemSO data = GetItemFromSlot(slot);
 
         if (data == null)
         {
@@ -148,26 +163,63 @@ public class ShopService : IShopService
 
         soldAmount = data.Price / 2;
 
-        switch (slot)
+        bool sold = slot switch
         {
-            case WeaponInventorySlot ws:
-                _equipmentManager.UnequipWeapon(ws.SlotIndex);
-                break;
-            case ItemInventorySlot islot:
-                _equipmentManager.RemovePassiveItem(islot.Item);
-                break;
-            default:
+            WeaponInventorySlot weaponSlot => TrySellWeapon(weaponSlot, out error),
+            ItemInventorySlot itemSlot => TrySellPassiveItem(itemSlot, out error),
+            _ => false
+        };
+
+        if (!sold)
+        {
+            if (error == null)
                 error = "Unsupported inventory slot type";
-                return false;
+            return false;
         }
 
         _walletManager.AddMoney(soldAmount);
         return true;
     }
 
+    private InventoryItemSO GetItemFromSlot(InventorySlot slot)
+    {
+        return slot switch
+        {
+            WeaponInventorySlot weaponSlot => _equipmentManager.GetWeapon(weaponSlot.SlotIndex),
+            ItemInventorySlot itemSlot => itemSlot.Item?.PassiveItemSO,
+            _ => null
+        };
+    }
+
+    private bool TrySellWeapon(WeaponInventorySlot slot, out string error)
+    {
+        error = null;
+        _equipmentManager.UnequipWeapon(slot.SlotIndex);
+        return true;
+    }
+
+    private bool TrySellPassiveItem(ItemInventorySlot slot, out string error)
+    {
+        error = null;
+        if (slot.Item == null)
+        {
+            error = "No item to sell";
+            return false;
+        }
+
+        _equipmentManager.RemovePassiveItem(slot.Item);
+        return true;
+    }
+
     public bool TryUnion(InventorySlot slot, out string error)
     {
         error = null;
+
+        if (_equipmentManager == null)
+        {
+            error = "Equipment manager is not available";
+            return false;
+        }
 
         if (slot is not WeaponInventorySlot weaponSlot)
         {

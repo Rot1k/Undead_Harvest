@@ -63,7 +63,7 @@ public class BuyWindow : MonoBehaviour
         _rarityConfig = rarityConfigSO;
         _playerStatsSO = playerStatsSO;
 
-        _shopService?.Initialize(itemsPool, rarityConfigSO, playerStatsSO);
+        _shopService?.Initialize(itemsPool, rarityConfigSO);
     }
 
     public void SetItem(InventoryItemSO item)

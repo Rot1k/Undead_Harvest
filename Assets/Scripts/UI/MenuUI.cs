@@ -6,11 +6,13 @@ public class MenuUI : MonoBehaviour
 {
     private Action _onPauseAction;
     private GameInput _gameInput;
+    private PauseManager _pauseManager;
 
     [Inject]
-    public void Construct(GameInput gameInput)
+    public void Construct(GameInput gameInput, PauseManager pauseManager)
     {
         _gameInput = gameInput;
+        _pauseManager = pauseManager;
     }
 
     public void Initialize()
@@ -47,11 +49,17 @@ public class MenuUI : MonoBehaviour
 
     public void Hide()
     {
+        if (gameObject.activeSelf)
+            _pauseManager?.Unpause();
+
         gameObject.SetActive(false);
     }
 
     public void Show()
     {
+        if (!gameObject.activeSelf)
+            _pauseManager?.Pause();
+
         gameObject.SetActive(true);
     }
 }

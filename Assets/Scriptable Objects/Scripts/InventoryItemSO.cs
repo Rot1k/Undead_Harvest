@@ -4,6 +4,7 @@ public abstract class InventoryItemSO : ScriptableObject
     public Sprite UISprite;
     public string ItemName;
     public Rarity Rarity;
+    [Min(0)]
     public int Price;
 
     [TextArea(3, 6)]

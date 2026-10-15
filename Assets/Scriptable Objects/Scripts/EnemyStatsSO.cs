@@ -5,7 +5,7 @@ public class EnemyStatsSO : ScriptableObject
 {
     public GameObject EnemyPrefab;
 
-    public int BaseHealth = 100;
-    public int BaseDamage = 1;
-    public float BaseMoveSpeed = 5f;
+    [Min(1)] public int BaseHealth = 100;
+    [Min(1)] public int BaseDamage = 1;
+    [Min(0.01f)] public float BaseMoveSpeed = 5f;
 }
