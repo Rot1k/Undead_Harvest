@@ -15,6 +15,7 @@ public class PlayerAnimation : MonoBehaviour
     private SoundManager _soundManager;
 
     private Player _player;
+    private bool _isDead;
 
     [Inject]
     public void Construct(SoundManager soundManager)
@@ -28,7 +29,7 @@ public class PlayerAnimation : MonoBehaviour
     }
     private void Update()
     {
-        if (_animator == null || _player?.Movement == null)
+        if (_isDead || _animator == null || _player?.Movement == null)
             return;
 
         _animator.SetBool(ANIMATOR_IS_WALKING, _player.Movement.IsWalking);
@@ -45,9 +46,12 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnDead(object sender, EventArgs e)
     {
+        _isDead = true;
         _animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        _animator.SetBool(ANIMATOR_IS_WALKING, false);
         _animator.SetTrigger(ANIMATOR_DEAD);
         _soundManager?.PlaySound(SoundType.ONDEAD);
-        _shadow.localScale = new Vector3(1.8f, 1.4f, 1);
+        if (_shadow != null)
+            _shadow.localScale = new Vector3(1.8f, 1.4f, 1f);
     }
 }

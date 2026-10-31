@@ -182,4 +182,15 @@ public class WeaponsHolder : MonoBehaviour
             }
         }
     }
+
+    public void StopAndHideWeapons()
+    {
+        foreach (GameObject weaponGO in _spawnedWeapons.Values)
+        {
+            if (weaponGO != null)
+                NightPool.Despawn(weaponGO);
+        }
+
+        _spawnedWeapons.Clear();
+    }
 }

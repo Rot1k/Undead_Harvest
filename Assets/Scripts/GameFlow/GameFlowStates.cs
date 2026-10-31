@@ -179,21 +179,29 @@ public sealed class GameOverState : GameFlowState
 {
     private readonly WaveEndWindow _waveEndWindow;
     private readonly WinLoseWindowUI _winLoseWindow;
+    private readonly WeaponsHolder _weaponsHolder;
+    private readonly PauseManager _pauseManager;
 
     public GameOverState(
         WavesManager wavesManager,
         Player player,
         WaveEndWindow waveEndWindow,
-        WinLoseWindowUI winLoseWindow)
+        WinLoseWindowUI winLoseWindow,
+        WeaponsHolder weaponsHolder,
+        PauseManager pauseManager)
         : base(wavesManager, player)
     {
         _waveEndWindow = waveEndWindow;
         _winLoseWindow = winLoseWindow;
+        _weaponsHolder = weaponsHolder;
+        _pauseManager = pauseManager;
     }
 
     public override void Enter()
     {
         WavesManager.StopCurrentWave();
+        _weaponsHolder.StopAndHideWeapons();
+        _pauseManager.Pause();
         _waveEndWindow.OnPlayerDeathMessageHidden += OnPlayerDeathMessageHidden;
         _waveEndWindow.ShowPlayerDied();
     }
