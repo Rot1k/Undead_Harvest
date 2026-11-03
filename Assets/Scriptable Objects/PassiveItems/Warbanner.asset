@@ -21,8 +21,6 @@ MonoBehaviour:
   - statType: 3
     modifierType: 0
     value: 3
-    priority: 0
   - statType: 5
     modifierType: 1
     value: 7
-    priority: 0

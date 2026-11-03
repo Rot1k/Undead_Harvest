@@ -36,6 +36,7 @@ public class SceneLifetimeScope : LifetimeScope
 
         //Services
         builder.Register<EnemySpawner>(Lifetime.Singleton);
+        builder.Register<EnemyRegistry>(Lifetime.Singleton);
         builder.Register<PauseManager>(Lifetime.Singleton);
         builder.Register<ShopService>(Lifetime.Singleton).As<IShopService>();
         builder.Register<StateMachine>(Lifetime.Singleton);

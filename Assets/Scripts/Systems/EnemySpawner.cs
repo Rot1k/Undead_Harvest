@@ -9,10 +9,12 @@ using static WaveConfigSO;
 public sealed class EnemySpawner
 {
     private readonly IObjectResolver _objectResolver;
+    private readonly EnemyRegistry _enemyRegistry;
 
-    public EnemySpawner(IObjectResolver objectResolver)
+    public EnemySpawner(IObjectResolver objectResolver, EnemyRegistry enemyRegistry)
     {
         _objectResolver = objectResolver;
+        _enemyRegistry = enemyRegistry;
     }
 
     public IEnumerator SpawnRoutine(
@@ -56,7 +58,7 @@ public sealed class EnemySpawner
                     }
                 }
 
-                if (EnemyRegistry.CountByType(entry.EnemyStats) >= entry.maxEnemiesInScene)
+                if (_enemyRegistry.CountByType(entry.EnemyStats) >= entry.maxEnemiesInScene)
                     continue;
 
                 if (!foundPosition)

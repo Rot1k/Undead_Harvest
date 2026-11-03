@@ -22,7 +22,7 @@ public partial class PassiveItemSO : IDescribableItem
         {
             var modifier = Modifiers[i];
             string valueText = StatModifierFormatter.Format(
-                new StatModifier(Guid.Empty, modifier.modifierType, modifier.value, modifier.priority)
+                new StatModifier(Guid.Empty, modifier.modifierType, modifier.value)
             );
 
             dictionary.Add(

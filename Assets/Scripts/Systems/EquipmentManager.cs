@@ -69,8 +69,7 @@ public class EquipmentManager : MonoBehaviour
                 var modifier = new StatModifier(
                     instance.InstanceId,
                     mod.modifierType,
-                    mod.value,
-                    mod.priority
+                    mod.value
                 );
 
                 _playerStats.ApplyModifier(mod.statType, modifier);

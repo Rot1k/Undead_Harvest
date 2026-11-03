@@ -11,6 +11,7 @@ public abstract class Weapon : MonoBehaviour
     protected PlayerStats _playerStats;
     protected SpriteRenderer _spriteRenderer;
     protected SoundManager _soundManager;
+    private EnemyRegistry _enemyRegistry;
 
     protected Vector3 OriginalLocalPosition;
 
@@ -18,6 +19,9 @@ public abstract class Weapon : MonoBehaviour
     protected Enemy _lockedEnemyComponent;
     private float _targetLoseTime;
     [SerializeField] private float _targetGraceTime = 0.2f;
+    [SerializeField] private float _targetSwitchDelay = 0.15f;
+    private Transform _candidateEnemy;
+    private float _candidateSince;
 
     protected float _nextFireTime = 0f;
 
@@ -27,9 +31,10 @@ public abstract class Weapon : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(SoundManager soundManager)
+    public void Construct(SoundManager soundManager, EnemyRegistry enemyRegistry)
     {
         _soundManager = soundManager;
+        _enemyRegistry = enemyRegistry;
     }
 
     public void Initialize(Player player, WeaponSO weaponSO)
@@ -66,14 +71,35 @@ public abstract class Weapon : MonoBehaviour
 
         if (found != null)
         {
-            _lockedEnemy = found;
-            _lockedEnemyComponent = found.GetComponent<Enemy>();
             _targetLoseTime = Time.time + _targetGraceTime;
+
+            if (found == _lockedEnemy)
+            {
+                _candidateEnemy = null;
+                return;
+            }
+
+            if (_candidateEnemy != found)
+            {
+                _candidateEnemy = found;
+                _candidateSince = Time.time;
+            }
+
+            if (_lockedEnemy == null || Time.time - _candidateSince >= _targetSwitchDelay)
+            {
+                _lockedEnemy = found;
+                _lockedEnemyComponent = found.GetComponent<Enemy>();
+                _candidateEnemy = null;
+            }
         }
-        else if (Time.time > _targetLoseTime)
+        else
         {
-            _lockedEnemy = null;
-            _lockedEnemyComponent = null;
+            _candidateEnemy = null;
+            if (Time.time > _targetLoseTime)
+            {
+                _lockedEnemy = null;
+                _lockedEnemyComponent = null;
+            }
         }
     }
 
@@ -97,7 +123,10 @@ public abstract class Weapon : MonoBehaviour
         Transform found = null;
         float closest = float.MaxValue;
 
-        foreach (var enemy in EnemyRegistry.GetAll())
+        if (_enemyRegistry == null)
+            return null;
+
+        foreach (var enemy in _enemyRegistry.GetAll())
         {
             if (enemy == null || enemy.IsDead || !enemy.gameObject.activeInHierarchy) continue;
 
@@ -196,6 +225,8 @@ public abstract class Weapon : MonoBehaviour
         _lockedEnemy = null;
         _lockedEnemyComponent = null;
         _targetLoseTime = 0f;
+        _candidateEnemy = null;
+        _candidateSince = 0f;
 
         transform.localPosition = OriginalLocalPosition;
         transform.rotation = Quaternion.identity;

@@ -84,7 +84,7 @@ Scene transitions go through `Loader`:
 
 After the VContainer container is built, `SceneLifetimeScope` injects all root GameObjects in the scene.
 
-`WavesManager` starts the first wave from `Start()` after one frame, so listeners can subscribe. It spawns enemies through `NightPool.Spawn`, then manually calls `_objectResolver.InjectGameObject(enemyGO)` because pooled objects are not created by VContainer.
+`Bootstrap.Start()` initializes the scene systems, registers the game flow states, then enters `StartingState`. `StartingState` calls `WavesManager.StartGame()`, which waits one frame before starting the first wave so listeners can subscribe. `WavesManager` delegates enemy creation to `EnemySpawner`; pooled enemies are injected manually through `IObjectResolver.InjectGameObject`.
 
 `WeaponsHolder.Start()` subscribes to `EquipmentManager` events, calls `_equipmentManager.OnInit()`, spawns starting weapons, arranges weapons around the player, and resets weapon state on wave completion.
 
@@ -101,7 +101,8 @@ Wave flow:
 
 ## Architecture Notes
 
-- The project is gradually moving from global singleton access toward VContainer injection. Do not migrate everything at once.
+- Scene services are registered with VContainer. `EnemyRegistry` is a scene singleton service injected into enemies, the enemy spawner, and weapons; it tracks active enemies for per-type caps and target search.
+- `CombatSystem` remains a static, stateless damage calculation helper. It has no owned runtime state to manage.
 - Use `[Inject] public void Construct(...)` for MonoBehaviours that need scene services.
 - Do not use injected dependencies in `Awake`; cache local components there. Use injected services in `Start`, in the inject method, or later lifecycle methods.
 - If a NightPool-spawned object needs VContainer dependencies, the spawner must inject it manually using `IObjectResolver.InjectGameObject`.
@@ -113,13 +114,26 @@ Wave flow:
 
 - Player stats: `PlayerStats` builds runtime `Stat` objects from `PlayerStatsSO`, applies/removes `StatModifier`s, and broadcasts `OnStatChanged`.
 - Health: `HealthSystem` is a plain C# class with `OnHealthChanged`, `OnDamaged`, `OnHealed`, and `OnDead`.
-- Enemies: `Enemy` owns runtime stats, health, movement toward the player, death handling, exp coin spawn, and status effect application. Variants include `RangerEnemy`, `DashEnemy`, and `BossEnemy`.
+- Enemies: `Enemy` owns runtime stats, health, movement toward the player, death handling, exp coin spawn, and status effect application. Variants include `RangerEnemy`, `DashEnemy`, and `BossEnemy`. `EnemyRegistry` tracks live enemies and counts them by `EnemyStatsSO`; wave caps apply per enemy type.
 - Waves: `WaveConfigSO` contains wave entries, spawn intervals, max enemies, duration, and boss-wave flag.
 - Weapons: `WeaponSO` configures weapon stats, prefab, rarity, scaling, union result, and on-hit effects. Runtime weapons inherit from `Weapon`.
 - Weapon spawning: `EquipmentManager` owns equipped weapon/item data; `WeaponsHolder` turns weapon slots into pooled weapon GameObjects.
 - Items: `PassiveItemSO` defines stat modifiers; `PassiveItemInstance` gives each equipped item a runtime `Guid` source id so modifiers can be removed by source.
 - Shop/UI: shop windows roll items from `InventoryItemsPoolSO`, use `RarityConfigSO`, spend via `WalletManager`, and update equipment/inventory UI.
 - Descriptions: `WeaponSO.Description.cs`, `PassiveItemSO.Description.cs`, and `ItemDescriptionBuilder` form templated TextMeshPro-rich descriptions.
+- Targeting: weapons search the full active enemy registry for the nearest target in attack range. They keep the current target while a different candidate is observed for the configured switch delay (`Weapon._targetSwitchDelay`); `_targetGraceTime` delays clearing a target when no candidate is found.
+- Pooled enemy registration happens both in `Enemy.OnSpawn()` and after DI in `Enemy.Construct()`, because NightPool may activate an enemy before the spawner injects its dependencies.
+- Shop rolls choose a weapon/passive category, roll a rarity from `RarityConfigSO`, and prefer matching items. If that category contains no item of the rolled rarity, the shop falls back to any item in that category. Rarity `StatMultiplier` is used by level-up stat offers, not shop pricing.
+- `StatModifier` has no priority ordering. Flat, additive-percent, and multiplier modifiers are aggregated by type in `Stat.Recalculate()`.
+
+## Current Behavior Notes
+
+- Enemy spawn positions are random within the configured map rectangle and must be at least the configured minimum distance from the player. They are not guaranteed to be outside the camera view.
+- `WaveEntry.MaxEnemiesInScene` is a per-enemy-type cap, not a total scene enemy cap. Reaching the cap skips that spawn attempt; the spawn routine continues on its normal interval.
+- `WavesManager.DespawnAllEntities()` despawns pooled entities at wave end, including enemy and projectile pools, while intentionally skipping weapon and inventory-slot pools.
+- Status effect ticking performs at most one tick per `Update()` call, then resets the tick timer. Long frames do not catch up missed ticks.
+- `WaveConfigSO.WaveDuration` documents `-1` as infinite, but the current `WavesManager.RunWave()` ends a wave for any duration `<= 0`. Treat this as a known implementation/documentation mismatch if configuring infinite waves.
+- `State.Update()` exists but the state machine does not call it. Current game-flow states transition through `Enter()` and events; add the update dispatch only when a state needs frame-based behavior.
 
 ## Editing Rules
 

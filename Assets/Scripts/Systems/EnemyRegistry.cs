@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-public static class EnemyRegistry
+public sealed class EnemyRegistry
 {
-    private static readonly List<Enemy> _enemies = new();
+    private readonly List<Enemy> _enemies = new();
 
-    public static void Register(Enemy e)
+    public void Register(Enemy e)
     {
         if (e != null && !_enemies.Contains(e))
         {
@@ -12,7 +12,7 @@ public static class EnemyRegistry
         }
     }
 
-    public static void Unregister(Enemy e)
+    public void Unregister(Enemy e)
     {
         if (e != null)
         {
@@ -20,7 +20,7 @@ public static class EnemyRegistry
         }
     }
 
-    public static int CountByType(EnemyStatsSO type)
+    public int CountByType(EnemyStatsSO type)
     {
         int count = 0;
         for (int i = 0; i < _enemies.Count; i++)
@@ -34,9 +34,9 @@ public static class EnemyRegistry
         return count;
     }
 
-    public static List<Enemy> GetAll() => _enemies;
+    public IReadOnlyList<Enemy> GetAll() => _enemies;
 
-    public static int GetAliveCount()
+    public int GetAliveCount()
     {
         int count = 0;
         for (int i = 0; i < _enemies.Count; i++)

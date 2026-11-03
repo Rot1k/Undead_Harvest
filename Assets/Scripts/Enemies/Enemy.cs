@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private readonly float _stopDistance = 0.15f; // Distance at which the enemy stops moving towards the player
     private Vector3 _localScale = Vector3.one;
     private IObjectResolver _objectResolver;
+    private EnemyRegistry _enemyRegistry;
 
     private readonly float _healthMultiplierPerWave = 0.10f;
     protected Rigidbody2D Rigidbody => _rigidbody;
@@ -40,10 +41,18 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     public bool IsDead => _isDead;
 
     [Inject]
-    public void Construct(WavesManager wavesManager, IObjectResolver objectResolver)
+    public void Construct(WavesManager wavesManager, IObjectResolver objectResolver, EnemyRegistry enemyRegistry)
     {
         _wavesManager = wavesManager;
         _objectResolver = objectResolver;
+        _enemyRegistry = enemyRegistry;
+
+        // NightPool activates pooled objects before the spawner can inject dependencies.
+        // OnSpawn may therefore run before this registry is assigned.
+        if (gameObject.activeInHierarchy && !_isDead)
+        {
+            _enemyRegistry.Register(this);
+        }
     }
     protected virtual void Awake()
     {
@@ -126,7 +135,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     public virtual void OnSpawn()
     {
         _isDead = false;
-        EnemyRegistry.Register(this);
+        _enemyRegistry?.Register(this);
 
         // Reset runtime stats to base values for pooling
         _runtimeStats[StatType.MoveSpeed] = _enemyStats.BaseMoveSpeed;
@@ -184,7 +193,7 @@ public class Enemy : MonoBehaviour, ISpawnable, IDamageable
     private void ResetEnemy()
     {
         _isDead = true;
-        EnemyRegistry.Unregister(this);
+        _enemyRegistry?.Unregister(this);
         _collider.enabled = false;
         _rigidbody.simulated = false;
         _statusEffectsManager.ClearAllEffects();

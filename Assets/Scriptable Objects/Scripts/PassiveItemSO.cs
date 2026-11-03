@@ -12,7 +12,6 @@ public partial class PassiveItemSO : InventoryItemSO
         public StatType statType;
         public ModifierType modifierType;
         public float value;
-        public int priority;
     }
 
     public List<ModifierData> Modifiers = new();

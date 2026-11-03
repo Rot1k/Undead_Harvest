@@ -38,6 +38,14 @@ https://github.com/user-attachments/assets/3176bdfe-f71b-43af-86fa-c495a9c31ff9
 - Shop between waves
 - Multiple enemy types and boss encounter
 
+## Architecture notes
+
+- VContainer wires scene services and game-flow states. `EnemyRegistry` is an injected scene service; `CombatSystem` is a stateless static damage helper.
+- Enemy caps are configured per enemy type in each wave. Spawn points are selected inside the map bounds while respecting a minimum distance from the player.
+- Weapons search active enemies for targets and briefly hold the current target before switching to a different candidate.
+- Shop rarity weights select a preferred rarity. If the selected item category has no matching rarity, the shop falls back to an available item from that category. Rarity stat multipliers are used by level-up offers, not shop prices.
+- Current implementation details and known caveats are documented in [CODEX.md](CODEX.md).
+
 ---
 
 # 🛠 Technologies

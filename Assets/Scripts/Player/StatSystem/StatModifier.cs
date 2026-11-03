@@ -5,9 +5,7 @@ public class StatModifier
     public Guid SourceId { get; }
     public ModifierType Type { get; }
     public float Value { get; }
-    public int Priority { get; }
-
-    public StatModifier(Guid sourceId, ModifierType type, float value, int priority)
+    public StatModifier(Guid sourceId, ModifierType type, float value)
     {
         SourceId = sourceId;
         Type = type;
@@ -17,6 +15,5 @@ public class StatModifier
         }
         else
             Value = value;
-        Priority = priority;
     }
 }
