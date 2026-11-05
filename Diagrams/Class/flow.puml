@@ -1,0 +1,133 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+abstract class State {
+  <<internal>> Bind(StateMachine) : void
+  # ChangeState() : void
+  + <<virtual>> Enter() : void
+  + <<virtual>> Exit() : void
+}
+class StateMachine {
+  + Register(TState) : void
+  + ChangeState() : void
+  + Dispose() : void
+}
+abstract class GameFlowState {
+  # GameFlowState(WavesManager, Player)
+}
+class StartingState <<sealed>> {
+  + StartingState(WavesManager, Player)
+  + <<override>> Enter() : void
+}
+class WaveState <<sealed>> {
+  + WaveState(WavesManager, Player)
+  + <<override>> Enter() : void
+  + <<override>> Exit() : void
+}
+class WaveEndState <<sealed>> {
+  + WaveEndState(WavesManager, Player, WaveEndWindow)
+  + <<override>> Enter() : void
+  + <<override>> Exit() : void
+}
+class LevelUpState <<sealed>> {
+  + LevelUpState(WavesManager, Player, LevelUpWindowUI, PauseManager)
+  + <<override>> Enter() : void
+  + <<override>> Exit() : void
+}
+class ShopState <<sealed>> {
+  + ShopState(WavesManager, Player, ShopUI, HUDUI, PauseManager)
+  + <<override>> Enter() : void
+  + <<override>> Exit() : void
+}
+class GameOverState <<sealed>> {
+  + GameOverState(WavesManager, Player, ...2 ін.)
+  + <<override>> Enter() : void
+  + <<override>> Exit() : void
+}
+class VictoryState <<sealed>> {
+  + VictoryState(WavesManager, Player, WinLoseWindowUI)
+  + <<override>> Enter() : void
+}
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "player::Player" as Player #EEEEEE
+class "ui_results::WaveEndWindow" as WaveEndWindow #EEEEEE
+class "ui_results::WinLoseWindowUI" as WinLoseWindowUI #EEEEEE
+class "ui_menu::LevelUpWindowUI" as LevelUpWindowUI #EEEEEE
+class "ui_shop::ShopUI" as ShopUI #EEEEEE
+class "ui_hud::HUDUI" as HUDUI #EEEEEE
+class "core_boot::PauseManager" as PauseManager #EEEEEE
+package "Вхідні" as IN_all #EEEEEE {
+  class "core_boot::Bootstrap" as IN_all_n <<names>>
+}
+State <|-- GameFlowState
+GameFlowState <|-- StartingState
+GameFlowState <|-- WaveState
+GameFlowState <|-- WaveEndState
+GameFlowState <|-- LevelUpState
+GameFlowState <|-- ShopState
+GameFlowState <|-- GameOverState
+GameFlowState <|-- VictoryState
+StateMachine o-- "0..*" State
+GameFlowState --> WavesManager
+StartingState ..> WavesManager
+WaveState ..> WavesManager
+WaveEndState ..> WavesManager
+LevelUpState ..> WavesManager
+ShopState ..> WavesManager
+GameOverState ..> WavesManager
+VictoryState ..> WavesManager
+GameFlowState --> Player
+StartingState ..> Player
+WaveState ..> Player
+WaveEndState ..> Player
+LevelUpState ..> Player
+ShopState ..> Player
+GameOverState ..> Player
+VictoryState ..> Player
+WaveEndState --> WaveEndWindow
+GameOverState --> WaveEndWindow
+GameOverState --> WinLoseWindowUI
+VictoryState --> WinLoseWindowUI
+LevelUpState --> LevelUpWindowUI
+LevelUpState --> PauseManager
+ShopState --> ShopUI
+ShopState --> HUDUI
+ShopState --> PauseManager
+IN_all ..> StateMachine
+IN_all ..> StartingState
+IN_all ..> WaveState
+IN_all ..> WaveEndState
+IN_all ..> LevelUpState
+IN_all ..> ShopState
+IN_all ..> GameOverState
+IN_all ..> VictoryState
+@enduml

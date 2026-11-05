@@ -1,0 +1,105 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class ShopUI {
+  +  <<event>> OnClosed : Action
+  + Construct(EquipmentManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + Show() : void
+}
+class BuyWindow {
+  + IsLocked : bool <<get>> = false
+  + Construct(IShopService) : void
+  + Initialize(InventoryItemsPoolSO, RarityConfigSO, PlayerStatsSO) : void
+  + SetItem(InventoryItemSO) : void
+  + SetRandomItem() : void
+}
+class BuyWindowsHolder {
+  + RerollWindows() : void
+}
+class RollButtonUI {
+  + Construct(WalletManager) : void
+}
+class ItemInfoController {
+  + Toggle(InventorySlot) : void
+  + Hide() : void
+}
+class ItemInfoUI {
+  + OnClose : Action
+  + Construct(EquipmentManager, IShopService) : void
+  + Initialize(PlayerStatsSO) : void
+  + Close() : void
+  + Show(InventorySlot, bool) : void
+  + Hide() : void
+}
+abstract class "items::InventoryItemSO" as InventoryItemSO #EEEEEE
+class "items::InventoryItemsPoolSO" as InventoryItemsPoolSO #EEEEEE
+class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+interface "core_services::IShopService" as IShopService <<interface>> #EEEEEE
+class "core_services::WalletManager" as WalletManager #EEEEEE
+abstract class "ui_inventory::InventorySlot" as InventorySlot #EEEEEE
+class "ui_inventory::WeaponsInventoryUI" as WeaponsInventoryUI #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "flow::ShopState\nui_hud::UIBootstrap\nui_inventory::InventorySlot\nui_inventory::ItemsInventoryUI\nui_inventory::ItemInventorySlot" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- BuyWindow
+MonoBehaviour <|-- BuyWindowsHolder
+MonoBehaviour <|-- ItemInfoController
+MonoBehaviour <|-- ItemInfoUI
+MonoBehaviour <|-- RollButtonUI
+MonoBehaviour <|-- ShopUI
+ItemInfoController --> ItemInfoUI
+RollButtonUI --> BuyWindowsHolder
+BuyWindow --> InventoryItemSO
+BuyWindowsHolder --> InventoryItemsPoolSO
+BuyWindow ..> InventoryItemsPoolSO
+BuyWindow --> RarityConfigSO
+BuyWindowsHolder --> RarityConfigSO
+ItemInfoUI --> RarityConfigSO
+ItemInfoUI --> EquipmentManager
+ShopUI --> EquipmentManager
+BuyWindow --> PlayerStatsSO
+BuyWindowsHolder --> PlayerStatsSO
+ItemInfoController --> PlayerStatsSO
+ItemInfoUI --> PlayerStatsSO
+BuyWindow --> IShopService
+ItemInfoUI --> IShopService
+RollButtonUI --> WalletManager
+ItemInfoUI --> InventorySlot
+ShopUI --> WeaponsInventoryUI
+IN_all ..> ShopUI
+IN_all ..> ItemInfoController
+@enduml

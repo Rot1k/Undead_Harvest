@@ -1,0 +1,119 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class MainUI {
+  + Construct(MasterVolumeManager, SoundManager, BackgroundMusicManager) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class MainMenuUI
+class MenuUI {
+  + Construct(GameInput, PauseManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + Hide() : void
+  + Show() : void
+}
+class SettingsUI {
+  + Construct(GameInput, MasterVolumeManager, ...2 парам.) : void
+  + Show() : void
+  + Hide() : void
+}
+class TutorialUI {
+  + Construct(PauseManager) : void
+  + Initialize() : void
+}
+class LevelUpWindowUI {
+  +  <<event>> OnCompleted : Action
+  + Construct(Player) : void
+  + Initialize() : void
+  + Dispose() : void
+  + Hide() : void
+  + Show() : void
+  + TryRerollPanels() : void
+}
+class LevelUpPanelsController {
+  + Initialize(Player) : void
+  + RerollPanels() : void
+}
+class LevelUpStatPanel {
+  + Rarity : Rarity
+  + StatType : StatType
+  + Initialize(PlayerStatsSO, PlayerStats, ...2 парам.) : void
+  + RerollPanel(Rarity, StatType) : void
+}
+interface "items_rarity::IHaveRarity" as IHaveRarity <<interface>> #EEEEEE
+class "input::GameInput" as GameInput #EEEEEE
+class "core_boot::PauseManager" as PauseManager #EEEEEE
+class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "player::Player" as Player #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "core_services" as OUT_core_services #EEEEEE {
+  class "MasterVolumeManager\nSoundManager\nBackgroundMusicManager" as OUT_core_services_n <<names>>
+}
+package "інші пакети" as IN_all #EEEEEE {
+  class "flow::LevelUpState\nui_hud::UIBootstrap" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- MainMenuUI
+MonoBehaviour <|-- MainUI
+MonoBehaviour <|-- MenuUI
+MonoBehaviour <|-- SettingsUI
+MonoBehaviour <|-- TutorialUI
+MonoBehaviour <|-- LevelUpPanelsController
+MonoBehaviour <|-- LevelUpStatPanel
+IHaveRarity <|.. LevelUpStatPanel
+MonoBehaviour <|-- LevelUpWindowUI
+MainMenuUI --> SettingsUI
+MainUI --> MenuUI
+LevelUpPanelsController -- LevelUpWindowUI
+LevelUpStatPanel --> LevelUpWindowUI
+MainUI ..> OUT_core_services
+SettingsUI ..> OUT_core_services
+MenuUI --> GameInput
+SettingsUI --> GameInput
+MenuUI --> PauseManager
+TutorialUI --> PauseManager
+LevelUpPanelsController --> RarityConfigSO
+LevelUpStatPanel --> RarityConfigSO
+LevelUpPanelsController --> PlayerStatsSO
+LevelUpPanelsController --> PlayerStats
+LevelUpStatPanel --> PlayerStats
+LevelUpStatPanel --> PlayerStatsSO
+LevelUpWindowUI --> Player
+LevelUpPanelsController ..> Player
+IN_all ..> LevelUpWindowUI
+IN_all ..> MenuUI
+IN_all ..> MainUI
+IN_all ..> TutorialUI
+@enduml

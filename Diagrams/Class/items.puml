@@ -1,0 +1,79 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+abstract class InventoryItemSO {
+  + ItemName : string
+  + Price : int
+  + SpecialDescription : string
+  + UISprite : Sprite
+  + Rarity : Rarity
+}
+class InventoryItemsPoolSO
+class PassiveItemSO {
+  + GetDescriptionTemplate() : string
+  + GetDescriptionParams(PlayerStatsSO) : Dictionary<string, string>
+}
+class PassiveItemInstance {
+  + RuntimeData : object
+  + InstanceId : Guid
+  + PassiveItemInstance(PassiveItemSO)
+}
+class ModifierData {
+  + value : float
+  + statType : StatType
+  + modifierType : ModifierType
+}
+interface IDescribableItem <<interface>> {
+  GetDescriptionTemplate() : string
+  GetDescriptionParams(PlayerStatsSO) : Dictionary<string, string>
+}
+class "weapons_data::WeaponSO" as WeaponSO #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+package "Вхідні" as IN_all #EEEEEE {
+  class "core_services::ShopService\nitems_rarity::EquipmentManager\nui_shop::BuyWindow\nui_shop::BuyWindowsHolder\nui_inventory::ItemInventorySlot\nui_inventory::ItemsInventoryUI\ncore_services::IShopService\nitems_rarity::ItemDescriptionBuilder" as IN_all_n <<names>>
+}
+ScriptableObject <|-- InventoryItemSO
+ScriptableObject <|-- InventoryItemsPoolSO
+InventoryItemSO <|-- PassiveItemSO
+IDescribableItem <|.. PassiveItemSO
+InventoryItemSO <|-- WeaponSO
+IDescribableItem <|.. WeaponSO
+PassiveItemInstance --> PassiveItemSO
+PassiveItemSO *-- "0..*" ModifierData
+PassiveItemSO ..> PlayerStatsSO
+IDescribableItem ..> PlayerStatsSO
+IN_all ..> InventoryItemsPoolSO
+IN_all ..> PassiveItemInstance
+IN_all ..> InventoryItemSO
+IN_all ..> PassiveItemSO
+@enduml

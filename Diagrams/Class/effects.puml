@@ -1,0 +1,109 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class StatusEffectsManager {
+  + ActiveEffectCount : int <<get>>
+  + ApplyEffect(StatusEffectSO) : void
+  + ClearAllEffects() : void
+}
+class StatusEffectInstance {
+  + IsFinished : bool <<get>>
+  + StatusEffectInstance(StatusEffectSO, Enemy)
+  + AddStack(float) : void
+  + ForceExpire() : void
+  + Refresh(float) : void
+  + GetStackCount() : int
+}
+class EffectStack <<struct>> {
+  + RemainingDuration : float
+  + EffectStack(float)
+}
+class StatusEffectSO {
+  + Id : string
+  + Name : string
+  + Duration : float
+  + TickInterval : float
+  + IsStackable : bool
+  + MaxStacks : int
+  + LinkedChanceStat : StatType
+  + Color : Color
+}
+class StatusEffectsListSO
+abstract class EffectModifierSO {
+  + <<virtual>> OnApply(StatusEffectInstance, Enemy) : void
+  + <<virtual>> OnTick(StatusEffectInstance, Enemy, int) : void
+  + <<virtual>> OnExpire(StatusEffectInstance, Enemy) : void
+}
+class FlatDamageEffectModifierSO {
+  + FlatDamageAmount : int = 10
+  + <<override>> OnTick(StatusEffectInstance, Enemy, int) : void
+}
+class PercentDamageEffectModifierSO {
+  + PercentDamageAmount : float = 5
+  + <<override>> OnTick(StatusEffectInstance, Enemy, int) : void
+}
+class SlowEffectModifierSO {
+  + SlowPercentAmount : float = 10
+  + <<override>> OnApply(StatusEffectInstance, Enemy) : void
+  + <<override>> OnExpire(StatusEffectInstance, Enemy) : void
+}
+class "enemies::Enemy" as Enemy #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "weapons_data::WeaponEffectData\nenemies::Enemy\nplayer::Player\nstats::PlayerStats" as IN_all_n <<names>>
+}
+ScriptableObject <|-- EffectModifierSO
+EffectModifierSO <|-- FlatDamageEffectModifierSO
+EffectModifierSO <|-- PercentDamageEffectModifierSO
+EffectModifierSO <|-- SlowEffectModifierSO
+ScriptableObject <|-- StatusEffectsListSO
+ScriptableObject <|-- StatusEffectSO
+MonoBehaviour <|-- StatusEffectsManager
+StatusEffectInstance --> StatusEffectSO
+StatusEffectInstance o-- "0..*" EffectStack
+StatusEffectSO o-- "0..*" EffectModifierSO
+StatusEffectsManager o-- "0..*" StatusEffectSO
+StatusEffectsManager o-- "0..*" StatusEffectInstance
+EffectModifierSO ..> StatusEffectInstance
+FlatDamageEffectModifierSO ..> StatusEffectInstance
+PercentDamageEffectModifierSO ..> StatusEffectInstance
+SlowEffectModifierSO ..> StatusEffectInstance
+StatusEffectInstance --> Enemy
+EffectModifierSO ..> Enemy
+FlatDamageEffectModifierSO ..> Enemy
+PercentDamageEffectModifierSO ..> Enemy
+SlowEffectModifierSO ..> Enemy
+IN_all ..> StatusEffectSO
+IN_all ..> StatusEffectsManager
+IN_all ..> StatusEffectsListSO
+@enduml

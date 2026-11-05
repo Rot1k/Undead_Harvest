@@ -1,0 +1,63 @@
+@startuml
+skinparam dpi 220
+skinparam maxMessageSize 110
+skinparam ParticipantPadding 2
+autonumber
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant ":RangeWeapon" as Weapon
+participant "EnemyRegistry\n<<service>>" as Registry
+participant "CombatSystem\n<<static>>" as Combat
+participant ":PlayerStats" as Stats
+participant ":IWeaponBehavior\n<<strategy>>" as Behavior
+participant ":PlayerBullet" as Bullet
+participant ":Enemy" as Enemy
+participant ":HealthSystem" as Health
+participant ":StatusEffectsManager" as StatusMgr
+
+loop FixedUpdate / Update
+    Weapon -> Registry : GetAll() / FindNearestEnemy()
+    Registry --> Weapon : nearestEnemy
+    opt new candidate closer AND current target still valid
+        note right of Weapon : _targetSwitchDelay (0.15s)\ncandidate must hold lead\nbefore becoming new target
+    end
+end
+
+opt CanShoot() == true
+    Weapon -> Combat : CalculateDamage(playerStats, weaponSO)
+    activate Combat
+    Combat -> Stats : Get(StatType.AttackDamage, CritChance...)
+    Stats --> Combat : statValues
+    Combat --> Weapon : finalDamage
+    deactivate Combat
+
+    Weapon -> Behavior : Shoot(firePoint, context, dir)
+    activate Behavior
+    Behavior -> Bullet : Spawn & Setup(dir, finalDamage, speed)
+    activate Bullet
+    deactivate Behavior
+
+    ...політ снаряду...
+    Bullet -> Enemy : OnTriggerEnter2D(collision)
+    Bullet -> Enemy : OnHit(IDamageable)
+
+    Bullet -> Health : Damage(damageAmount)
+    activate Health
+    Health -> Health : Health.Value -= damageAmount
+    opt Health <= 0
+        Health --> Enemy : OnDead
+        Enemy -> Registry : Unregister(this)
+    end
+    deactivate Health
+
+    Bullet -> Weapon : HandleOnHit(enemy)
+    Weapon -> StatusMgr : ApplyEffect(statusEffectSO)
+    activate StatusMgr
+    StatusMgr -> StatusMgr : AddStack() / Refresh()
+    deactivate StatusMgr
+
+    Bullet -> Bullet : Despawn()
+    deactivate Bullet
+end
+@enduml

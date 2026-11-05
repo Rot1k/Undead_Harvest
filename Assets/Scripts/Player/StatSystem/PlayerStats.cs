@@ -9,8 +9,6 @@ public sealed class PlayerStats : IDisposable
     private readonly StatusEffectsListSO _effects;
 
     private readonly Dictionary<StatType, Stat> _stats = new();
-    private readonly Dictionary<StatType, Action<float>> _statHandlers = new();
-    private readonly Dictionary<StatType, ReactiveProperty<float>> _statValues = new();
 
     public PlayerStatsSO StatsSO => _baseStats;
 
@@ -42,35 +40,18 @@ public sealed class PlayerStats : IDisposable
             if (entry == null)
                 continue;
 
-            var stat = new Stat(entry.Type, entry.BaseValue); // Stat now knows its own type
-            var statValue = new ReactiveProperty<float>(stat.CurrentValue);
-            Action<float> handler = _ => statValue.Value = stat.CurrentValue;
-            stat.OnValueChanged += handler;
-
-            _stats[entry.Type] = stat;
-            _statHandlers[entry.Type] = handler;
-            _statValues[entry.Type] = statValue;
+            _stats[entry.Type] = new Stat(entry.Type, entry.BaseValue);
         }
     }
 
     public void Dispose()
     {
-        foreach (var kv in _statHandlers)
+        foreach (var stat in _stats.Values)
         {
-            if (_stats.TryGetValue(kv.Key, out var stat))
-            {
-                stat.OnValueChanged -= kv.Value;
-            }
+            stat.Dispose();
         }
 
-        foreach (var statValue in _statValues.Values)
-        {
-            statValue.Dispose();
-        }
-
-        _statHandlers.Clear();
         _stats.Clear();
-        _statValues.Clear();
     }
 
     public void SetBaseStat(StatType type, float value)
@@ -119,8 +100,8 @@ public sealed class PlayerStats : IDisposable
 
     public ReadOnlyReactiveProperty<float> Observe(StatType type)
     {
-        if (_statValues.TryGetValue(type, out var statValue))
-            return statValue;
+        if (_stats.TryGetValue(type, out var stat))
+            return stat.CurrentValueStream;
 
         throw new KeyNotFoundException($"Stat {type} not found on Player.");
     }

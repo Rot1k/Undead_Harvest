@@ -1,0 +1,91 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+abstract class InventorySlot {
+  + RectTransform : RectTransform
+  + ItemImage : Image
+  + SlotOutline : Outline
+  + OnPointerClick(PointerEventData) : void
+}
+class ItemInventorySlot {
+  + SetItem(PassiveItemInstance, ItemInfoController) : void
+  + PushInstance(PassiveItemInstance) : void
+  + PopInstance() : PassiveItemInstance
+  + GetCount() : int
+}
+class WeaponInventorySlot {
+  + SlotIndex : int <<get>>
+}
+class ItemsInventoryUI {
+  + Construct(EquipmentManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + SpawnItemUI(PassiveItemInstance) : void
+}
+class WeaponsInventoryUI {
+  + Construct(EquipmentManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + UpdateUI(int, WeaponSO) : void
+}
+class "ui_shop::ItemInfoController" as ItemInfoController #EEEEEE
+class "items::PassiveItemInstance" as PassiveItemInstance #EEEEEE
+class "items::PassiveItemSO" as PassiveItemSO #EEEEEE
+class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "weapons_data::WeaponSO" as WeaponSO #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+interface IPointerClickHandler <<interface>> <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "ui_results::WeaponsStatisticsUI\nui_shop::ItemInfoUI\nui_shop::ShopUI\ncore_services::IShopService\ncore_services::ShopService\nitems_rarity::EquipmentManager" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- InventorySlot
+IPointerClickHandler <|.. InventorySlot
+InventorySlot <|-- ItemInventorySlot
+MonoBehaviour <|-- ItemsInventoryUI
+InventorySlot <|-- WeaponInventorySlot
+MonoBehaviour <|-- WeaponsInventoryUI
+ItemsInventoryUI o-- "0..*" ItemInventorySlot
+InventorySlot -- ItemInfoController
+ItemsInventoryUI --> ItemInfoController
+ItemInventorySlot ..> ItemInfoController
+ItemInventorySlot o-- "0..*" PassiveItemInstance
+ItemsInventoryUI o-- "0..*" PassiveItemSO
+ItemsInventoryUI ..> PassiveItemInstance
+ItemsInventoryUI --> RarityConfigSO
+ItemsInventoryUI --> EquipmentManager
+WeaponsInventoryUI --> RarityConfigSO
+WeaponsInventoryUI --> EquipmentManager
+WeaponsInventoryUI ..> WeaponSO
+IN_all ..> WeaponsInventoryUI
+IN_all ..> InventorySlot
+@enduml

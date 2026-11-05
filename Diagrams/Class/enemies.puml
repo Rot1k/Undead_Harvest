@@ -1,0 +1,121 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class Enemy {
+  +  <<event>> OnDied : Action<Enemy>
+  + IsDead : bool <<get>>
+  + Rigidbody : Rigidbody2D
+  + Player : Transform
+  + Construct(WavesManager, IObjectResolver) : void
+  # <<virtual>> OnDead(object, System.EventArgs) : void
+  # MoveToPlayer() : void
+  # Turn(Vector2) : void
+  + GetDamage() : int
+  + <<virtual>> OnSpawn() : void
+  + <<virtual>> OnDespawn() : void
+  + ApplyModifier(StatType, ModifierType, float) : void
+  + ApplyEffect(StatusEffectSO) : void
+  + Init(Transform) : void
+}
+class BossEnemy {
+  + {static}  <<event>> OnBossSpawned : Action<BossEnemy>
+  + <<override>> OnSpawn() : void
+  # <<override>> OnDead(object, EventArgs) : void
+}
+class DashEnemy {
+  +  <<event>> OnDashPrepare : Action
+}
+class RangerEnemy
+class EnemyVisual {
+  + SetTempColor(Color, float) : IEnumerator
+  + OnSpawn() : void
+}
+enum AttackType <<enumeration>> {
+  AttackAround
+  BurstAttack
+}
+class EnemyStatsSO {
+  + BaseHealth : int = 100
+  + BaseDamage : int = 1
+  + BaseMoveSpeed : float = 5f
+  + EnemyPrefab : GameObject
+}
+class BossEnemyStatsSO {
+  + FireRate : float = 1.0f
+  + BulletSpeed : float = 7f
+}
+class RangerEnemyStatsSO {
+  + ShootingRange : float = 5f
+  + RunAwayDistance : float = 3f
+  + FireRate : float = 1.0f
+  + BulletSpeed : float = 7f
+}
+interface "player_systems::IDamageable" as IDamageable <<interface>> #EEEEEE
+abstract class "projectiles::Bullet" as Bullet #EEEEEE
+class "player_systems::HealthSystem" as HealthSystem #EEEEEE
+class "effects::StatusEffectsManager" as StatusEffectsManager #EEEEEE
+class "effects::StatusEffectSO" as StatusEffectSO #EEEEEE
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "waves::EnemyRegistry" as EnemyRegistry #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+class MonoBehaviour <<library>> #DDEBF7
+interface ISpawnable <<interface>> <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "effects::StatusEffectInstance\nwaves::WaveEntry\nwaves::EnemyRegistry\nweapons::Weapon\nui_hud::BossHealthBarUI\neffects::EffectModifierSO\neffects::FlatDamageEffectModifierSO\neffects::PercentDamageEffectModifierSO\n..." as IN_all_n <<names>>
+}
+EnemyStatsSO <|-- BossEnemyStatsSO
+ScriptableObject <|-- EnemyStatsSO
+EnemyStatsSO <|-- RangerEnemyStatsSO
+Enemy <|-- BossEnemy
+Enemy <|-- DashEnemy
+MonoBehaviour <|-- Enemy
+ISpawnable <|.. Enemy
+IDamageable <|.. Enemy
+MonoBehaviour <|-- EnemyVisual
+ISpawnable <|.. EnemyVisual
+Enemy <|-- RangerEnemy
+BossEnemy --> BossEnemyStatsSO
+Enemy --> EnemyStatsSO
+EnemyVisual --> Enemy
+RangerEnemy --> RangerEnemyStatsSO
+BossEnemy --> Bullet
+RangerEnemy --> Bullet
+Enemy --> HealthSystem
+EnemyVisual --> HealthSystem
+Enemy -- StatusEffectsManager
+Enemy ..> StatusEffectSO
+Enemy --> WavesManager
+Enemy --> EnemyRegistry
+IN_all ..> Enemy
+IN_all ..> EnemyStatsSO
+IN_all ..> BossEnemy
+@enduml

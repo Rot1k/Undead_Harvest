@@ -1,0 +1,86 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class WeaponSO {
+  + BaseDamage : float
+  + RangeMultiplier : float
+  + BaseAttackSpeed : float
+  + CanUnion : bool <<get>>
+  + Prefab : GameObject
+  + MaskSprite : Sprite
+  + GetDescriptionTemplate() : string
+  + GetDescriptionParams(PlayerStatsSO) : Dictionary<string, string>
+}
+class MeeleWeaponSO {
+  + WeaponSpeed : float
+}
+class RangeWeaponSO {
+  + BulletSpeed : float
+  + WeaponType : WeaponType
+  + GetContext() : RangeWeaponContext
+}
+enum WeaponType <<enumeration>> {
+  Single
+  Shotgun
+  Burst
+  Laser
+}
+class WeaponEffectData {
+  + Chance : float
+}
+class ScalingStatsEntry {
+  + ScalingFactor : float
+  + ScalingStatType : StatType
+}
+abstract class "items::InventoryItemSO" as InventoryItemSO #EEEEEE
+interface "items::IDescribableItem" as IDescribableItem <<interface>> #EEEEEE
+class "projectiles::PlayerBullet" as PlayerBullet #EEEEEE
+class "projectiles::RangeWeaponContext" as RangeWeaponContext #EEEEEE
+class "effects::StatusEffectSO" as StatusEffectSO #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+package "інші пакети" as IN_all #EEEEEE {
+  class "weapons::MeeleWeapon\nweapons::RangeWeapon\nweapons::Weapon\nplayer_systems::CombatSystem\nitems_rarity::EquipmentManager\nweapons::WeaponVisual\nui_inventory::WeaponsInventoryUI" as IN_all_n <<names>>
+}
+WeaponSO <|-- MeeleWeaponSO
+WeaponSO <|-- RangeWeaponSO
+InventoryItemSO <|-- WeaponSO
+IDescribableItem <|.. WeaponSO
+WeaponSO *-- "0..*" ScalingStatsEntry
+WeaponSO *-- "0..*" WeaponEffectData
+RangeWeaponSO --> PlayerBullet
+RangeWeaponSO ..> RangeWeaponContext
+WeaponEffectData --> StatusEffectSO
+WeaponSO ..> PlayerStatsSO
+IN_all ..> MeeleWeaponSO
+IN_all ..> RangeWeaponSO
+IN_all ..> WeaponSO
+@enduml

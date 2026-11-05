@@ -1,0 +1,114 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class PlayerStats <<sealed>> {
+  +  <<event>> OnStatChanged : Action<StatType, float>
+  + PlayerStats(PlayerStatsSO, StatusEffectsListSO)
+  + Initialize() : void
+  + Dispose() : void
+  + SetBaseStat(StatType, float) : void
+  + ApplyModifier(StatType, StatModifier) : Guid
+  + RemoveModifiersFromSource(StatType, Guid) : void
+  + Get(StatType) : float
+  + Observe(StatType) : Observable<float>
+  + TryApplyEffects(Enemy) : void
+}
+class Stat {
+  +  <<event>> OnValueChanged : Action<float>
+  + BaseValue : float <<get>>
+  + CurrentValue : float <<get>>
+  + Type : StatType
+  + Stat(StatType, float)
+  + SetBase(float) : void
+  + AddModifier(StatModifier) : void
+  + RemoveModifiersFromSource(Guid) : void
+}
+class StatModifier {
+  + Value : float <<get>>
+  + SourceId : Guid
+  + Type : ModifierType
+  + StatModifier(Guid, ModifierType, float)
+}
+enum ModifierType <<enumeration>> {
+  Flat
+  AddPercent
+  Multiplier
+}
+enum StatType <<enumeration>> {
+  MaxHealth
+  HealthRegen
+  AttackDamage
+  ... (всього 17)
+}
+enum StatTag <<enumeration>> {
+  None= 0
+  Primary= 1 << 0
+  Secondary= 1 << 1
+}
+class PlayerStatsSO {
+  + GetBaseValue(StatType) : float
+  + GetBaseIncreaseAmount(StatType) : float
+  + GetName(StatType) : string
+  + GetIcon(StatType) : Sprite
+  + GetStatsByTag(StatTag) : List<StatType>
+}
+class StatEntry {
+  + Name : string
+  + BaseValue : float
+  + BaseIncreaseAmount : float
+  + Type : StatType
+  + Icon : Sprite
+  + Tags : StatTag
+}
+class StatModifierFormatter <<static>> {
+  + {static} Format(StatModifier) : string
+}
+class "effects::StatusEffectsListSO" as StatusEffectsListSO #EEEEEE
+class "enemies::Enemy" as Enemy #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+interface IDisposable <<interface>> <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "player_systems::ItemMagnet\nplayer::Player\nplayer::PlayerHealthSystem\nplayer::PlayerLevelSystem\nplayer::PlayerMovement\nitems_rarity::EquipmentManager\nui_results::StatsTableUI\nui_results::StatUI\n..." as IN_all_n <<names>>
+}
+ScriptableObject <|-- PlayerStatsSO
+IDisposable <|.. PlayerStats
+PlayerStatsSO *-- "0..*" StatEntry
+PlayerStats --> PlayerStatsSO
+PlayerStats o-- "0..*" Stat
+Stat o-- "0..*" StatModifier
+StatModifierFormatter ..> StatModifier
+PlayerStats ..> StatModifier
+PlayerStats --> StatusEffectsListSO
+PlayerStats ..> Enemy
+IN_all ..> PlayerStats
+IN_all ..> PlayerStatsSO
+@enduml

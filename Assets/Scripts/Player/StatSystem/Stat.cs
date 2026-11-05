@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
+using R3;
 using UnityEngine;
-public class Stat
+public class Stat : IDisposable
 {
-    public event Action<float> OnValueChanged;
-
     public StatType Type { get; private set; }
     public float BaseValue { get; private set; }
 
     private readonly List<StatModifier> _modifiers = new();
+    private readonly ReactiveProperty<float> _currentValue;
     private float _cachedValue;
+
+    public ReadOnlyReactiveProperty<float> CurrentValueStream => _currentValue;
 
     public Stat(StatType type, float baseValue)
     {
         Type = type;
         BaseValue = baseValue;
+        _currentValue = new ReactiveProperty<float>(0f);
         Recalculate();
     }
 
@@ -61,6 +64,11 @@ public class Stat
         Recalculate();
     }
 
+    public void Dispose()
+    {
+        _currentValue.Dispose();
+    }
+
     private void Recalculate()
     {
         float value = BaseValue;
@@ -91,7 +99,7 @@ public class Stat
         if (Math.Abs(newValue - _cachedValue) > 0.0001f)
         {
             _cachedValue = newValue;
-            OnValueChanged?.Invoke(_cachedValue);
+            _currentValue.Value = CurrentValue;
         }
     }
 

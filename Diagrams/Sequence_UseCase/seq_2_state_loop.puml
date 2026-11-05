@@ -1,0 +1,65 @@
+@startuml
+skinparam dpi 220
+skinparam maxMessageSize 110
+skinparam ParticipantPadding 2
+autonumber
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "Гравець" as User
+participant ":StateMachine" as SM
+participant ":WaveState" as WaveSt
+participant ":WavesManager" as WM
+participant ":WaveEndState" as WaveEndSt
+participant ":WaveEndWindow" as UI_End
+participant ":LevelUpState" as LvlSt
+participant ":ShopState" as ShopSt
+participant ":PauseManager" as Pause
+
+SM -> WaveSt : Enter()
+activate WaveSt
+WaveSt -> WM : Subscribe(OnWaveCompleted, OnDead)
+WaveSt -> WM : StartNextWave()
+activate WM
+
+loop Тривалість хвилі (WaveDuration)
+    WM -> WM : Оновлення таймера, спавн супротивників
+end
+
+WM --> WaveSt : OnWaveCompleted()
+deactivate WM
+WaveSt -> SM : ChangeState<WaveEndState>()
+WaveSt -> WaveSt : Exit()
+deactivate WaveSt
+
+SM -> WaveEndSt : Enter()
+activate WaveEndSt
+WaveEndSt -> UI_End : ShowWaveCompleted(currentWave, isFinal)
+activate UI_End
+UI_End --> WaveEndSt : OnWaveMessageHidden()
+deactivate UI_End
+
+alt SkillPoints > 0
+    WaveEndSt -> SM : ChangeState<LevelUpState>()
+    deactivate WaveEndSt
+    SM -> LvlSt : Enter()
+    activate LvlSt
+    LvlSt -> Pause : Pause()
+    User -> LvlSt : Вибір картки поліпшення
+    LvlSt -> Pause : Unpause()
+    LvlSt -> SM : ChangeState<ShopState>()
+    deactivate LvlSt
+else SkillPoints == 0
+    WaveEndSt -> SM : ChangeState<ShopState>()
+end
+
+SM -> ShopSt : Enter()
+activate ShopSt
+ShopSt -> Pause : Pause()
+User -> ShopSt : Торгівля / Reroll
+User -> ShopSt : Закрити магазин (Next Wave)
+ShopSt -> Pause : Unpause()
+ShopSt -> SM : ChangeState<WaveState>()
+deactivate ShopSt
+
+@enduml

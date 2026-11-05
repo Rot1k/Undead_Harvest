@@ -1,0 +1,110 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class WalletManager {
+  + Balance : float <<get>> = 0f
+  +  <<event>> OnBalanceChanged : Action<float>
+  + AddMoney(float) : void
+  + TrySpendMoney(float) : bool
+}
+interface IShopService <<interface>> {
+  Initialize(InventoryItemsPoolSO, RarityConfigSO) : void
+  RollRandomItem() : InventoryItemSO
+  CalculateItemPrice(InventoryItemSO) : int
+  TryBuyItem(InventoryItemSO, string) : bool
+  TrySellItem(InventorySlot, int, string) : bool
+  TryUnion(InventorySlot, string) : bool
+}
+class ShopService {
+  + ShopService(WavesManager, EquipmentManager, ...2 парам.)
+  + Initialize(InventoryItemsPoolSO, RarityConfigSO) : void
+  + RollRandomItem() : InventoryItemSO
+  + CalculateItemPrice(InventoryItemSO) : int
+  + TryBuyItem(InventoryItemSO, string) : bool
+  + TrySellItem(InventorySlot, int, string) : bool
+  + TryUnion(InventorySlot, string) : bool
+}
+class BackgroundMusicManager {
+  + Volume : float <<get>> = 1f
+  + SetVolume(float) : void
+}
+class MasterVolumeManager {
+  + Volume : float <<get>> = 1f
+  + SetVolume(float) : void
+}
+class SoundManager {
+  + Volume : float <<get>> = 1f
+  + PlaySound(SoundType, float) : void
+  + SetVolume(float) : void
+}
+enum SoundType <<enumeration>> {
+  HIT
+  SHOOT
+  BUY
+  ... (всього 8)
+}
+class SoundList <<struct>> {
+  + Name : string
+}
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
+class "items::InventoryItemsPoolSO" as InventoryItemsPoolSO #EEEEEE
+abstract class "items::InventoryItemSO" as InventoryItemSO #EEEEEE
+abstract class "ui_inventory::InventorySlot" as InventorySlot #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "player_systems::ExpCoin\nplayer::Player\nplayer::PlayerAnimation\nplayer::PlayerLevelSystem\nui_menu::MainUI\nui_menu::SettingsUI\nui_hud::WalletUI\nui_results::WinLoseWindowUI\n..." as IN_all_n <<names>>
+}
+IShopService <|.. ShopService
+MonoBehaviour <|-- WalletManager
+MonoBehaviour <|-- BackgroundMusicManager
+MonoBehaviour <|-- MasterVolumeManager
+MonoBehaviour <|-- SoundManager
+ShopService --> WalletManager
+ShopService --> SoundManager
+ShopService --> WavesManager
+ShopService --> EquipmentManager
+ShopService --> RarityConfigSO
+IShopService ..> RarityConfigSO
+ShopService --> InventoryItemsPoolSO
+IShopService ..> InventoryItemsPoolSO
+IShopService ..> InventoryItemSO
+ShopService ..> InventoryItemSO
+IShopService ..> InventorySlot
+ShopService ..> InventorySlot
+IN_all ..> WalletManager
+IN_all ..> SoundManager
+IN_all ..> MasterVolumeManager
+IN_all ..> BackgroundMusicManager
+IN_all ..> IShopService
+@enduml

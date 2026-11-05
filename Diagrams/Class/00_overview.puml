@@ -1,0 +1,67 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+package "Запуск і ігровий потік" as L_boot #F4F4F4 {
+  class "Запуск гри:\nBootstrap, сцени, DI-контейнери\n(8 кл.)" as G_core_boot <<grp>>
+  class "Ігровий потік:\nстани та автомат станів\n(10 кл.)" as G_flow <<grp>>
+}
+package "Інтерфейс (UI)" as L_ui #F4F4F4 {
+  class "UI:\nHUD\n(8 кл.)" as G_ui_hud <<grp>>
+  class "UI:\nменю та вікно підвищення рівня\n(8 кл.)" as G_ui_menu <<grp>>
+  class "UI:\nрезультати хвилі та статистика\n(6 кл.)" as G_ui_results <<grp>>
+  class "UI:\nмагазин\n(6 кл.)" as G_ui_shop <<grp>>
+  class "UI:\nінвентар\n(5 кл.)" as G_ui_inventory <<grp>>
+}
+package "Ігрова логіка" as L_logic #F4F4F4 {
+  class "Гравець:\nкомпоненти\n(6 кл.)" as G_player <<grp>>
+  class "Гравець:\nздоров'я, рівні, підбір предметів\n(8 кл.)" as G_player_systems <<grp>>
+  class "Вороги\n(9 кл.)" as G_enemies <<grp>>
+  class "Хвилі та спавн ворогів\n(5 кл.)" as G_waves <<grp>>
+  class "Зброя:\nповедінка\n(8 кл.)" as G_weapons <<grp>>
+  class "Снаряди та поведінка пострілу\n(8 кл.)" as G_projectiles <<grp>>
+  class "Статус-ефекти\n(9 кл.)" as G_effects <<grp>>
+}
+package "Дані та сервіси" as L_data #F4F4F4 {
+  class "Характеристики та модифікатори\n(9 кл.)" as G_stats <<grp>>
+  class "Предмети:\nдані та інтерфейси\n(7 кл.)" as G_items <<grp>>
+  class "Предмети:\nрідкість, екіпірування, опис\n(6 кл.)" as G_items_rarity <<grp>>
+  class "Зброя:\nдані (ScriptableObject)\n(6 кл.)" as G_weapons_data <<grp>>
+  class "Сервіси:\nекономіка та аудіо\n(8 кл.)" as G_core_services <<grp>>
+  class "Керування (Input System)\n(6 кл.)" as G_input <<grp>>
+}
+L_logic ..> L_data : 23 (зворотно 6)
+L_boot ..> L_logic : 26
+L_boot ..> L_ui : 10 (зворотно 2)
+L_boot ..> L_data : 7
+L_ui ..> L_data : 45 (зворотно 3)
+L_ui ..> L_logic : 12
+@enduml

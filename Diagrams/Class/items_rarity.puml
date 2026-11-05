@@ -1,0 +1,101 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class RarityConfigSO {
+  + GetMultiplier(Rarity) : float
+  + GetColor(Rarity) : Color
+  + GetDropChance(Rarity) : float
+  + GetRandomEntry() : RarityEntry
+}
+class RarityEntry {
+  + StatMultiplier : float
+  + DropChance : float
+  + Rarity : Rarity
+  + Color : Color
+}
+enum Rarity <<enumeration>> {
+  Common
+  Uncommon
+  Rare
+  ... (всього 5)
+}
+interface IHaveRarity <<interface>> {
+  + Rarity : Rarity
+}
+class ItemDescriptionBuilder <<static>> {
+  + {static} Build(InventoryItemSO, PlayerStatsSO) : string
+}
+class EquipmentManager {
+  +  <<event>> OnItemEquipped : Action<PassiveItemInstance>
+  +  <<event>> OnItemUnequipped : Action<PassiveItemInstance>
+  +  <<event>> OnWeaponEquipped : Action<int, WeaponSO>
+  +  <<event>> OnWeaponUnequipped : Action<int, WeaponSO>
+  + MaxWeapons : int <<get>>
+  + IsInitialized : bool <<get>>
+  + Initialize(PlayerStats) : void
+  + AddItem(PassiveItemSO) : void
+  + RemovePassiveItem(PassiveItemInstance) : void
+  + EquipWeapon(WeaponSO, int) : void
+  + UnequipWeapon(int) : void
+  + ReplaceWeapon(int, WeaponSO) : void
+  + Union(InventorySlot) : void
+  + GetWeapon(int) : WeaponSO
+  + GetFirstEmptyWeaponSlot() : int
+  + FindWeaponIndex(WeaponSO) : int
+  + FindSecondWeaponIndex(WeaponSO, int) : int
+}
+class "ui_menu::LevelUpStatPanel" as LevelUpStatPanel #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class "weapons_data::WeaponSO" as WeaponSO #EEEEEE
+abstract class "ui_inventory::InventorySlot" as InventorySlot #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+class MonoBehaviour <<library>> #DDEBF7
+package "items" as OUT_items #EEEEEE {
+  class "PassiveItemInstance\nPassiveItemSO\nInventoryItemSO" as OUT_items_n <<names>>
+}
+package "інші пакети" as IN_all #EEEEEE {
+  class "core_services::ShopService\ncore_boot::Bootstrap\nui_results::WeaponsStatisticsUI\nweapons::WeaponsHolder\nweapons::WeaponVisual\ncore_boot::SceneLifetimeScope\nui_menu::LevelUpPanelsController\nui_menu::LevelUpStatPanel\n..." as IN_all_n <<names>>
+}
+ScriptableObject <|-- RarityConfigSO
+MonoBehaviour <|-- EquipmentManager
+IHaveRarity <|.. LevelUpStatPanel
+RarityConfigSO *-- "0..*" RarityEntry
+EquipmentManager ..> OUT_items
+ItemDescriptionBuilder ..> OUT_items
+EquipmentManager --> PlayerStats
+ItemDescriptionBuilder ..> PlayerStatsSO
+EquipmentManager ..> WeaponSO
+EquipmentManager ..> InventorySlot
+IN_all ..> EquipmentManager
+IN_all ..> RarityConfigSO
+@enduml

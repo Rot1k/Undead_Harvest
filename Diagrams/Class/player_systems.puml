@@ -1,0 +1,110 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class HealthSystem {
+  +  <<event>> OnDead : EventHandler
+  + HealthMax : ReadOnlyReactiveProperty<int>
+  + Health : ReadOnlyReactiveProperty<int>
+  + HealthSystem(int)
+  + SetMaxHealth(int, bool) : void
+  + Damage(int) : void
+  + Die() : void
+  + Heal(int) : void
+  + Reset(int) : void
+}
+class LevelSystem {
+  +  <<event>> OnLevelChanged : EventHandler
+  +  <<event>> OnExpChanged : EventHandler
+  +  <<event>> OnSkillPointUsed : EventHandler
+  + SkillPoints : int <<get>>
+  + Level : ReadOnlyReactiveProperty<int>
+  + CurrentExp : ReadOnlyReactiveProperty<float>
+  + ExpToNextLevel : ReadOnlyReactiveProperty<float>
+  + LevelSystem()
+  + AddExp(float) : void
+  + UseSkillPoint(int) : void
+}
+class ItemCollector {
+  + Construct(Player) : void
+  + AddExp(float) : void
+}
+class ItemMagnet {
+  + Construct(Player) : void
+}
+class ExpCoin {
+  + Construct(WalletManager) : void
+  + StartAttraction(Transform, float) : void
+  + Collect(ItemCollector) : void
+  + OnSpawn() : void
+}
+interface IDamageable <<interface>>
+interface ICollectible <<interface>> {
+  Collect(ItemCollector) : void
+  StartAttraction(Transform, float) : void
+}
+class CombatSystem <<static>> {
+  + {static} CalculateDamage(PlayerStats, WeaponSO) : float
+}
+class "enemies::Enemy" as Enemy #EEEEEE
+class "player::Player" as Player #EEEEEE
+class "player::PlayerHealthSystem" as PlayerHealthSystem #EEEEEE
+class "core_services::WalletManager" as WalletManager #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "weapons_data::WeaponSO" as WeaponSO #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+interface ISpawnable <<interface>> <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "enemies::Enemy\nenemies::EnemyVisual\nplayer::Player\nplayer::PlayerDamageReceiver\nplayer::PlayerHealthSystem\nplayer::PlayerLevelSystem\nui_hud::BossHealthBarUI\nui_hud::ExpBarUI\n..." as IN_all_n <<names>>
+}
+MonoBehaviour <|-- ExpCoin
+ICollectible <|.. ExpCoin
+ISpawnable <|.. ExpCoin
+IDamageable <|.. Enemy
+MonoBehaviour <|-- ItemCollector
+MonoBehaviour <|-- ItemMagnet
+IDamageable <|.. Player
+IDamageable <|.. PlayerHealthSystem
+IDamageable --> HealthSystem
+ItemCollector --> LevelSystem
+ItemCollector --> HealthSystem
+ExpCoin ..> ItemCollector
+ICollectible ..> ItemCollector
+ExpCoin --> WalletManager
+ItemCollector --> Player
+ItemMagnet --> Player
+ItemMagnet --> PlayerStats
+CombatSystem ..> PlayerStats
+CombatSystem ..> WeaponSO
+IN_all ..> HealthSystem
+IN_all ..> LevelSystem
+IN_all ..> IDamageable
+@enduml

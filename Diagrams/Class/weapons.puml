@@ -1,0 +1,121 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+abstract class Weapon {
+  # _nextFireTime : float = 0f
+  # _targetSwitchDelay : float = 0.15
+  # HasTarget : bool <<get>>
+  + OriginalLocalPosition : Vector3
+  + Construct(SoundManager) : void
+  + Initialize(Player, WeaponSO) : void
+  # UpdateTarget() : void
+  # GetAimDirection(Vector3) : Vector2
+  # FindNearestEnemy() : Transform
+  # LookAtTargetOrInput() : void
+  # CanShoot(float) : bool
+  # ApplyCooldown(float) : void
+  + HandleOnHit(Enemy) : void
+  + <<virtual>> UpdateStartPosition(Vector3) : void
+  + <<virtual>> SetStats(WeaponSO) : void
+  + ResetState() : void
+}
+class MeeleWeapon {
+  +  <<event>> OnHit : Action
+}
+enum MeeleWeaponState <<enumeration>> {
+  Idle
+  Attacking
+  Returning
+}
+class MeeleWeaponVisual
+class RangeWeapon {
+  +  <<event>> OnShoot : Action
+  + <<override>> UpdateStartPosition(Vector3) : void
+}
+class RangeWeaponAnimation {
+  + InitializePosition(Vector3) : void
+}
+class WeaponsHolder {
+  + Construct(IObjectResolver) : void
+  + Initialize(EquipmentManager, Player, WavesManager) : void
+  + Dispose() : void
+}
+class WeaponVisual {
+  + Apply(WeaponSO) : void
+}
+interface "projectiles::IWeaponBehavior" as IWeaponBehavior <<interface>> #EEEEEE
+class "player::PlayerMovement" as PlayerMovement #EEEEEE
+class "player::Player" as Player #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "core_services::SoundManager" as SoundManager #EEEEEE
+class "enemies::Enemy" as Enemy #EEEEEE
+class "waves::EnemyRegistry" as EnemyRegistry #EEEEEE
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "weapons_data" as OUT_weapons_data #EEEEEE {
+  class "MeeleWeaponSO\nRangeWeaponSO\nWeaponSO" as OUT_weapons_data_n <<names>>
+}
+package "інші пакети" as IN_all #EEEEEE {
+  class "projectiles::PlayerBullet\ncore_boot::Bootstrap\ncore_boot::SceneLifetimeScope\nprojectiles::IWeaponBehavior\nprojectiles::BurstShotBehavior\nprojectiles::ShotgunBehavior\nprojectiles::SingleShotBehavior" as IN_all_n <<names>>
+}
+Weapon <|-- MeeleWeapon
+MonoBehaviour <|-- MeeleWeaponVisual
+Weapon <|-- RangeWeapon
+MonoBehaviour <|-- RangeWeaponAnimation
+MonoBehaviour <|-- Weapon
+MonoBehaviour <|-- WeaponsHolder
+MonoBehaviour <|-- WeaponVisual
+MeeleWeaponVisual --> MeeleWeapon
+RangeWeaponAnimation --> RangeWeapon
+Weapon --> WeaponVisual
+MeeleWeapon ..> OUT_weapons_data
+RangeWeapon ..> OUT_weapons_data
+Weapon ..> OUT_weapons_data
+WeaponVisual ..> OUT_weapons_data
+RangeWeapon --> IWeaponBehavior
+Weapon --> PlayerMovement
+WeaponsHolder --> Player
+WeaponsHolder --> PlayerMovement
+Weapon ..> Player
+Weapon --> PlayerStats
+WeaponsHolder --> PlayerStats
+Weapon --> SoundManager
+Weapon --> Enemy
+Weapon --> EnemyRegistry
+WeaponsHolder --> WavesManager
+WeaponsHolder --> EquipmentManager
+WeaponVisual --> RarityConfigSO
+IN_all ..> Weapon
+IN_all ..> WeaponsHolder
+@enduml

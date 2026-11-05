@@ -20,7 +20,8 @@ public class ShotgunBehavior : IWeaponBehavior
             Vector2 pelletDirection = rotation * Vector2.right;
 
             PlayerBullet bullet = NightPool.Spawn(context.BulletPrefab, firePoint.position,rotation);
-            bullet.Setup(pelletDirection, context.Damage, context.BulletSpeed, weapon);
+            float pelletBaseDamage = context.Damage / pellets;
+            bullet.Setup(pelletDirection, weapon.CalculateDamage(pelletBaseDamage), context.BulletSpeed, weapon);
         }
     }
 }

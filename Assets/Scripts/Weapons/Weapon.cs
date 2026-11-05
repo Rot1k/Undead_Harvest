@@ -169,6 +169,11 @@ public abstract class Weapon : MonoBehaviour
         return HasTarget && time >= _nextFireTime;
     }
 
+    public float CalculateDamage(float projectileBaseDamage)
+    {
+        return CombatSystem.CalculateDamage(_playerStats, _weaponBaseStats, projectileBaseDamage);
+    }
+
     protected void ApplyCooldown(float currentTime)
     {
         float baseAPS = _weaponBaseStats.BaseAttackSpeed;

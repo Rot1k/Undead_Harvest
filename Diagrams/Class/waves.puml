@@ -1,0 +1,90 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class EnemySpawner <<sealed>> {
+  + EnemySpawner(IObjectResolver)
+  + SpawnRoutine(WaveEntry, float, ...5 парам.) : IEnumerator
+}
+class EnemyRegistry {
+  + Register(Enemy) : void
+  + Unregister(Enemy) : void
+  + CountByType(EnemyStatsSO) : int
+  + GetAll() : List<Enemy>
+  + GetAliveCount() : int
+}
+class WavesManager {
+  +  <<event>> OnWaveCompleted : Action
+  +  <<event>> OnWaveStarted : Action
+  +  <<event>> OnAllWavesCompleted : Action
+  + IsAllWavesCompleted : bool <<get>> = false
+  + CurrentWave : int <<get>> = 0
+  + Construct(EnemySpawner) : void
+  + StartGame() : void
+  + StartNextWave() : void
+  + StopCurrentWave() : void
+  + GetCurrentWave() : WaveConfigSO
+}
+class WaveConfigSO {
+  + WaveDuration : int = 20
+  + IsBossWave : bool = false
+  + GetSpawnInterval(EnemyStatsSO) : float
+  + GetEnemiesPerSpawn(EnemyStatsSO) : int
+  + GetMaxEnemiesInScene(EnemyStatsSO) : int
+}
+class WaveEntry {
+  + SpawnInterval : float = 2f
+  + EnemiesPerSpawn : int = 5
+  + MaxEnemiesInScene : int = 30
+  + maxEnemiesInScene : int <<get>> <<set>>
+}
+class "enemies::EnemyStatsSO" as EnemyStatsSO #EEEEEE
+class "enemies::Enemy" as Enemy #EEEEEE
+class ScriptableObject <<library>> #DDEBF7
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "enemies::Enemy\nflow::GameFlowState\nplayer::Player\nplayer::PlayerMovement\ncore_services::ShopService\ncore_boot::Bootstrap\nui_hud::WaveCounterUI\nui_hud::WaveTimerUI\n..." as IN_all_n <<names>>
+}
+ScriptableObject <|-- WaveConfigSO
+MonoBehaviour <|-- WavesManager
+class "core_boot::SceneLifetimeScope" as SceneLifetimeScope #EEEEEE
+SceneLifetimeScope ..> EnemyRegistry : <<registers>>
+WaveConfigSO *-- "0..*" WaveEntry
+WavesManager --> EnemySpawner
+EnemySpawner ..> WaveEntry
+EnemySpawner --> EnemyRegistry
+WavesManager ..> WaveConfigSO
+WaveEntry --> EnemyStatsSO
+EnemyRegistry o-- "0..*" Enemy
+WaveConfigSO ..> EnemyStatsSO
+EnemyRegistry ..> EnemyStatsSO
+IN_all ..> WavesManager
+@enduml

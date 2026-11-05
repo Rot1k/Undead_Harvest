@@ -1,0 +1,51 @@
+@startuml
+skinparam dpi 220
+skinparam maxMessageSize 110
+skinparam ParticipantPadding 2
+autonumber
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "Unity Engine" as Unity
+participant ":SceneLifetimeScope" as Scope
+participant "builder\n:IContainerBuilder" as Builder
+participant "container\n:IObjectResolver" as Container
+participant ":Bootstrap" as Boot
+participant ":Player" as Player
+participant ":WeaponsHolder" as WH
+participant ":UIBootstrap" as UI
+participant ":StateMachine" as SM
+
+Unity -> Scope : Awake() / Start()
+activate Scope
+Scope -> Scope : Configure(builder)
+activate Scope
+Scope -> Builder : RegisterComponent(Player, WavesManager, ...)
+Scope -> Builder : Register<StateMachine, States, Services>(Singleton)
+Scope -> Builder : Register<EnemyRegistry>(Singleton)
+Scope -> Builder : RegisterEntryPoint<Bootstrap>()
+deactivate Scope
+
+Unity -> Builder : Build()
+Builder -> Container : Create()
+activate Container
+
+Container -> Container : InjectGameObject(player, sceneRoots)
+Container -> Boot : create(dependencies...)
+activate Boot
+Container -> Boot : Start()
+
+Boot -> Player : Initialize()
+Boot -> WH : Initialize(equipmentManager, player, wavesManager)
+Boot -> UI : Initialize()
+
+Boot -> SM : Register(StartingState, WaveState, ...)
+Boot -> SM : ChangeState<StartingState>()
+activate SM
+SM --> Boot
+deactivate SM
+
+deactivate Boot
+deactivate Container
+deactivate Scope
+@enduml

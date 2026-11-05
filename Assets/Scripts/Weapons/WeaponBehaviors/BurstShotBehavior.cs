@@ -14,7 +14,8 @@ public class BurstShotBehavior : IWeaponBehavior
         for (int i = 0; i < burstCount; i++)
         {
             PlayerBullet bullet = NightPool.Spawn(context.BulletPrefab, firePoint.position, Quaternion.identity);
-            bullet.Setup(shootDirection, context.Damage, context.BulletSpeed, weapon);
+            float bulletBaseDamage = context.Damage / burstCount;
+            bullet.Setup(shootDirection, weapon.CalculateDamage(bulletBaseDamage), context.BulletSpeed, weapon);
             yield return new WaitForSeconds(0.1f);
         }
     }

@@ -1,0 +1,108 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class Bootstrap {
+  + Bootstrap(Player, WavesManager, ...13 парам.)
+  + Dispose() : void
+}
+class Loader <<static>> {
+  + {static}  <<event>> OnAfterSceneLoad : Action
+  + {static} Load(Scene) : void
+  + {static} LoaderCallback() : void
+}
+class LoaderCallback
+enum Scene <<enumeration>> {
+  MainMenuScene
+  GameScene
+  LoadingScene
+}
+class PauseManager <<sealed>> {
+  + PauseCount : int <<get>>
+  + IsPaused : bool <<get>>
+  + PauseManager()
+  + Pause() : void
+  + Unpause() : void
+}
+class GlobalLifetimeScope {
+  # <<override>> Configure(IContainerBuilder) : void
+}
+class MainMenuLifetimeScope {
+  # <<override>> Configure(IContainerBuilder) : void
+}
+class SceneLifetimeScope {
+  # <<override>> Configure(IContainerBuilder) : void
+}
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "weapons::WeaponsHolder" as WeaponsHolder #EEEEEE
+class "ui_hud::UIBootstrap" as UIBootstrap #EEEEEE
+class "input::GameInput" as GameInput #EEEEEE
+class "ui_results::WaveEndWindow" as WaveEndWindow #EEEEEE
+interface IStartable <<interface>> <<library>> #DDEBF7
+interface IDisposable <<interface>> <<library>> #DDEBF7
+class MonoBehaviour <<library>> #DDEBF7
+class LifetimeScope <<library>> #DDEBF7
+package "player" as OUT_player #EEEEEE {
+  class "Player\nPlayerDamageReceiver\nPlayerAnimation" as OUT_player_n <<names>>
+}
+package "flow" as OUT_flow #EEEEEE {
+  class "StateMachine\nStartingState\nWaveState\nWaveEndState\nLevelUpState\n..." as OUT_flow_n <<names>>
+}
+package "core_services" as OUT_core_services #EEEEEE {
+  class "MasterVolumeManager\nBackgroundMusicManager\nSoundManager\nWalletManager" as OUT_core_services_n <<names>>
+}
+package "інші пакети" as IN_all #EEEEEE {
+  class "ui_menu::MenuUI\nui_menu::TutorialUI" as IN_all_n <<names>>
+}
+IStartable <|.. Bootstrap
+IDisposable <|.. Bootstrap
+MonoBehaviour <|-- LoaderCallback
+LifetimeScope <|-- GlobalLifetimeScope
+LifetimeScope <|-- MainMenuLifetimeScope
+LifetimeScope <|-- SceneLifetimeScope
+Bootstrap ..> OUT_player
+SceneLifetimeScope ..> OUT_player
+Bootstrap --> WavesManager
+SceneLifetimeScope --> WavesManager
+Bootstrap --> EquipmentManager
+SceneLifetimeScope --> EquipmentManager
+Bootstrap --> WeaponsHolder
+SceneLifetimeScope --> WeaponsHolder
+Bootstrap --> UIBootstrap
+SceneLifetimeScope --> UIBootstrap
+Bootstrap ..> OUT_flow
+GlobalLifetimeScope --> GameInput
+GlobalLifetimeScope ..> OUT_core_services
+SceneLifetimeScope ..> OUT_core_services
+SceneLifetimeScope --> WaveEndWindow
+IN_all ..> PauseManager
+@enduml

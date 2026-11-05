@@ -1,0 +1,88 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class WaveEndWindow {
+  +  <<event>> OnWaveMessageHidden : Action
+  +  <<event>> OnFinalWaveMessageHidden : Action
+  +  <<event>> OnPlayerDeathMessageHidden : Action
+  + Initialize() : void
+  + ShowWaveCompleted(int, bool) : void
+  + ShowPlayerDied() : void
+}
+class WinLoseWindowUI {
+  + Construct(SoundManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + ShowWin() : void
+  + ShowLose() : void
+}
+class StatsTableUI {
+  + Construct(Player) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class StatUI {
+  + Initialize(PlayerStats, PlayerStatsSO) : void
+}
+class ItemsInventoryStatisticsUI
+class WeaponsStatisticsUI {
+  + Construct(EquipmentManager) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "ui_inventory::WeaponsInventoryUI" as WeaponsInventoryUI #EEEEEE
+class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
+class "core_services::SoundManager" as SoundManager #EEEEEE
+class "player::Player" as Player #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "flow::WaveEndState\nflow::GameOverState\nflow::VictoryState\nui_hud::UIBootstrap\ncore_boot::SceneLifetimeScope" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- ItemsInventoryStatisticsUI
+MonoBehaviour <|-- StatsTableUI
+MonoBehaviour <|-- StatUI
+MonoBehaviour <|-- WaveEndWindow
+MonoBehaviour <|-- WeaponsStatisticsUI
+MonoBehaviour <|-- WinLoseWindowUI
+StatsTableUI --> PlayerStatsSO
+StatsTableUI --> PlayerStats
+StatUI --> PlayerStats
+StatUI --> PlayerStatsSO
+WeaponsStatisticsUI --> WeaponsInventoryUI
+WeaponsStatisticsUI --> EquipmentManager
+WinLoseWindowUI --> SoundManager
+StatsTableUI ..> Player
+IN_all ..> WaveEndWindow
+IN_all ..> WinLoseWindowUI
+@enduml

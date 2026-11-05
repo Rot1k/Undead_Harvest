@@ -1,0 +1,68 @@
+@startuml
+skinparam dpi 220
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+actor "Гравець" as Player
+
+rectangle "Відеогра «Undead Harvest»" {
+    
+    package "Головне меню та налаштування" {
+        usecase "Почати нову гру" as UC_StartGame
+        usecase "Налаштувати аудіо" as UC_Settings
+        usecase "Переглянути інструкцію\n(Tutorial)" as UC_Tutorial
+    }
+
+    package "Ігровий процес (Бойова фаза)" {
+        usecase "Керувати переміщенням\nперсонажа" as UC_Move
+        usecase "Відбивати хвилю ворогів" as UC_SurviveWave
+        usecase "Атакувати ворогів зброєю" as UC_Attack
+        usecase "Збирати монети та досвід" as UC_CollectExp
+        usecase "Поставити гру на паузу" as UC_Pause
+        usecase "Завершити гру поразкою\n(GameOver)" as UC_GameOver
+    }
+
+    package "Розвиток та економіка" {
+        usecase "Отримати новий рівень\n(Level Up)" as UC_LevelUp
+        usecase "Вибрати картку покращення\nхарактеристики" as UC_PickStatCard
+        usecase "Взаємодіяти з магазином\n(Shop)" as UC_Shop
+        usecase "Купити предмет / зброю" as UC_BuyItem
+        usecase "Продати предмет / зброю" as UC_SellItem
+        usecase "Об'єднати дві зброї\n(Weapon Union)" as UC_UnionWeapon
+        usecase "Оновити асортимент\n(Reroll)" as UC_Reroll
+        usecase "Заблокувати слот товару\n(Lock)" as UC_LockItem
+        usecase "Переглянути статистику\nперсонажа" as UC_ViewStats
+    }
+
+    ' Зв'язки гравця з базовими сценаріями
+    Player --> UC_StartGame
+    Player --> UC_Settings
+    Player --> UC_Tutorial
+    Player --> UC_Move
+    Player --> UC_SurviveWave
+    Player --> UC_Pause
+    Player --> UC_ViewStats
+
+    ' Включення (include) у бойовій фазі
+    UC_SurviveWave ..> UC_Attack : <<include>>
+    UC_SurviveWave ..> UC_CollectExp : <<include>>
+
+    ' Розширення (extend) у бойовій фазі
+    UC_GameOver ..> UC_SurviveWave : <<extend>>\n(здоров'я = 0)
+    UC_LevelUp ..> UC_CollectExp : <<extend>>\n(досвід >= ліміту)
+
+    ' Розвиток
+    UC_LevelUp ..> UC_PickStatCard : <<include>>
+    
+    ' Магазин
+    Player --> UC_Shop
+    UC_Shop <|-- UC_BuyItem
+    UC_Shop <|-- UC_SellItem
+    UC_Shop <|-- UC_UnionWeapon
+    UC_Shop <|-- UC_Reroll
+    
+    UC_LockItem ..> UC_Reroll : <<extend>>
+}
+@enduml

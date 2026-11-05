@@ -4,7 +4,11 @@ public static class CombatSystem
 {
     public static float CalculateDamage(PlayerStats playerStats, WeaponSO weaponStats)
     {
-        float baseDamage = weaponStats.BaseDamage;
+        return CalculateDamage(playerStats, weaponStats, weaponStats.BaseDamage);
+    }
+
+    public static float CalculateDamage(PlayerStats playerStats, WeaponSO weaponStats, float baseDamage)
+    {
         float scalingDamage;
         if (weaponStats.ScalingStats != null && weaponStats.ScalingStats.Count > 0)
         {

@@ -1,0 +1,109 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class Player <<sealed>> {
+  + Construct(WavesManager, GameInput, SoundManager) : void
+  + Initialize() : void
+}
+class PlayerAnimation {
+  + Construct(SoundManager) : void
+  + Initialize(Player) : void
+  + Dispose() : void
+}
+class PlayerDamageReceiver {
+  + Initialize(Player) : void
+  + Dispose() : void
+}
+class PlayerHealthSystem {
+  + PlayerHealthSystem(PlayerStats)
+  + Tick(float) : void
+  + Dispose() : void
+}
+class PlayerLevelSystem {
+  + PlayerLevelSystem(PlayerStats, SoundManager)
+  + SetSoundManager(SoundManager) : void
+  + Dispose() : void
+  + AddExp(float) : void
+}
+class PlayerMovement {
+  + IsWalking : bool <<get>>
+  + PlayerMovement(Rigidbody2D, SpriteRenderer, ...4 парам.)
+  + Dispose() : void
+  + Tick() : void
+  + GetInput() : Vector2
+}
+interface "player_systems::IDamageable" as IDamageable <<interface>> #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "effects::StatusEffectsListSO" as StatusEffectsListSO #EEEEEE
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "input::GameInput" as GameInput #EEEEEE
+class "core_services::SoundManager" as SoundManager #EEEEEE
+class "player_systems::HealthSystem" as HealthSystem #EEEEEE
+class "player_systems::LevelSystem" as LevelSystem #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "flow::GameFlowState\nplayer_systems::ItemCollector\nplayer_systems::ItemMagnet\ncore_boot::Bootstrap\nweapons::Weapon\nweapons::WeaponsHolder\ncore_boot::SceneLifetimeScope\nui_hud::HealthBarUI\n..." as IN_all_n <<names>>
+}
+MonoBehaviour <|-- Player
+IDamageable <|.. Player
+MonoBehaviour <|-- PlayerAnimation
+MonoBehaviour <|-- PlayerDamageReceiver
+IDamageable <|.. PlayerHealthSystem
+Player --> PlayerMovement
+Player --> PlayerLevelSystem
+Player --> PlayerHealthSystem
+PlayerAnimation --> Player
+PlayerDamageReceiver --> Player
+PlayerMovement --> PlayerHealthSystem
+Player --> PlayerStatsSO
+Player --> PlayerStats
+PlayerHealthSystem --> PlayerStats
+PlayerLevelSystem --> PlayerStats
+PlayerMovement --> PlayerStats
+Player --> StatusEffectsListSO
+Player --> WavesManager
+PlayerMovement --> WavesManager
+Player --> GameInput
+PlayerMovement --> GameInput
+Player --> SoundManager
+PlayerAnimation --> SoundManager
+PlayerLevelSystem --> SoundManager
+Player --> HealthSystem
+PlayerDamageReceiver --> HealthSystem
+PlayerHealthSystem --> HealthSystem
+PlayerLevelSystem --> LevelSystem
+IN_all ..> Player
+IN_all ..> PlayerDamageReceiver
+IN_all ..> PlayerAnimation
+IN_all ..> PlayerMovement
+@enduml

@@ -1,0 +1,160 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class GameInput {
+  +  <<event>> OnPause : Action
+  +  <<event>> OnCancel : Action
+  + MovementVector : Vector2
+  + DisableAllControls() : void
+}
+class PlayerInputActions {
+  + asset : InputActionAsset
+  + bindingMask : InputBinding
+  + devices : ReadOnlyArray<InputDevice>
+  + controlSchemes : ReadOnlyArray<InputControlScheme>
+  + bindings : IEnumerable<InputBinding>
+  + m_Player : InputActionMap
+  + m_Player_Move : InputAction
+  + m_Player_Look : InputAction
+  + m_Player_Attack : InputAction
+  + m_Player_Interact : InputAction
+  + m_Player_Crouch : InputAction
+  + m_Player_Jump : InputAction
+  + m_Player_Previous : InputAction
+  + m_Player_Next : InputAction
+  + m_Player_Sprint : InputAction
+  + m_UI : InputActionMap
+  + m_UI_Navigate : InputAction
+  + m_UI_Submit : InputAction
+  + m_UI_Cancel : InputAction
+  + m_UI_Point : InputAction
+  + m_UI_Click : InputAction
+  + m_UI_RightClick : InputAction
+  + m_UI_MiddleClick : InputAction
+  + m_UI_ScrollWheel : InputAction
+  + m_UI_TrackedDevicePosition : InputAction
+  + m_UI_TrackedDeviceOrientation : InputAction
+  + m_UI_Pause : InputAction
+  + KeyboardMouseScheme : InputControlScheme
+  + GamepadScheme : InputControlScheme
+  + TouchScheme : InputControlScheme
+  + JoystickScheme : InputControlScheme
+  + XRScheme : InputControlScheme
+  + @PlayerInputActions()
+  + Dispose() : void
+  + Contains(InputAction) : bool
+  + GetEnumerator() : IEnumerator<InputAction>
+  + Enable() : void
+  + Disable() : void
+  + FindAction(string, bool) : InputAction
+  + FindBinding(InputBinding, InputAction) : int
+}
+class PlayerActions <<struct>> {
+  + enabled : bool <<get>>
+  + m_Wrapper : @PlayerInputActions
+  + @Move : InputAction
+  + @Look : InputAction
+  + @Attack : InputAction
+  + @Interact : InputAction
+  + @Crouch : InputAction
+  + @Jump : InputAction
+  + @Previous : InputAction
+  + @Next : InputAction
+  + @Sprint : InputAction
+  + PlayerActions(@PlayerInputActions)
+  + Get() : InputActionMap
+  + Enable() : void
+  + Disable() : void
+  + AddCallbacks(IPlayerActions) : void
+  + RemoveCallbacks(IPlayerActions) : void
+  + SetCallbacks(IPlayerActions) : void
+}
+class UIActions <<struct>> {
+  + enabled : bool <<get>>
+  + m_Wrapper : @PlayerInputActions
+  + @Navigate : InputAction
+  + @Submit : InputAction
+  + @Cancel : InputAction
+  + @Point : InputAction
+  + @Click : InputAction
+  + @RightClick : InputAction
+  + @MiddleClick : InputAction
+  + @ScrollWheel : InputAction
+  + @TrackedDevicePosition : InputAction
+  + @TrackedDeviceOrientation : InputAction
+  + @Pause : InputAction
+  + UIActions(@PlayerInputActions)
+  + Get() : InputActionMap
+  + Enable() : void
+  + Disable() : void
+  + AddCallbacks(IUIActions) : void
+  + RemoveCallbacks(IUIActions) : void
+  + SetCallbacks(IUIActions) : void
+}
+interface IPlayerActions <<interface>> {
+  OnMove(InputAction.CallbackContext) : void
+  OnLook(InputAction.CallbackContext) : void
+  OnAttack(InputAction.CallbackContext) : void
+  OnInteract(InputAction.CallbackContext) : void
+  OnCrouch(InputAction.CallbackContext) : void
+  OnJump(InputAction.CallbackContext) : void
+  OnPrevious(InputAction.CallbackContext) : void
+  OnNext(InputAction.CallbackContext) : void
+  OnSprint(InputAction.CallbackContext) : void
+}
+interface IUIActions <<interface>> {
+  OnNavigate(InputAction.CallbackContext) : void
+  OnSubmit(InputAction.CallbackContext) : void
+  OnCancel(InputAction.CallbackContext) : void
+  OnPoint(InputAction.CallbackContext) : void
+  OnClick(InputAction.CallbackContext) : void
+  OnRightClick(InputAction.CallbackContext) : void
+  OnMiddleClick(InputAction.CallbackContext) : void
+  OnScrollWheel(InputAction.CallbackContext) : void
+  OnTrackedDevicePosition(InputAction.CallbackContext) : void
+  OnTrackedDeviceOrientation(InputAction.CallbackContext) : void
+  OnPause(InputAction.CallbackContext) : void
+}
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "player::Player\nplayer::PlayerMovement\nui_menu::MenuUI\nui_menu::SettingsUI\ncore_boot::GlobalLifetimeScope" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- GameInput
+PlayerInputActions o-- "0..*" IPlayerActions
+PlayerInputActions *-- PlayerActions
+PlayerInputActions o-- "0..*" IUIActions
+PlayerInputActions *-- UIActions
+GameInput --> PlayerInputActions
+PlayerActions ..> IPlayerActions
+UIActions ..> IUIActions
+IN_all ..> GameInput
+@enduml
