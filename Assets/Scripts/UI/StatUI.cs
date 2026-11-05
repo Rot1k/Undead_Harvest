@@ -1,3 +1,5 @@
+using System;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,52 +12,26 @@ public class StatUI : MonoBehaviour
     [SerializeField] private Image _icon;
     private PlayerStats _playerStats;
     private PlayerStatsSO _statsSO;
-    private bool _subscribed;
+    private IDisposable _statSubscription;
 
     public void Initialize(PlayerStats playerStats, PlayerStatsSO statsSO)
     {
-        Unsubscribe();
+        _statSubscription?.Dispose();
         _playerStats = playerStats;
         _statsSO = statsSO;
 
         _icon.sprite = _statsSO.GetIcon(_type);
         if (_playerStats != null)
-            _valueText.text = _playerStats.Get(_type).ToString("0.##");
+            _statSubscription = _playerStats.Observe(_type).Subscribe(value => OnStatChanged(value));
+    }
 
-        Subscribe();
-    }
-    private void OnEnable()
+    private void OnDestroy()
     {
-        Subscribe();
+        _statSubscription?.Dispose();
     }
-    private void OnDisable()
-    {
-        Unsubscribe();
-    }
-    private void Subscribe()
-    {
-        if (_playerStats != null && !_subscribed)
-        {
-            _playerStats.OnStatChanged += OnStatChanged;
-            _subscribed = true;
-        }
-    }
-    private void Unsubscribe()
-    {
-        if (_playerStats != null && _subscribed)
-        {
-            _playerStats.OnStatChanged -= OnStatChanged;
-            _subscribed = false;
-        }
-    }
-    private void OnStatChanged(StatType type, float newValue)
-    {
-        if (type != _type) return;
-        if (type == StatType.MaxHealth)
-        {
-            _valueText.text = newValue.ToString("0");
-        }
 
-        _valueText.text = newValue.ToString("0.##");
+    private void OnStatChanged(float newValue)
+    {
+        _valueText.text = newValue.ToString(_type == StatType.MaxHealth ? "0" : "0.##");
     }
 }

@@ -37,7 +37,7 @@ public sealed class EnemySpawner
         float elapsedTime = 0f;
         yield return new WaitForSeconds(2f);
 
-        while (waveDuration <= 0f || elapsedTime < waveDuration)
+        while (waveDuration < 0f || elapsedTime < waveDuration)
         {
             for (int i = 0; i < entry.EnemiesPerSpawn; i++)
             {

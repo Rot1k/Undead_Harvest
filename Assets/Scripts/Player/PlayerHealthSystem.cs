@@ -1,3 +1,5 @@
+using System;
+using R3;
 using UnityEngine;
 
 public class PlayerHealthSystem : IDamageable
@@ -9,14 +11,20 @@ public class PlayerHealthSystem : IDamageable
     private float _healthRegen;
     private float _regenAccumulator = 0f;
     private bool _isInitialized;
+    private readonly IDisposable _maxHealthSubscription;
+    private readonly IDisposable _healthRegenSubscription;
 
     public PlayerHealthSystem(PlayerStats playerStats)
     {
         _playerStats = playerStats;
-        _playerStats.OnStatChanged += OnStatChanged;
         HealthSystem = new HealthSystem(MaxHealth);
         _healthRegen = _playerStats.Get(StatType.HealthRegen);
         _isInitialized = true;
+
+        _maxHealthSubscription = _playerStats.Observe(StatType.MaxHealth)
+            .Subscribe(value => HealthSystem.SetMaxHealth(Mathf.RoundToInt(value), true));
+        _healthRegenSubscription = _playerStats.Observe(StatType.HealthRegen)
+            .Subscribe(value => _healthRegen = value);
     }
 
     public void Tick(float deltaTime)
@@ -40,18 +48,7 @@ public class PlayerHealthSystem : IDamageable
 
     public void Dispose()
     {
-        if (_playerStats != null)
-            _playerStats.OnStatChanged -= OnStatChanged;
-    }
-    private void OnStatChanged(StatType type, float newValue)
-    {
-        if (type == StatType.MaxHealth)
-        {
-            HealthSystem.SetMaxHealth(MaxHealth, true);
-        }
-        if (type == StatType.HealthRegen)
-        {
-            _healthRegen = newValue;
-        }
+        _maxHealthSubscription?.Dispose();
+        _healthRegenSubscription?.Dispose();
     }
 }

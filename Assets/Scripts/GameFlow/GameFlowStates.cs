@@ -112,18 +112,22 @@ public sealed class WaveEndState : GameFlowState
 public sealed class LevelUpState : GameFlowState
 {
     private readonly LevelUpWindowUI _levelUpWindow;
+    private readonly PauseManager _pauseManager;
 
     public LevelUpState(
         WavesManager wavesManager,
         Player player,
-        LevelUpWindowUI levelUpWindow)
+        LevelUpWindowUI levelUpWindow,
+        PauseManager pauseManager)
         : base(wavesManager, player)
     {
         _levelUpWindow = levelUpWindow;
+        _pauseManager = pauseManager;
     }
 
     public override void Enter()
     {
+        _pauseManager.Pause();
         _levelUpWindow.OnCompleted += OnCompleted;
         _levelUpWindow.Show();
     }
@@ -132,6 +136,7 @@ public sealed class LevelUpState : GameFlowState
     {
         _levelUpWindow.OnCompleted -= OnCompleted;
         _levelUpWindow.Hide();
+        _pauseManager.Unpause();
     }
 
     private void OnCompleted()
@@ -144,20 +149,24 @@ public sealed class ShopState : GameFlowState
 {
     private readonly ShopUI _shopUI;
     private readonly HUDUI _hudUI;
+    private readonly PauseManager _pauseManager;
 
     public ShopState(
         WavesManager wavesManager,
         Player player,
         ShopUI shopUI,
-        HUDUI hudUI)
+        HUDUI hudUI,
+        PauseManager pauseManager)
         : base(wavesManager, player)
     {
         _shopUI = shopUI;
         _hudUI = hudUI;
+        _pauseManager = pauseManager;
     }
 
     public override void Enter()
     {
+        _pauseManager.Pause();
         _hudUI.Hide();
         _shopUI.OnClosed += OnClosed;
         _shopUI.Show();
@@ -165,8 +174,13 @@ public sealed class ShopState : GameFlowState
 
     public override void Exit()
     {
-        _shopUI.OnClosed -= OnClosed;
-        _hudUI.Show();
+        if (_shopUI != null)
+            _shopUI.OnClosed -= OnClosed;
+
+        if (_hudUI != null)
+            _hudUI.Show();
+
+        _pauseManager.Unpause();
     }
 
     private void OnClosed()

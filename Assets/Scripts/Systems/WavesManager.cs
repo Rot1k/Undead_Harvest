@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
-using static WaveConfigSO;
 
 
 public class WavesManager : MonoBehaviour
@@ -98,17 +96,23 @@ public class WavesManager : MonoBehaviour
         {
             var routine = StartCoroutine(_enemySpawner.SpawnRoutine(
                 entry,
-                wave.WaveDuration,
+                wave.IsBossWave || wave.WaveDuration < 0 ? -1f : wave.WaveDuration,
                 _playerTransform,
                 _mapMin,
                 _mapMax,
                 _spawnRadiusFromPlayer,
-                EndCurrentWave));
+                wave.IsBossWave ? EndCurrentWave : null));
             _spawnCoroutines.Add(routine);
             yield return new WaitForSeconds(0.5f);
         }
 
-        if (wave.WaveDuration <= 0)
+        if (wave.IsBossWave || wave.WaveDuration < 0)
+        {
+            while (true)
+                yield return null;
+        }
+
+        if (wave.WaveDuration == 0)
         {
             EndCurrentWave();
             yield break;

@@ -41,6 +41,7 @@ public class WeaponsHolder : MonoBehaviour
         _equipmentManager.OnWeaponUnequipped += DespawnWeapon;
 
         _wavesManager.OnWaveCompleted += ResetWeapons;
+        _wavesManager.OnWaveStarted += ResetWeapons;
 
         // Spawn any weapons that were equipped before this holder initialized
         for (int i = 0; i < _equipmentManager.MaxWeapons; i++)
@@ -61,6 +62,7 @@ public class WeaponsHolder : MonoBehaviour
         _equipmentManager.OnWeaponUnequipped -= DespawnWeapon;
 
         _wavesManager.OnWaveCompleted -= ResetWeapons;
+        _wavesManager.OnWaveStarted -= ResetWeapons;
     }
 
     private void SpawnWeapon(int slot, WeaponSO weapon)

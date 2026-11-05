@@ -25,5 +25,5 @@ MonoBehaviour:
     SpawnInterval: 3
     EnemiesPerSpawn: 2
     maxEnemiesInScene: 30
-  WaveDuration: 20
+  WaveDuration: -1
   IsBossWave: 1

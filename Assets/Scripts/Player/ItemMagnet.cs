@@ -1,3 +1,5 @@
+using System;
+using R3;
 using UnityEngine;
 using VContainer;
 
@@ -8,6 +10,7 @@ public class ItemMagnet : MonoBehaviour
 
     [SerializeField] private CircleCollider2D _coinPickupCollider;
     [SerializeField] private CircleCollider2D _itemPickupCollider;
+    private IDisposable _pickupRangeSubscription;
 
     [Inject]
     public void Construct(Player player)
@@ -15,21 +18,17 @@ public class ItemMagnet : MonoBehaviour
         _player = player;
     }
 
-    private float _currentPickupRange => _playerStats.Get(StatType.ItemPickupRange);
     private float _currentMoveSpeed => _playerStats.Get(StatType.MoveSpeed);
 
     private void Start()
     {
-        _playerStats.OnStatChanged += OnStatChanged;
-        OnStatChanged(StatType.ItemPickupRange, _currentPickupRange);
+        _pickupRangeSubscription = _playerStats.Observe(StatType.ItemPickupRange)
+            .Subscribe(value => UpdatePickupRange(value));
     }
 
     private void OnDestroy()
     {
-        if (_player != null)
-        {
-            _playerStats.OnStatChanged -= OnStatChanged;
-        }
+        _pickupRangeSubscription?.Dispose();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,10 +38,9 @@ public class ItemMagnet : MonoBehaviour
             collectible.StartAttraction(transform, _currentMoveSpeed * 1.3f);
         }
     }
-    private void OnStatChanged(StatType type, float value)
+    private void UpdatePickupRange(float value)
     {
-        if (type == StatType.ItemPickupRange)
-        _coinPickupCollider.radius = _currentPickupRange;
-        _itemPickupCollider.radius = _currentPickupRange * 1.1f;
+        _coinPickupCollider.radius = value;
+        _itemPickupCollider.radius = value * 1.1f;
     }
 }

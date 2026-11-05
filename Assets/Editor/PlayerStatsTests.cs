@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using R3;
 using UnityEngine;
 
 public class PlayerStatsTests
@@ -44,5 +45,17 @@ public class PlayerStatsTests
         _playerStats.SetBaseStat(StatType.AttackDamage, -10);
 
         Assert.That(_playerStats.Get(StatType.AttackDamage), Is.EqualTo(-10));
+    }
+
+    [Test]
+    public void Observe_AfterStatChanged_ImmediatelyEmitsCurrentValue()
+    {
+        _playerStats.SetBaseStat(StatType.MaxHealth, 150);
+        float observedValue = 0;
+
+        using var subscription = _playerStats.Observe(StatType.MaxHealth)
+            .Subscribe(value => observedValue = value);
+
+        Assert.That(observedValue, Is.EqualTo(150));
     }
 }

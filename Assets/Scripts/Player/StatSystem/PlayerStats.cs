@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
+using R3;
 using UnityEngine;
 
 public sealed class PlayerStats : IDisposable
 {
-    public event Action<StatType, float> OnStatChanged;
-
     private readonly PlayerStatsSO _baseStats;
     private readonly StatusEffectsListSO _effects;
 
     private readonly Dictionary<StatType, Stat> _stats = new();
     private readonly Dictionary<StatType, Action<float>> _statHandlers = new();
+    private readonly Dictionary<StatType, ReactiveProperty<float>> _statValues = new();
 
     public PlayerStatsSO StatsSO => _baseStats;
 
@@ -43,11 +43,13 @@ public sealed class PlayerStats : IDisposable
                 continue;
 
             var stat = new Stat(entry.Type, entry.BaseValue); // Stat now knows its own type
-            Action<float> handler = (newValue) => OnStatChanged?.Invoke(entry.Type, newValue);
+            var statValue = new ReactiveProperty<float>(stat.CurrentValue);
+            Action<float> handler = _ => statValue.Value = stat.CurrentValue;
             stat.OnValueChanged += handler;
 
             _stats[entry.Type] = stat;
             _statHandlers[entry.Type] = handler;
+            _statValues[entry.Type] = statValue;
         }
     }
 
@@ -60,8 +62,15 @@ public sealed class PlayerStats : IDisposable
                 stat.OnValueChanged -= kv.Value;
             }
         }
+
+        foreach (var statValue in _statValues.Values)
+        {
+            statValue.Dispose();
+        }
+
         _statHandlers.Clear();
         _stats.Clear();
+        _statValues.Clear();
     }
 
     public void SetBaseStat(StatType type, float value)
@@ -107,6 +116,15 @@ public sealed class PlayerStats : IDisposable
 
         throw new KeyNotFoundException($"Stat {type} not found on Player.");
     }
+
+    public ReadOnlyReactiveProperty<float> Observe(StatType type)
+    {
+        if (_statValues.TryGetValue(type, out var statValue))
+            return statValue;
+
+        throw new KeyNotFoundException($"Stat {type} not found on Player.");
+    }
+
     public void TryApplyEffects(Enemy enemy)
     {
         if (enemy == null || _effects == null || _effects.StatusEffects == null)
