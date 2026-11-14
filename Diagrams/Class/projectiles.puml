@@ -52,6 +52,7 @@ class RangeWeaponContext {
   + Damage : float
   + FireRate : float
   + BulletSpeed : float
+  + BulletPrefab : PlayerBullet
 }
 interface IWeaponBehavior <<interface>> {
   Shoot(Weapon, Transform, ...2 парам.) : void
@@ -89,6 +90,9 @@ IWeaponBehavior ..> Weapon
 BurstShotBehavior ..> Weapon
 ShotgunBehavior ..> Weapon
 SingleShotBehavior ..> Weapon
+BurstShotBehavior ..> PlayerBullet : <<create>>
+ShotgunBehavior ..> PlayerBullet : <<create>>
+SingleShotBehavior ..> PlayerBullet : <<create>>
 Bullet ..> IDamageable
 EnemyBullet ..> IDamageable
 PlayerBullet ..> IDamageable

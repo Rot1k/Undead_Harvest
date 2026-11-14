@@ -38,7 +38,7 @@ class ShopUI {
   + Show() : void
 }
 class BuyWindow {
-  + IsLocked : bool <<get>> = false
+  + IsLocked : bool {get; private set;} = false
   + Construct(IShopService) : void
   + Initialize(InventoryItemsPoolSO, RarityConfigSO, PlayerStatsSO) : void
   + SetItem(InventoryItemSO) : void
@@ -51,11 +51,17 @@ class RollButtonUI {
   + Construct(WalletManager) : void
 }
 class ItemInfoController {
+  - _itemInfoUI : ItemInfoUI
+  - _playerStatsSO : PlayerStatsSO
+  - _currentSlot : InventorySlot
   + Toggle(InventorySlot) : void
   + Hide() : void
 }
 class ItemInfoUI {
-  + OnClose : Action
+  + <<event>> OnClose : Action
+  - _equipmentManager : EquipmentManager
+  - _shopService : IShopService
+  - _playerStatsSO : PlayerStatsSO
   + Construct(EquipmentManager, IShopService) : void
   + Initialize(PlayerStatsSO) : void
   + Close() : void

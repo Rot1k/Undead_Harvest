@@ -31,10 +31,15 @@ left to right direction
 hide empty members
 
 class Enemy {
-  +  <<event>> OnDied : Action<Enemy>
-  + IsDead : bool <<get>>
-  + Rigidbody : Rigidbody2D
-  + Player : Transform
+  + <<event>> OnDied : Action<Enemy>
+  + IsDead : bool {get;}
+  - _rigidbody : Rigidbody2D
+  - _healthSystem : HealthSystem
+  - _statusEffectsManager : StatusEffectsManager
+  - _wavesManager : WavesManager
+  - _enemyRegistry : EnemyRegistry
+  # Rigidbody : Rigidbody2D {get;}
+  + Player : Transform {get;}
   + Construct(WavesManager, IObjectResolver) : void
   # <<virtual>> OnDead(object, System.EventArgs) : void
   # MoveToPlayer() : void
@@ -107,11 +112,12 @@ BossEnemy --> BossEnemyStatsSO
 Enemy --> EnemyStatsSO
 EnemyVisual --> Enemy
 RangerEnemy --> RangerEnemyStatsSO
-BossEnemy --> Bullet
-RangerEnemy --> Bullet
-Enemy --> HealthSystem
+BossEnemy ..> Bullet : <<create>>
+RangerEnemy ..> Bullet : <<create>>
+Enemy *-- HealthSystem
+Enemy ..> HealthSystem : <<create>>
 EnemyVisual --> HealthSystem
-Enemy -- StatusEffectsManager
+Enemy <--> StatusEffectsManager : mutual reference
 Enemy ..> StatusEffectSO
 Enemy --> WavesManager
 Enemy --> EnemyRegistry

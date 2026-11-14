@@ -1,0 +1,93 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+class GameInput {
+  +  <<event>> OnPause : Action
+  +  <<event>> OnCancel : Action
+  + MovementVector : Vector2 {get;}
+  + DisableAllControls() : void
+}
+class PlayerInputActions {
+  + asset : InputActionAsset
+  + bindingMask : InputBinding
+  + devices : ReadOnlyArray<InputDevice>
+  ... (усього 32 атрибутів)
+  + PlayerInputActions()
+  + Dispose() : void
+  + Contains(InputAction) : bool
+  + GetEnumerator() : IEnumerator<InputAction>
+  ... (усього 8 методів)
+}
+class PlayerActions <<struct>> {
+  + enabled : bool {get;}
+  + m_Wrapper : PlayerInputActions
+  ... (усього 11 атрибутів)
+  + PlayerActions(PlayerInputActions)
+  + Get() : InputActionMap
+  + Enable() : void
+  ... (усього 7 методів)
+}
+class UIActions <<struct>> {
+  + enabled : bool {get;}
+  + m_Wrapper : PlayerInputActions
+  ... (усього 13 атрибутів)
+  + UIActions(PlayerInputActions)
+  + Get() : InputActionMap
+  + Enable() : void
+  ... (усього 7 методів)
+}
+interface IPlayerActions <<interface>> {
+  OnMove(InputAction.CallbackContext) : void
+  OnLook(InputAction.CallbackContext) : void
+  OnAttack(InputAction.CallbackContext) : void
+  ... (усього 9 методів)
+}
+interface IUIActions <<interface>> {
+  OnNavigate(InputAction.CallbackContext) : void
+  OnSubmit(InputAction.CallbackContext) : void
+  OnCancel(InputAction.CallbackContext) : void
+  ... (усього 11 методів)
+}
+class MonoBehaviour <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "player::Player\nplayer::PlayerMovement\nui_menu::MenuUI\nui_menu::SettingsUI\ncore_boot::GlobalLifetimeScope" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- GameInput
+PlayerInputActions o-- "0..*" IPlayerActions
+PlayerInputActions *-- PlayerActions
+PlayerInputActions o-- "0..*" IUIActions
+PlayerInputActions *-- UIActions
+GameInput --> PlayerInputActions
+PlayerActions ..> IPlayerActions
+UIActions ..> IUIActions
+IN_all ..> GameInput
+@enduml

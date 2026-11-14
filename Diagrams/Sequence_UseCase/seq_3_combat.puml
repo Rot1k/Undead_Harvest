@@ -25,20 +25,25 @@ loop FixedUpdate / Update
 end
 
 opt CanShoot() == true
-    Weapon -> Combat : CalculateDamage(playerStats, weaponSO)
+    Weapon -> Behavior : Shoot(this, firePoint, context, dir)
+    activate Behavior
+    
+    Behavior -> Weapon : CalculateDamage(bulletBaseDamage)
+    activate Weapon
+    Weapon -> Combat : CalculateDamage(playerStats, weaponSO, bulletBaseDamage)
     activate Combat
     Combat -> Stats : Get(StatType.AttackDamage, CritChance...)
     Stats --> Combat : statValues
     Combat --> Weapon : finalDamage
     deactivate Combat
+    Weapon --> Behavior : finalDamage
+    deactivate Weapon
 
-    Weapon -> Behavior : Shoot(firePoint, context, dir)
-    activate Behavior
-    Behavior -> Bullet : Spawn & Setup(dir, finalDamage, speed)
+    Behavior -> Bullet : Spawn & Setup(dir, finalDamage, speed, this)
     activate Bullet
     deactivate Behavior
 
-    ...політ снаряду...
+    ...Політ снаряда...
     Bullet -> Enemy : OnTriggerEnter2D(collision)
     Bullet -> Enemy : OnHit(IDamageable)
 

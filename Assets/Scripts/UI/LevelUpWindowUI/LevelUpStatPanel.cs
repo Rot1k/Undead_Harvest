@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelUpStatPanel : MonoBehaviour, IHaveRarity
+public class LevelUpStatPanel : MonoBehaviour
 {
     public Rarity Rarity { get; private set; }
     public StatType StatType { get; private set; }

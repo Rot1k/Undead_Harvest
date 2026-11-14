@@ -6,7 +6,3 @@ public enum Rarity
     Epic,
     Legendary
 }
-public interface IHaveRarity
-{
-    Rarity Rarity { get; }
-}

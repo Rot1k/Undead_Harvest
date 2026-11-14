@@ -1,0 +1,61 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 11
+skinparam classFontSize 11
+skinparam ArrowFontSize 10
+skinparam nodesep 14
+skinparam ranksep 22
+skinparam linetype polyline
+skinparam NoteBackgroundColor #F7F7F7
+skinparam NoteBorderColor #888888
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam class<<library>> {
+  BackgroundColor #DDEBF7
+}
+hide circle
+hide empty members
+left to right direction
+class "A7" as A7
+class "B7" as B7
+A7 *-- "0..*" B7 : КОМПОЗИЦІЯ: B7 створюється і знищується разом з A7
+class "A6" as A6
+class "B6" as B6
+A6 o-- "0..*" B6 : АГРЕГАЦІЯ: B6 існує і без A6
+interface "I5" as I5 <<interface>>
+class "C5" as C5
+I5 <|.. C5 : РЕАЛІЗАЦІЯ (C5 реалізує I5):\nпунктир, порожній трикутник
+class "A4" as A4
+class "B4" as B4
+A4 <|-- B4 : УСПАДКУВАННЯ (B4 успадковує A4):\nсуцільна лінія, порожній трикутник
+class "A3" as A3
+class "B3" as B3
+A3 ..> B3 : <<create>> СТВОРЕННЯ: пунктир + «create».\nA3 створює екземпляри B3 (new / Instantiate / пул)
+class "A2" as A2
+class "B2" as B2
+A2 ..> B2 : ЗАЛЕЖНІСТЬ: пунктир, відкрита стрілка.\nB2 лише використовується (параметр, виклик), посилання не зберігається
+class "A1" as A1
+class "B1" as B1
+A1 --> B1 : АСОЦІАЦІЯ: суцільна лінія, відкрита стрілка.\nA1 зберігає B1 (поле, властивість, ін'єкція в конструкторі)
+class "Власний клас діаграми" as Own
+class "pkg::Клас іншої діаграми" as Other #EEEEEE
+class "Тип рушія/бібліотеки" as Lib <<library>>
+class Example {
+  + openMember : int
+  # protectedMember : int
+  - privateMember : int
+  ~ internalMember : int
+  + Method() : void
+}
+note right of Example
+  <U+002B> public     <U+002D> private
+  <U+0023> protected  <U+007E> internal
+  {get;} лише читання
+  {get; private set;} читання ззовні, запис лише всередині
+end note
+@enduml

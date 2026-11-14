@@ -27,7 +27,7 @@ MonoBehaviour:
     Tags: 1
   - Name: Attack Damage
     Type: 2
-    BaseValue: 5
+    BaseValue: 0
     Icon: {fileID: 1453296145, guid: 9b67c21bc4d729249852b132d47b42af, type: 3}
     BaseIncreaseAmount: 0.5
     Tags: 1

@@ -1,0 +1,51 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam ranksep 18
+skinparam nodesep 12
+skinparam linetype polyline
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam class<<library>> {
+  BackgroundColor #DDEBF7
+  BorderColor #444444
+}
+skinparam package {
+  BackgroundColor #F4F4F4
+  BorderColor #444444
+}
+top to bottom direction
+hide empty members
+
+class MonoBehaviour <<library>>
+class LifetimeScope <<library>>
+class MainMenuLifetimeScope {
+  # Configure(IContainerBuilder) : void
+}
+class IContainerBuilder <<library>>
+class IObjectResolver <<library>>
+class GameObject <<library>>
+class MenuUI
+class MainMenuUI
+class SettingsUI
+class TutorialUI
+
+MonoBehaviour <|-- LifetimeScope
+LifetimeScope <|-- MainMenuLifetimeScope
+MainMenuLifetimeScope ..> IContainerBuilder : <<налаштовує контейнер>>
+MainMenuLifetimeScope ..> IObjectResolver : <<виконує ін’єкцію>>
+IObjectResolver ..> GameObject : <<ін’єктує всі кореневі об’єкти сцени>>
+GameObject --> MenuUI : містить компонент
+GameObject --> MainMenuUI : містить компонент
+GameObject --> SettingsUI : містить компонент
+GameObject --> TutorialUI : містить компонент
+MenuUI -[hidden]down-> MainMenuUI
+MainMenuUI -[hidden]down-> SettingsUI
+SettingsUI -[hidden]down-> TutorialUI
+@enduml

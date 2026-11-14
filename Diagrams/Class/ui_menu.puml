@@ -53,7 +53,10 @@ class TutorialUI {
   + Initialize() : void
 }
 class LevelUpWindowUI {
-  +  <<event>> OnCompleted : Action
+  + <<event>> OnCompleted : Action
+  - _player : Player
+  - _levelUpPanelsController : LevelUpPanelsController
+  + Player : Player {get;}
   + Construct(Player) : void
   + Initialize() : void
   + Dispose() : void
@@ -62,12 +65,13 @@ class LevelUpWindowUI {
   + TryRerollPanels() : void
 }
 class LevelUpPanelsController {
+  - _levelUpWindowUI : LevelUpWindowUI
   + Initialize(Player) : void
   + RerollPanels() : void
 }
 class LevelUpStatPanel {
-  + Rarity : Rarity
-  + StatType : StatType
+  + Rarity : Rarity {get; private set;}
+  + StatType : StatType {get; private set;}
   + Initialize(PlayerStatsSO, PlayerStats, ...2 парам.) : void
   + RerollPanel(Rarity, StatType) : void
 }
@@ -96,7 +100,7 @@ IHaveRarity <|.. LevelUpStatPanel
 MonoBehaviour <|-- LevelUpWindowUI
 MainMenuUI --> SettingsUI
 MainUI --> MenuUI
-LevelUpPanelsController -- LevelUpWindowUI
+LevelUpPanelsController <--> LevelUpWindowUI : controller / window
 LevelUpStatPanel --> LevelUpWindowUI
 MainUI ..> OUT_core_services
 SettingsUI ..> OUT_core_services

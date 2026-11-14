@@ -31,6 +31,21 @@ top to bottom direction
 hide empty members
 
 class Player <<sealed>> {
+  - _sprite : SpriteRenderer
+  - _baseStats : PlayerStatsSO
+  - _effects : StatusEffectsListSO
+  - _rigidbody : Rigidbody2D
+  - _wavesManager : WavesManager
+  - _gameInput : GameInput
+  - _soundManager : SoundManager
+  - _movement : PlayerMovement
+  - _level : PlayerLevelSystem
+  - _health : PlayerHealthSystem
+  + Stats : PlayerStats {get; private set;}
+  + Movement : PlayerMovement {get;}
+  + Level : PlayerLevelSystem {get;}
+  + Health : PlayerHealthSystem {get;}
+  + HealthSystem : HealthSystem {get;}
   + Construct(WavesManager, GameInput, SoundManager) : void
   + Initialize() : void
 }
@@ -44,18 +59,27 @@ class PlayerDamageReceiver {
   + Dispose() : void
 }
 class PlayerHealthSystem {
+  - _playerStats : PlayerStats
+  - _healthRegen : float
+  - _regenAccumulator : float
+  - _isInitialized : bool
+  + HealthSystem : HealthSystem {get; private set;}
   + PlayerHealthSystem(PlayerStats)
   + Tick(float) : void
   + Dispose() : void
 }
 class PlayerLevelSystem {
+  - _playerStats : PlayerStats
+  - _levelSystem : LevelSystem
+  - _soundManager : SoundManager
+  + LevelSystem : LevelSystem {get;}
   + PlayerLevelSystem(PlayerStats, SoundManager)
   + SetSoundManager(SoundManager) : void
   + Dispose() : void
   + AddExp(float) : void
 }
 class PlayerMovement {
-  + IsWalking : bool <<get>>
+  + IsWalking : bool {get;}
   + PlayerMovement(Rigidbody2D, SpriteRenderer, ...4 парам.)
   + Dispose() : void
   + Tick() : void
@@ -79,14 +103,19 @@ IDamageable <|.. Player
 MonoBehaviour <|-- PlayerAnimation
 MonoBehaviour <|-- PlayerDamageReceiver
 IDamageable <|.. PlayerHealthSystem
-Player --> PlayerMovement
-Player --> PlayerLevelSystem
-Player --> PlayerHealthSystem
+Player *-- PlayerMovement
+Player *-- PlayerLevelSystem
+Player *-- PlayerHealthSystem
+Player ..> PlayerMovement : <<create>>
+Player ..> PlayerLevelSystem : <<create>>
+Player ..> PlayerHealthSystem : <<create>>
 PlayerAnimation --> Player
 PlayerDamageReceiver --> Player
 PlayerMovement --> PlayerHealthSystem
-Player --> PlayerStatsSO
-Player --> PlayerStats
+Player *-- PlayerStats
+Player ..> PlayerStats : <<create>>SO
+Player *-- PlayerStats
+Player ..> PlayerStats : <<create>>
 PlayerHealthSystem --> PlayerStats
 PlayerLevelSystem --> PlayerStats
 PlayerMovement --> PlayerStats
@@ -100,8 +129,10 @@ PlayerAnimation --> SoundManager
 PlayerLevelSystem --> SoundManager
 Player --> HealthSystem
 PlayerDamageReceiver --> HealthSystem
-PlayerHealthSystem --> HealthSystem
-PlayerLevelSystem --> LevelSystem
+PlayerHealthSystem *-- HealthSystem
+PlayerHealthSystem ..> HealthSystem : <<create>>
+PlayerLevelSystem *-- LevelSystem
+PlayerLevelSystem ..> LevelSystem : <<create>>
 IN_all ..> Player
 IN_all ..> PlayerDamageReceiver
 IN_all ..> PlayerAnimation

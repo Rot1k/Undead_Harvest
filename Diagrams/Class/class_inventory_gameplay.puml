@@ -1,0 +1,83 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 9
+skinparam packageStyle rectangle
+skinparam linetype polyline
+left to right direction
+hide empty members
+title Ігрова логіка — повний перелік типів
+
+package "Collectible Items" {
+  class "ExpCoin" as T0_0
+  interface "ICollectible" as T0_1 <<interface>>
+}
+package "Combat" {
+  class "Bullet" as T1_0
+  class "EnemyBullet" as T1_1
+  interface "IDamageable" as T1_2 <<interface>>
+  class "PlayerBullet" as T1_3
+}
+package "Enemies" {
+  enum "AttackType" as T2_0 <<enumeration>>
+  class "BossEnemy" as T2_1
+  class "DashEnemy" as T2_2
+  class "EffectStack" as T2_3 <<struct>>
+  class "Enemy" as T2_4
+  class "EnemyVisual" as T2_5
+  class "RangerEnemy" as T2_6
+  class "StatusEffectInstance" as T2_7
+  class "StatusEffectsManager" as T2_8
+}
+package "Items" {
+  interface "IDescribableItem" as T3_0 <<interface>>
+  interface "IHaveRarity" as T3_1 <<interface>>
+  class "PassiveItemInstance" as T3_2
+  enum "Rarity" as T3_3 <<enumeration>>
+}
+package "Player" {
+  interface "IPlayerActions" as T4_0 <<interface>>
+  class "ItemCollector" as T4_1
+  class "ItemMagnet" as T4_2
+  interface "IUIActions" as T4_3 <<interface>>
+  enum "ModifierType" as T4_4 <<enumeration>>
+  class "Player" as T4_5
+  class "PlayerActions" as T4_6 <<struct>>
+  class "PlayerAnimation" as T4_7
+  class "PlayerInputActions" as T4_99
+  class "PlayerDamageReceiver" as T4_8
+  class "PlayerHealthSystem" as T4_9
+  class "PlayerLevelSystem" as T4_10
+  class "PlayerMovement" as T4_11
+  class "PlayerStats" as T4_12
+  class "Stat" as T4_13
+  class "StatModifier" as T4_14
+  enum "StatTag" as T4_15 <<enumeration>>
+  enum "StatType" as T4_16 <<enumeration>>
+  class "UIActions" as T4_17 <<struct>>
+}
+package "Weapons" {
+  class "BurstShotBehavior" as T5_0
+  interface "IWeaponBehavior" as T5_1 <<interface>>
+  class "MeeleWeapon" as T5_2
+  class "MeeleWeaponVisual" as T5_3
+  class "RangeWeapon" as T5_4
+  class "RangeWeaponAnimation" as T5_5
+  class "RangeWeaponContext" as T5_6
+  class "ShotgunBehavior" as T5_7
+  class "SingleShotBehavior" as T5_8
+  enum "MeeleWeaponState" as T5_9 <<enumeration>>
+  class "Weapon" as T5_10
+  class "WeaponsHolder" as T5_11
+  class "WeaponVisual" as T5_12
+}
+
+note bottom
+51 унікальне оголошень типів.
+Часткові класи об’єднано; згенерований PlayerInputActions.cs включено.
+end note
+@enduml

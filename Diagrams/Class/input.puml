@@ -33,116 +33,49 @@ hide empty members
 class GameInput {
   +  <<event>> OnPause : Action
   +  <<event>> OnCancel : Action
-  + MovementVector : Vector2
+  + MovementVector : Vector2 {get;}
   + DisableAllControls() : void
 }
 class PlayerInputActions {
   + asset : InputActionAsset
   + bindingMask : InputBinding
   + devices : ReadOnlyArray<InputDevice>
-  + controlSchemes : ReadOnlyArray<InputControlScheme>
-  + bindings : IEnumerable<InputBinding>
-  + m_Player : InputActionMap
-  + m_Player_Move : InputAction
-  + m_Player_Look : InputAction
-  + m_Player_Attack : InputAction
-  + m_Player_Interact : InputAction
-  + m_Player_Crouch : InputAction
-  + m_Player_Jump : InputAction
-  + m_Player_Previous : InputAction
-  + m_Player_Next : InputAction
-  + m_Player_Sprint : InputAction
-  + m_UI : InputActionMap
-  + m_UI_Navigate : InputAction
-  + m_UI_Submit : InputAction
-  + m_UI_Cancel : InputAction
-  + m_UI_Point : InputAction
-  + m_UI_Click : InputAction
-  + m_UI_RightClick : InputAction
-  + m_UI_MiddleClick : InputAction
-  + m_UI_ScrollWheel : InputAction
-  + m_UI_TrackedDevicePosition : InputAction
-  + m_UI_TrackedDeviceOrientation : InputAction
-  + m_UI_Pause : InputAction
-  + KeyboardMouseScheme : InputControlScheme
-  + GamepadScheme : InputControlScheme
-  + TouchScheme : InputControlScheme
-  + JoystickScheme : InputControlScheme
-  + XRScheme : InputControlScheme
-  + @PlayerInputActions()
+  ... (усього 32 атрибутів)
+  + PlayerInputActions()
   + Dispose() : void
   + Contains(InputAction) : bool
   + GetEnumerator() : IEnumerator<InputAction>
-  + Enable() : void
-  + Disable() : void
-  + FindAction(string, bool) : InputAction
-  + FindBinding(InputBinding, InputAction) : int
+  ... (усього 8 методів)
 }
 class PlayerActions <<struct>> {
-  + enabled : bool <<get>>
-  + m_Wrapper : @PlayerInputActions
-  + @Move : InputAction
-  + @Look : InputAction
-  + @Attack : InputAction
-  + @Interact : InputAction
-  + @Crouch : InputAction
-  + @Jump : InputAction
-  + @Previous : InputAction
-  + @Next : InputAction
-  + @Sprint : InputAction
-  + PlayerActions(@PlayerInputActions)
+  + enabled : bool {get;}
+  + m_Wrapper : PlayerInputActions
+  ... (усього 11 атрибутів)
+  + PlayerActions(PlayerInputActions)
   + Get() : InputActionMap
   + Enable() : void
-  + Disable() : void
-  + AddCallbacks(IPlayerActions) : void
-  + RemoveCallbacks(IPlayerActions) : void
-  + SetCallbacks(IPlayerActions) : void
+  ... (усього 7 методів)
 }
 class UIActions <<struct>> {
-  + enabled : bool <<get>>
-  + m_Wrapper : @PlayerInputActions
-  + @Navigate : InputAction
-  + @Submit : InputAction
-  + @Cancel : InputAction
-  + @Point : InputAction
-  + @Click : InputAction
-  + @RightClick : InputAction
-  + @MiddleClick : InputAction
-  + @ScrollWheel : InputAction
-  + @TrackedDevicePosition : InputAction
-  + @TrackedDeviceOrientation : InputAction
-  + @Pause : InputAction
-  + UIActions(@PlayerInputActions)
+  + enabled : bool {get;}
+  + m_Wrapper : PlayerInputActions
+  ... (усього 13 атрибутів)
+  + UIActions(PlayerInputActions)
   + Get() : InputActionMap
   + Enable() : void
-  + Disable() : void
-  + AddCallbacks(IUIActions) : void
-  + RemoveCallbacks(IUIActions) : void
-  + SetCallbacks(IUIActions) : void
+  ... (усього 7 методів)
 }
 interface IPlayerActions <<interface>> {
   OnMove(InputAction.CallbackContext) : void
   OnLook(InputAction.CallbackContext) : void
   OnAttack(InputAction.CallbackContext) : void
-  OnInteract(InputAction.CallbackContext) : void
-  OnCrouch(InputAction.CallbackContext) : void
-  OnJump(InputAction.CallbackContext) : void
-  OnPrevious(InputAction.CallbackContext) : void
-  OnNext(InputAction.CallbackContext) : void
-  OnSprint(InputAction.CallbackContext) : void
+  ... (усього 9 методів)
 }
 interface IUIActions <<interface>> {
   OnNavigate(InputAction.CallbackContext) : void
   OnSubmit(InputAction.CallbackContext) : void
   OnCancel(InputAction.CallbackContext) : void
-  OnPoint(InputAction.CallbackContext) : void
-  OnClick(InputAction.CallbackContext) : void
-  OnRightClick(InputAction.CallbackContext) : void
-  OnMiddleClick(InputAction.CallbackContext) : void
-  OnScrollWheel(InputAction.CallbackContext) : void
-  OnTrackedDevicePosition(InputAction.CallbackContext) : void
-  OnTrackedDeviceOrientation(InputAction.CallbackContext) : void
-  OnPause(InputAction.CallbackContext) : void
+  ... (усього 11 методів)
 }
 class MonoBehaviour <<library>> #DDEBF7
 package "інші пакети" as IN_all #EEEEEE {

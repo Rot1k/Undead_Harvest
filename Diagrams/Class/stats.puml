@@ -31,7 +31,11 @@ top to bottom direction
 hide empty members
 
 class PlayerStats <<sealed>> {
-  +  <<event>> OnStatChanged : Action<StatType, float>
+  + <<event>> OnStatChanged : Action<StatType, float>
+  - _baseStats : PlayerStatsSO
+  - _effects : StatusEffectsListSO
+  - _stats : Dictionary<StatType, Stat>
+  + StatsSO : PlayerStatsSO {get;}
   + PlayerStats(PlayerStatsSO, StatusEffectsListSO)
   + Initialize() : void
   + Dispose() : void
@@ -39,23 +43,27 @@ class PlayerStats <<sealed>> {
   + ApplyModifier(StatType, StatModifier) : Guid
   + RemoveModifiersFromSource(StatType, Guid) : void
   + Get(StatType) : float
-  + Observe(StatType) : Observable<float>
+  + Observe(StatType) : ReadOnlyReactiveProperty<float>
   + TryApplyEffects(Enemy) : void
 }
 class Stat {
-  +  <<event>> OnValueChanged : Action<float>
-  + BaseValue : float <<get>>
-  + CurrentValue : float <<get>>
-  + Type : StatType
+  - _modifiers : List<StatModifier>
+  - _currentValue : ReactiveProperty<float>
+  - _cachedValue : float
+  + BaseValue : float {get; private set;}
+  + CurrentValue : float {get;}
+  + CurrentValueStream : ReadOnlyReactiveProperty<float> {get;}
+  + Type : StatType {get; private set;}
   + Stat(StatType, float)
   + SetBase(float) : void
   + AddModifier(StatModifier) : void
   + RemoveModifiersFromSource(Guid) : void
+  + Dispose() : void
 }
 class StatModifier {
-  + Value : float <<get>>
-  + SourceId : Guid
-  + Type : ModifierType
+  + Value : float {get;}
+  + SourceId : Guid {get;}
+  + Type : ModifierType {get;}
   + StatModifier(Guid, ModifierType, float)
 }
 enum ModifierType <<enumeration>> {
@@ -101,9 +109,11 @@ package "інші пакети" as IN_all #EEEEEE {
 }
 ScriptableObject <|-- PlayerStatsSO
 IDisposable <|.. PlayerStats
+IDisposable <|.. Stat
 PlayerStatsSO *-- "0..*" StatEntry
 PlayerStats --> PlayerStatsSO
-PlayerStats o-- "0..*" Stat
+PlayerStats *-- "0..*" Stat
+PlayerStats ..> Stat : <<create>>
 Stat o-- "0..*" StatModifier
 StatModifierFormatter ..> StatModifier
 PlayerStats ..> StatModifier

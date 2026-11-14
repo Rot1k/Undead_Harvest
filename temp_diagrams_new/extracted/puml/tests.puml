@@ -1,0 +1,60 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class HealthSystemTests {
+  + Damage_ReducesHealthByDamageAmount() : void
+  + Heal_DoesNotExceedMaximumHealth() : void
+  + Damage_AtZeroHealth_RaisesDeathEventOnlyOnce() : void
+}
+class PlayerStatsTests {
+  + SetUp() : void
+  + TearDown() : void
+  + SetBaseStat_WithNegativeMaxHealth_ClampsToZero() : void
+  + SetBaseStat_WithNegativeAttackDamage_KeepsNegativeValue() : void
+  + Observe_AfterStatChanged_ImmediatelyEmitsCurrentValue() : void
+}
+class StatusEffectsTests {
+  + SetUp() : void
+  + TearDown() : void
+  + ApplyEffect_WithTwoDifferentEffects_HasCorrectEffectCount() : void
+  + ApplyEffect_TwiceForNonStackableEffect_DoesNotAddAnotherEffect() : void
+  + ClearAllEffects_RemovesAllEffects() : void
+}
+class "stats::PlayerStats" as PlayerStats #EEEEEE
+class "stats::PlayerStatsSO" as PlayerStatsSO #EEEEEE
+class "effects::StatusEffectsManager" as StatusEffectsManager #EEEEEE
+class "enemies::EnemyStatsSO" as EnemyStatsSO #EEEEEE
+PlayerStatsTests --> PlayerStats
+PlayerStatsTests --> PlayerStatsSO
+StatusEffectsTests --> StatusEffectsManager
+StatusEffectsTests --> EnemyStatsSO
+@enduml

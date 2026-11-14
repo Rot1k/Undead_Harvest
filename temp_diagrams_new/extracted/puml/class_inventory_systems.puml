@@ -1,0 +1,62 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 9
+skinparam packageStyle rectangle
+skinparam linetype polyline
+left to right direction
+hide empty members
+title Системи та ігровий потік — повний перелік типів
+
+package "GameFlow" {
+  class "GameFlowState" as T0_0
+  class "GameOverState" as T0_1
+  class "LevelUpState" as T0_2
+  class "ShopState" as T0_3
+  class "StartingState" as T0_4
+  class "State" as T0_5
+  class "StateMachine" as T0_6
+  class "VictoryState" as T0_7
+  class "WaveEndState" as T0_8
+  class "WaveState" as T0_9
+}
+package "Services" {
+  interface "IShopService" as T1_0 <<interface>>
+  class "ShopService" as T1_1
+}
+package "Systems" {
+  class "BackgroundMusicManager" as T2_0
+  class "Bootstrap" as T2_1
+  class "CombatSystem" as T2_2
+  class "EnemyRegistry" as T2_3
+  class "EnemySpawner" as T2_4
+  class "EquipmentManager" as T2_5
+  class "GameInput" as T2_6
+  class "GlobalLifetimeScope" as T2_7
+  class "HealthSystem" as T2_8
+  class "ItemDescriptionBuilder" as T2_9
+  class "LevelSystem" as T2_10
+  class "Loader" as T2_11
+  class "LoaderCallback" as T2_12
+  class "MainMenuLifetimeScope" as T2_13
+  class "MasterVolumeManager" as T2_14
+  class "PauseManager" as T2_15
+  enum "Scene" as T2_16 <<enumeration>>
+  class "SceneLifetimeScope" as T2_17
+  class "SoundList" as T2_18 <<struct>>
+  class "SoundManager" as T2_19
+  enum "SoundType" as T2_20 <<enumeration>>
+  class "StatModifierFormatter" as T2_21
+  class "WalletManager" as T2_22
+  class "WavesManager" as T2_23
+}
+
+note bottom
+36 унікальних оголошень типів.
+Часткові класи об’єднано; згенерований PlayerInputActions.cs включено.
+end note
+@enduml

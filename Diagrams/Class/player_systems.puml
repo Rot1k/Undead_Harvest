@@ -31,9 +31,11 @@ left to right direction
 hide empty members
 
 class HealthSystem {
-  +  <<event>> OnDead : EventHandler
-  + HealthMax : ReadOnlyReactiveProperty<int>
-  + Health : ReadOnlyReactiveProperty<int>
+  + <<event>> OnDead : EventHandler
+  - _healthMax : ReactiveProperty<int>
+  - _health : ReactiveProperty<int>
+  + HealthMax : ReadOnlyReactiveProperty<int> {get;}
+  + Health : ReadOnlyReactiveProperty<int> {get;}
   + HealthSystem(int)
   + SetMaxHealth(int, bool) : void
   + Damage(int) : void
@@ -42,13 +44,18 @@ class HealthSystem {
   + Reset(int) : void
 }
 class LevelSystem {
-  +  <<event>> OnLevelChanged : EventHandler
-  +  <<event>> OnExpChanged : EventHandler
-  +  <<event>> OnSkillPointUsed : EventHandler
-  + SkillPoints : int <<get>>
-  + Level : ReadOnlyReactiveProperty<int>
-  + CurrentExp : ReadOnlyReactiveProperty<float>
-  + ExpToNextLevel : ReadOnlyReactiveProperty<float>
+  + <<event>> OnLevelChanged : EventHandler
+  + <<event>> OnExpChanged : EventHandler
+  + <<event>> OnSkillPointUsed : EventHandler
+  - _level : ReactiveProperty<int>
+  - _currentExp : ReactiveProperty<float>
+  - _expToNextLevel : ReactiveProperty<float>
+  - _baseExp : float = 100f
+  - _growthFactor : float = 1.15f
+  + SkillPoints : int {get; private set;}
+  + Level : ReadOnlyReactiveProperty<int> {get;}
+  + CurrentExp : ReadOnlyReactiveProperty<float> {get;}
+  + ExpToNextLevel : ReadOnlyReactiveProperty<float> {get;}
   + LevelSystem()
   + AddExp(float) : void
   + UseSkillPoint(int) : void
@@ -66,13 +73,16 @@ class ExpCoin {
   + Collect(ItemCollector) : void
   + OnSpawn() : void
 }
-interface IDamageable <<interface>>
+interface IDamageable <<interface>> {
+  + HealthSystem : HealthSystem {get;}
+}
 interface ICollectible <<interface>> {
   Collect(ItemCollector) : void
   StartAttraction(Transform, float) : void
 }
 class CombatSystem <<static>> {
   + {static} CalculateDamage(PlayerStats, WeaponSO) : float
+  + {static} CalculateDamage(PlayerStats, WeaponSO, float) : float
 }
 class "enemies::Enemy" as Enemy #EEEEEE
 class "player::Player" as Player #EEEEEE
@@ -93,7 +103,7 @@ MonoBehaviour <|-- ItemCollector
 MonoBehaviour <|-- ItemMagnet
 IDamageable <|.. Player
 IDamageable <|.. PlayerHealthSystem
-IDamageable --> HealthSystem
+IDamageable ..> HealthSystem
 ItemCollector --> LevelSystem
 ItemCollector --> HealthSystem
 ExpCoin ..> ItemCollector

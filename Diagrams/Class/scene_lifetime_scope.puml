@@ -1,0 +1,60 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam ranksep 18
+skinparam nodesep 16
+skinparam linetype polyline
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam class<<library>> {
+  BackgroundColor #DDEBF7
+  BorderColor #444444
+}
+skinparam package {
+  BackgroundColor #F4F4F4
+  BorderColor #444444
+}
+left to right direction
+hide empty members
+
+class SceneLifetimeScope {
+  # Configure(IContainerBuilder) : void
+}
+class IContainerBuilder <<library>>
+class IObjectResolver <<library>>
+class GameObject <<library>>
+
+package "Компоненти з посиланнями в Inspector" as SerializedComponents {
+  class WavesManager
+  class WaveEndWindow
+  class Player
+  class EquipmentManager
+  class WalletManager
+  class PlayerDamageReceiver
+  class PlayerAnimation
+  class WeaponsHolder
+  class UIBootstrap
+}
+package "Компоненти, знайдені в ієрархії сцени" as HierarchyComponents {
+  class ShopUI
+  class LevelUpWindowUI
+  class WinLoseWindowUI
+  class HUDUI
+}
+
+SceneLifetimeScope ..> IContainerBuilder : <<налаштовує контейнер>>
+SceneLifetimeScope ..> SerializedComponents : <<реєструє компоненти з посиланнями Inspector>>
+SceneLifetimeScope ..> HierarchyComponents : <<реєструє компоненти з ієрархії>>
+SceneLifetimeScope ..> IObjectResolver : <<виконує ін’єкцію>>
+IObjectResolver ..> GameObject : <<ін’єктує кореневі об’єкти сцени>>
+note bottom of SerializedComponents
+  Залежність від пакета стосується
+  кожного типу, наведеного в ньому.
+end note
+@enduml

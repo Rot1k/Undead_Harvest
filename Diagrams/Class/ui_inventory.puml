@@ -31,9 +31,10 @@ left to right direction
 hide empty members
 
 abstract class InventorySlot {
-  + RectTransform : RectTransform
-  + ItemImage : Image
-  + SlotOutline : Outline
+  # _itemInfoController : ItemInfoController
+  # ItemImage : Image
+  # SlotOutline : Outline
+  + RectTransform : RectTransform {get;}
   + OnPointerClick(PointerEventData) : void
 }
 class ItemInventorySlot {
@@ -43,9 +44,12 @@ class ItemInventorySlot {
   + GetCount() : int
 }
 class WeaponInventorySlot {
-  + SlotIndex : int <<get>>
+  + SlotIndex : int {get;}
 }
 class ItemsInventoryUI {
+  - _slots : Dictionary<PassiveItemSO, ItemInventorySlot>
+  - _equipmentManager : EquipmentManager
+  - _itemSlotPrefab : GameObject
   + Construct(EquipmentManager) : void
   + Initialize() : void
   + Dispose() : void
@@ -74,8 +78,9 @@ InventorySlot <|-- ItemInventorySlot
 MonoBehaviour <|-- ItemsInventoryUI
 InventorySlot <|-- WeaponInventorySlot
 MonoBehaviour <|-- WeaponsInventoryUI
-ItemsInventoryUI o-- "0..*" ItemInventorySlot
-InventorySlot -- ItemInfoController
+ItemsInventoryUI *-- "0..*" ItemInventorySlot
+ItemsInventoryUI ..> ItemInventorySlot : <<create>>
+InventorySlot <--> ItemInfoController : slot / controller
 ItemsInventoryUI --> ItemInfoController
 ItemInventorySlot ..> ItemInfoController
 ItemInventorySlot o-- "0..*" PassiveItemInstance

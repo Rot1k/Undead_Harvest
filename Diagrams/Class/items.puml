@@ -35,7 +35,7 @@ abstract class InventoryItemSO {
   + Price : int
   + SpecialDescription : string
   + UISprite : Sprite
-  + Rarity : Rarity
+  + Rarity : Rarity {get; private set;}
 }
 class InventoryItemsPoolSO
 class PassiveItemSO {
@@ -43,8 +43,9 @@ class PassiveItemSO {
   + GetDescriptionParams(PlayerStatsSO) : Dictionary<string, string>
 }
 class PassiveItemInstance {
+  + PassiveItemSO : PassiveItemSO {get;}
+  + InstanceId : Guid {get;}
   + RuntimeData : object
-  + InstanceId : Guid
   + PassiveItemInstance(PassiveItemSO)
 }
 class ModifierData {

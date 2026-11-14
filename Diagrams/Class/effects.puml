@@ -31,12 +31,18 @@ top to bottom direction
 hide empty members
 
 class StatusEffectsManager {
-  + ActiveEffectCount : int <<get>>
+  - _enemy : Enemy
+  - _activeEffects : Dictionary<StatusEffectSO, StatusEffectInstance>
+  + ActiveEffectCount : int {get;}
   + ApplyEffect(StatusEffectSO) : void
   + ClearAllEffects() : void
 }
 class StatusEffectInstance {
-  + IsFinished : bool <<get>>
+  - _stacks : List<EffectStack>
+  - _tickTimer : float
+  + EffectData : StatusEffectSO {get;}
+  + Target : Enemy {get;}
+  + IsFinished : bool {get;}
   + StatusEffectInstance(StatusEffectSO, Enemy)
   + AddStack(float) : void
   + ForceExpire() : void
@@ -90,10 +96,12 @@ ScriptableObject <|-- StatusEffectsListSO
 ScriptableObject <|-- StatusEffectSO
 MonoBehaviour <|-- StatusEffectsManager
 StatusEffectInstance --> StatusEffectSO
-StatusEffectInstance o-- "0..*" EffectStack
+StatusEffectInstance *-- "0..*" EffectStack
+StatusEffectInstance ..> EffectStack : <<create>>
+StatusEffectsManager ..> StatusEffectInstance : <<create>>
 StatusEffectSO o-- "0..*" EffectModifierSO
 StatusEffectsManager o-- "0..*" StatusEffectSO
-StatusEffectsManager o-- "0..*" StatusEffectInstance
+StatusEffectsManager *-- "0..*" StatusEffectInstance
 EffectModifierSO ..> StatusEffectInstance
 FlatDamageEffectModifierSO ..> StatusEffectInstance
 PercentDamageEffectModifierSO ..> StatusEffectInstance

@@ -34,7 +34,7 @@ class WeaponSO {
   + BaseDamage : float
   + RangeMultiplier : float
   + BaseAttackSpeed : float
-  + CanUnion : bool <<get>>
+  + CanUnion : bool {get;}
   + Prefab : GameObject
   + MaskSprite : Sprite
   + GetDescriptionTemplate() : string
@@ -77,7 +77,7 @@ IDescribableItem <|.. WeaponSO
 WeaponSO *-- "0..*" ScalingStatsEntry
 WeaponSO *-- "0..*" WeaponEffectData
 RangeWeaponSO --> PlayerBullet
-RangeWeaponSO ..> RangeWeaponContext
+RangeWeaponSO ..> RangeWeaponContext : <<create>>
 WeaponEffectData --> StatusEffectSO
 WeaponSO ..> PlayerStatsSO
 IN_all ..> MeeleWeaponSO

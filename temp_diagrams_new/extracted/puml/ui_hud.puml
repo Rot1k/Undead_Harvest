@@ -1,0 +1,118 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+left to right direction
+hide empty members
+
+class HUDUI {
+  + Construct(WavesManager) : void
+  + Initialize() : void
+  + Dispose() : void
+  + Show() : void
+  + Hide() : void
+}
+class HealthBarUI {
+  + Construct(Player) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class ExpBarUI {
+  + Construct(Player) : void
+  + Initialize() : void
+}
+class BossHealthBarUI {
+  + Construct(WavesManager) : void
+  + Initialize() : void
+}
+class UIBootstrap {
+  + Initialize() : void
+  + Dispose() : void
+}
+class WalletUI {
+  + Construct(WalletManager) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class WaveCounterUI {
+  + Construct(WavesManager) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class WaveTimerUI {
+  + Construct(WavesManager) : void
+  + Initialize() : void
+  + Dispose() : void
+}
+class "ui_shop::ShopUI" as ShopUI #EEEEEE
+class "ui_results::WaveEndWindow" as WaveEndWindow #EEEEEE
+class "ui_results::WinLoseWindowUI" as WinLoseWindowUI #EEEEEE
+class "core_services::WalletManager" as WalletManager #EEEEEE
+class "waves::WavesManager" as WavesManager #EEEEEE
+class "enemies::BossEnemy" as BossEnemy #EEEEEE
+class "player_systems::HealthSystem" as HealthSystem #EEEEEE
+class "player_systems::LevelSystem" as LevelSystem #EEEEEE
+class "player::Player" as Player #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+package "ui_menu" as OUT_ui_menu #EEEEEE {
+  class "MenuUI\nMainUI\nTutorialUI\nLevelUpWindowUI" as OUT_ui_menu_n <<names>>
+}
+package "інші пакети" as IN_all #EEEEEE {
+  class "flow::ShopState\ncore_boot::Bootstrap\ncore_boot::SceneLifetimeScope" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- UIBootstrap
+MonoBehaviour <|-- WalletUI
+MonoBehaviour <|-- WaveCounterUI
+MonoBehaviour <|-- WaveTimerUI
+MonoBehaviour <|-- BossHealthBarUI
+MonoBehaviour <|-- ExpBarUI
+MonoBehaviour <|-- HealthBarUI
+MonoBehaviour <|-- HUDUI
+UIBootstrap --> HealthBarUI
+UIBootstrap --> ExpBarUI
+UIBootstrap --> WaveTimerUI
+UIBootstrap --> WaveCounterUI
+UIBootstrap --> HUDUI
+UIBootstrap --> BossHealthBarUI
+UIBootstrap --> ShopUI
+UIBootstrap ..> OUT_ui_menu
+UIBootstrap --> WaveEndWindow
+UIBootstrap --> WinLoseWindowUI
+WalletUI --> WalletManager
+WaveCounterUI --> WavesManager
+WaveTimerUI --> WavesManager
+BossHealthBarUI --> WavesManager
+HUDUI --> WavesManager
+BossHealthBarUI --> BossEnemy
+BossHealthBarUI --> HealthSystem
+ExpBarUI --> LevelSystem
+HealthBarUI --> Player
+ExpBarUI ..> Player
+IN_all ..> HUDUI
+IN_all ..> UIBootstrap
+@enduml

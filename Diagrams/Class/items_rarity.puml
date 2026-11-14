@@ -39,7 +39,7 @@ class RarityConfigSO {
 class RarityEntry {
   + StatMultiplier : float
   + DropChance : float
-  + Rarity : Rarity
+  + Rarity : Rarity {get; private set;}
   + Color : Color
 }
 enum Rarity <<enumeration>> {
@@ -49,18 +49,23 @@ enum Rarity <<enumeration>> {
   ... (всього 5)
 }
 interface IHaveRarity <<interface>> {
-  + Rarity : Rarity
+  + Rarity : Rarity {get;}
 }
 class ItemDescriptionBuilder <<static>> {
   + {static} Build(InventoryItemSO, PlayerStatsSO) : string
 }
 class EquipmentManager {
-  +  <<event>> OnItemEquipped : Action<PassiveItemInstance>
-  +  <<event>> OnItemUnequipped : Action<PassiveItemInstance>
-  +  <<event>> OnWeaponEquipped : Action<int, WeaponSO>
-  +  <<event>> OnWeaponUnequipped : Action<int, WeaponSO>
-  + MaxWeapons : int <<get>>
-  + IsInitialized : bool <<get>>
+  + <<event>> OnItemEquipped : Action<PassiveItemInstance>
+  + <<event>> OnItemUnequipped : Action<PassiveItemInstance>
+  + <<event>> OnWeaponEquipped : Action<int, WeaponSO>
+  + <<event>> OnWeaponUnequipped : Action<int, WeaponSO>
+  - _weapons : WeaponSO[]
+  - _playerStats : PlayerStats
+  - _startingItems : PassiveItemSO[]
+  - _startingWeapons : WeaponSO[]
+  + Items : List<PassiveItemInstance> {get;}
+  + MaxWeapons : int {get;}
+  + IsInitialized : bool {get; private set;}
   + Initialize(PlayerStats) : void
   + AddItem(PassiveItemSO) : void
   + RemovePassiveItem(PassiveItemInstance) : void
@@ -93,6 +98,7 @@ RarityConfigSO *-- "0..*" RarityEntry
 EquipmentManager ..> OUT_items
 ItemDescriptionBuilder ..> OUT_items
 EquipmentManager --> PlayerStats
+EquipmentManager ..> PassiveItemInstance : <<create>>
 ItemDescriptionBuilder ..> PlayerStatsSO
 EquipmentManager ..> WeaponSO
 EquipmentManager ..> InventorySlot

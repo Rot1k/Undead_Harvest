@@ -31,10 +31,17 @@ left to right direction
 hide empty members
 
 abstract class Weapon {
+  - _weaponVisual : WeaponVisual
+  # _weaponBaseStats : WeaponSO
+  # _playerMovement : PlayerMovement
+  # _playerStats : PlayerStats
+  # _soundManager : SoundManager
+  - _enemyRegistry : EnemyRegistry
+  # OriginalLocalPosition : Vector3
+  # _lockedEnemy : Transform
   # _nextFireTime : float = 0f
   # _targetSwitchDelay : float = 0.15
-  # HasTarget : bool <<get>>
-  + OriginalLocalPosition : Vector3
+  # HasTarget : bool {get;}
   + Construct(SoundManager) : void
   + Initialize(Player, WeaponSO) : void
   # UpdateTarget() : void
@@ -43,6 +50,7 @@ abstract class Weapon {
   # LookAtTargetOrInput() : void
   # CanShoot(float) : bool
   # ApplyCooldown(float) : void
+  + CalculateDamage(float) : float
   + HandleOnHit(Enemy) : void
   + <<virtual>> UpdateStartPosition(Vector3) : void
   + <<virtual>> SetStats(WeaponSO) : void
@@ -79,6 +87,7 @@ class "stats::PlayerStats" as PlayerStats #EEEEEE
 class "core_services::SoundManager" as SoundManager #EEEEEE
 class "enemies::Enemy" as Enemy #EEEEEE
 class "waves::EnemyRegistry" as EnemyRegistry #EEEEEE
+class "player_systems::CombatSystem" as CombatSystem <<static>> #EEEEEE
 class "waves::WavesManager" as WavesManager #EEEEEE
 class "items_rarity::EquipmentManager" as EquipmentManager #EEEEEE
 class "items_rarity::RarityConfigSO" as RarityConfigSO #EEEEEE
@@ -113,6 +122,7 @@ WeaponsHolder --> PlayerStats
 Weapon --> SoundManager
 Weapon --> Enemy
 Weapon --> EnemyRegistry
+Weapon ..> CombatSystem
 WeaponsHolder --> WavesManager
 WeaponsHolder --> EquipmentManager
 WeaponVisual --> RarityConfigSO

@@ -31,7 +31,7 @@ left to right direction
 hide empty members
 
 class WalletManager {
-  + Balance : float <<get>> = 0f
+  + Balance : float {get; private set;} = 0f
   +  <<event>> OnBalanceChanged : Action<float>
   + AddMoney(float) : void
   + TrySpendMoney(float) : bool
@@ -54,15 +54,15 @@ class ShopService {
   + TryUnion(InventorySlot, string) : bool
 }
 class BackgroundMusicManager {
-  + Volume : float <<get>> = 1f
+  + Volume : float {get; private set;} = 1f
   + SetVolume(float) : void
 }
 class MasterVolumeManager {
-  + Volume : float <<get>> = 1f
+  + Volume : float {get; private set;} = 1f
   + SetVolume(float) : void
 }
 class SoundManager {
-  + Volume : float <<get>> = 1f
+  + Volume : float {get; private set;} = 1f
   + PlaySound(SoundType, float) : void
   + SetVolume(float) : void
 }

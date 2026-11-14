@@ -1,0 +1,99 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam dpi 200
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 10
+skinparam classFontSize 10
+skinparam classAttributeFontSize 9
+skinparam stereotypeFontSize 8
+skinparam ranksep 16
+skinparam nodesep 8
+skinparam padding 2
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor #444444
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 8
+skinparam linetype polyline
+skinparam class<<grp>> {
+  BackgroundColor White
+  BorderColor #444444
+}
+skinparam class<<names>> {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+hide <<names>> stereotype
+hide <<grp>> stereotype
+hide circle
+top to bottom direction
+hide empty members
+
+abstract class Bullet {
+  # _damage : float
+  + <<virtual>> OnSpawn() : void
+  + <<virtual>> Setup(Vector2, float, float) : void
+  # <<virtual>> IsObstacle(Collider2D) : bool
+  # {abstract} TryGetTarget(Collider2D, IDamageable) : bool
+  # <<virtual>> OnHit(IDamageable) : void
+  # Despawn() : void
+}
+class EnemyBullet {
+  # <<override>> TryGetTarget(Collider2D, IDamageable) : bool
+}
+class PlayerBullet {
+  + Setup(Vector2, float, ...2 парам.) : void
+  # <<override>> TryGetTarget(Collider2D, IDamageable) : bool
+  # <<override>> OnHit(IDamageable) : void
+  + <<override>> OnSpawn() : void
+}
+class RangeWeaponContext {
+  + Damage : float
+  + FireRate : float
+  + BulletSpeed : float
+}
+interface IWeaponBehavior <<interface>> {
+  Shoot(Weapon, Transform, ...2 парам.) : void
+}
+class SingleShotBehavior {
+  + Shoot(Weapon, Transform, ...2 парам.) : void
+}
+class BurstShotBehavior {
+  + Shoot(Weapon, Transform, ...2 парам.) : void
+}
+class ShotgunBehavior {
+  + Shoot(Weapon, Transform, ...2 парам.) : void
+}
+abstract class "weapons::Weapon" as Weapon #EEEEEE
+interface "player_systems::IDamageable" as IDamageable <<interface>> #EEEEEE
+class MonoBehaviour <<library>> #DDEBF7
+interface ISpawnable <<interface>> <<library>> #DDEBF7
+package "інші пакети" as IN_all #EEEEEE {
+  class "weapons_data::RangeWeaponSO\nenemies::BossEnemy\nenemies::RangerEnemy\nweapons::RangeWeapon" as IN_all_n <<names>>
+}
+MonoBehaviour <|-- Bullet
+ISpawnable <|.. Bullet
+Bullet <|-- EnemyBullet
+Bullet <|-- PlayerBullet
+IWeaponBehavior <|.. BurstShotBehavior
+IWeaponBehavior <|.. ShotgunBehavior
+IWeaponBehavior <|.. SingleShotBehavior
+RangeWeaponContext --> PlayerBullet
+IWeaponBehavior ..> RangeWeaponContext
+BurstShotBehavior ..> RangeWeaponContext
+ShotgunBehavior ..> RangeWeaponContext
+SingleShotBehavior ..> RangeWeaponContext
+PlayerBullet --> Weapon
+IWeaponBehavior ..> Weapon
+BurstShotBehavior ..> Weapon
+ShotgunBehavior ..> Weapon
+SingleShotBehavior ..> Weapon
+Bullet ..> IDamageable
+EnemyBullet ..> IDamageable
+PlayerBullet ..> IDamageable
+IN_all ..> PlayerBullet
+IN_all ..> Bullet
+IN_all ..> IWeaponBehavior
+IN_all ..> RangeWeaponContext
+@enduml
